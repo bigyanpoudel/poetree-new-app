@@ -15,6 +15,7 @@ const darkTheme: ThemeProp = {
     onPrimary: "#1E1E1E",
     background: "#151718",
     onBackground: "white",
+    surface: "#151718",
     onSurface: "white",
   },
 };
@@ -29,7 +30,8 @@ const lightTheme: ThemeProp = {
     onBackground: "#1E1E1E",
     onSurface: "#1E1E1E",
     backdrop: "red",
-    surface: "green",
+    surface: "white",
+    elevation: "level1",
   },
 };
 

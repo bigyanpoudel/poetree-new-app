@@ -12,6 +12,7 @@ interface IExpoRouteTabsProps {
 
 export const ExpoRouteTabs: React.FC<IExpoRouteTabsProps> = ({ items }) => {
   const colorScheme = useColorScheme();
+
   return (
     <Tabs
       screenOptions={{
