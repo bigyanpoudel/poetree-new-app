@@ -30,7 +30,6 @@ export const InputField: React.FC<InputFieldProps> = ({
         outlineStyle={{
           borderRadius: 48,
         }}
-        placeholder="Hello"
         placeholderTextColor={isDark ? "#bdbdbd" : "#757575"}
         value={field.value} // Bind value to Formik
         onChangeText={helpers.setValue} // Bind onChangeText to Formik

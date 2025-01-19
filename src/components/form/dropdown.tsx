@@ -27,11 +27,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
       <Dropdown
         placeholder={placeholder}
         value={field.value}
-        options={[
-          { label: "Male", value: "male" },
-          { label: "Female", value: "female" },
-          { label: "Other", value: "other" },
-        ]}
+        options={options}
         onSelect={(value) => helpers.setValue(value)}
         mode="outlined"
         menuContentStyle={{
