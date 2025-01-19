@@ -16,7 +16,6 @@ const darkTheme: ThemeProp = {
     background: "#151718",
     onBackground: "white",
     surface: "#151718",
-    onSurface: "white",
   },
 };
 

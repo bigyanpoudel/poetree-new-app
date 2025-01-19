@@ -6,6 +6,7 @@ interface CustomColors {
   icon: string;
   tabIconDefault: string;
   borderColor: string;
+  scafoldColor: string;
 }
 interface IColorsType {
   light: CustomColors;
@@ -19,6 +20,7 @@ export const Colors: IColorsType = {
     icon: "#687076",
     tabIconDefault: "#687076",
     borderColor: "#e9ecf0",
+    scafoldColor: "#f8f8f8",
   },
   dark: {
     text: "#ECEDEE",
@@ -27,5 +29,6 @@ export const Colors: IColorsType = {
     icon: "#9BA1A6",
     tabIconDefault: "#9BA1A6",
     borderColor: "#e9ecf0",
+    scafoldColor: "#181818",
   },
 };

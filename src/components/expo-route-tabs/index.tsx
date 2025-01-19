@@ -2,10 +2,11 @@ import { ScreenProps, Tabs } from "expo-router";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 
-import TabBarBackground from "@/components/ui/TabBarBackground";
+
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/src/utils/constant/colors";
 import { HapticTab } from "./helper/haptic-tab";
+import TabBarBackground from "./helper/tab-bar-background/TabBarBackground";
 interface IExpoRouteTabsProps {
   items: ScreenProps[];
 }

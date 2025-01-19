@@ -19,6 +19,10 @@ export const MainAppBar = () => {
         paddingLeft: 0,
         paddingRight: 16,
         gap: 0,
+        backgroundColor: isDarkTheme
+          ? Colors.light.primary
+          : Colors.dark.primary,
+        // iOS shadow
       }}
       mode="small"
     >
