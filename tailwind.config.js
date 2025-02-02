@@ -7,6 +7,7 @@ module.exports = {
       colors: {
         darkTextColor: "#ECEDEE",
         ligtTextColor: "#11181C",
+        darkBackground: "#151718",
         ui: {
           border: "#e9ecf0",
           grey: "#808ba8",
@@ -16,6 +17,15 @@ module.exports = {
           warning: "#fde965",
           info: "#266ede",
         },
+      },
+      fontSize: {
+        xss: [
+          "12px",
+          {
+            lineHeight: "16px",
+            letterSpacing: "0.1px",
+          },
+        ],
       },
     },
   },

@@ -1,4 +1,4 @@
-import { useColorScheme, View, type ViewProps } from "react-native";
+import { ScrollView, useColorScheme, View, type ViewProps } from "react-native";
 
 import { Colors } from "@/src/utils/constant/colors";
 
@@ -16,19 +16,22 @@ export function Scafold({
   const colorSchema = useColorScheme();
   const isDarked = colorSchema == "dark";
   return (
-    <View
-      style={[
-        {
-          backgroundColor: isDarked
-            ? Colors.dark.scafoldColor
-            : Colors.light.scafoldColor,
-          paddingHorizontal: 20,
-          paddingVertical: 24,
-          flex: 1,
-        },
-        style,
-      ]}
-      {...otherProps}
-    />
+    <ScrollView style={{ flex: 1 }}>
+      <View
+        style={[
+          {
+            backgroundColor: isDarked
+              ? Colors.dark.scafoldColor
+              : Colors.light.scafoldColor,
+            paddingHorizontal: 20,
+            paddingVertical: 24,
+            flex: 1,
+            paddingBottom: 100,
+          },
+          style,
+        ]}
+        {...otherProps}
+      />
+    </ScrollView>
   );
 }

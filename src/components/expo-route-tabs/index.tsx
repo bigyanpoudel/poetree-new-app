@@ -1,9 +1,7 @@
 import { ScreenProps, Tabs } from "expo-router";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, useColorScheme, View } from "react-native";
 
-
-import { useColorScheme } from "@/hooks/useColorScheme";
 import { Colors } from "@/src/utils/constant/colors";
 import { HapticTab } from "./helper/haptic-tab";
 import TabBarBackground from "./helper/tab-bar-background/TabBarBackground";
@@ -13,7 +11,7 @@ interface IExpoRouteTabsProps {
 
 export const ExpoRouteTabs: React.FC<IExpoRouteTabsProps> = ({ items }) => {
   const colorScheme = useColorScheme();
-
+  const isDark = colorScheme == "dark";
   return (
     <Tabs
       screenOptions={{
@@ -36,7 +34,9 @@ export const ExpoRouteTabs: React.FC<IExpoRouteTabsProps> = ({ items }) => {
         tabBarStyle: [
           styles.tabBar,
           {
-            backgroundColor: Colors[colorScheme ?? "light"].background,
+            backgroundColor: isDark
+              ? Colors[colorScheme ?? "light"].background
+              : "white",
           },
         ],
         tabBarLabelStyle: styles.tabBarLabel,
