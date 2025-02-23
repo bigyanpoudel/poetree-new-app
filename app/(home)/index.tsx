@@ -46,6 +46,9 @@ export default function HomeScreen() {
               alignItems: "center",
               display: "flex",
             },
+            tabBarLabelStyle: {
+              fontFamily: "Poximanova",
+            },
             tabBarIndicatorStyle: {
               backgroundColor: Colors[colorScheme ?? "light"].primary,
             },
@@ -64,6 +67,9 @@ export default function HomeScreen() {
               alignItems: "center",
               display: "flex",
             },
+            tabBarLabelStyle: {
+              fontFamily: "Poximanova",
+            },
             tabBarIndicatorStyle: {
               backgroundColor: Colors[colorScheme ?? "light"].primary,
             },
@@ -76,6 +82,9 @@ export default function HomeScreen() {
             tabBarIcon: ({ color }) => (
               <IconSymbol name="person.fill" color={color} size={24} />
             ),
+            tabBarLabelStyle: {
+              fontFamily: "Poximanova",
+            },
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally
               alignItems: "center",

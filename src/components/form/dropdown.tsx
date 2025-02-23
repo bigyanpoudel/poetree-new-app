@@ -4,6 +4,7 @@ import { useColorScheme, View } from "react-native";
 import { TextInput } from "react-native-paper";
 import { Dropdown } from "react-native-paper-dropdown";
 import { Text } from "../text"; // Your custom Text component
+import { Colors } from "@/src/utils/constant/colors";
 
 interface DropdownFieldProps {
   name: string; // Formik field name
@@ -50,10 +51,14 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
               paddingRight: 24,
               paddingTop: 12,
               paddingBottom: 12,
-              height: 48,
+
+              color: isDark ? Colors.dark.text : Colors.light.text,
             }}
             outlineStyle={{
               borderRadius: 48,
+            }}
+            style={{
+              height: 48,
             }}
           />
         )}

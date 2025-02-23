@@ -1,8 +1,10 @@
 import { Button, Text } from "@/src/components";
-import { CheckboxField } from "@/src/components/form/checkbox";
+import { DropdownField } from "@/src/components/form/dropdown";
 import { InputField } from "@/src/components/form/input";
 import { ScreenLayout } from "@/src/components/layout";
 import { Colors } from "@/src/utils/constant/colors";
+import { COUNTRYLIST } from "@/src/utils/constant/countryConstant";
+import { generateSelectOptions } from "@/src/utils/form";
 import { Link } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
@@ -14,6 +16,8 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address") // Validate email format
     .required("Email is required"), // Make email field required
+  country: Yup.string().required("Country is required"),
+  name: Yup.string().required("Name is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters") // Minimum length
     .matches(
@@ -29,13 +33,17 @@ const validationSchema = Yup.object().shape({
       "Password must contain at least one number"
     )
     .required("Password is required"), // Make password field required
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords must match") // Match password field
+    .required("Confirm Password is required"),
 });
 
-export const SigninPage = () => {
+export const SignupPage = () => {
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] =
+    React.useState<boolean>(false);
   const colorSchema = useColorScheme();
   const isDark = colorSchema === "dark";
-
   return (
     <ScreenLayout
       appBar={{
@@ -45,33 +53,40 @@ export const SigninPage = () => {
       <View className={"w-full max-w-md"}>
         {/* Welcome Header */}
         <View className={"flex flex-col gap-1.5 items-center mb-6"}>
-          <Text className={"text-2xl font-bold  text-center"}>
-            Welcome Back!
-          </Text>
+          <Text className={"text-2xl font-bold  text-center"}>Signup</Text>
           <Text
             className={
               "text-sm font-medium dark:text-white/60 text-gray-500 text-center"
             }
           >
-            Please enter your credentials to log in to your account
+            Create your account using your email address
           </Text>
         </View>
         <Formik
           initialValues={{
             comment: "",
           }}
-          validationSchema={validationSchema}
           onSubmit={() => {}}
         >
           {({ handleSubmit }) => (
             <View className="flex flex-col gap-4">
               <InputField
                 mode="outlined"
+                label="Full Name"
+                placeholder="Enter full name"
+                name="name"
+              />
+              <InputField
+                mode="outlined"
                 label="Username / Email"
                 placeholder="Username / Email"
                 name="email"
               />
-
+              <DropdownField
+                options={generateSelectOptions(COUNTRYLIST, "code", "name")}
+                name="country"
+                label="Country"
+              />
               <InputField
                 name="password"
                 mode="outlined"
@@ -98,18 +113,32 @@ export const SigninPage = () => {
                   )
                 }
               />
-              {/* Remember Me & Forgot Password */}
-              <View
-                className={"flex flex-row justify-between items-center mb-6"}
-              >
-                <CheckboxField name={"isRemember"} label={"Remember me"} />
-
-                <Link href="/forget-password">
-                  <Text className={" text-base font-medium"}>
-                    Forgot Password?
-                  </Text>
-                </Link>
-              </View>
+              <InputField
+                name="confrimPassword"
+                mode="outlined"
+                label="Confirm Password"
+                placeholder="Enter confirm password"
+                secureTextEntry={!passwordVisible}
+                right={
+                  confirmPasswordVisible ? (
+                    <TextInput.Icon
+                      onPress={() => {
+                        setConfirmPasswordVisible(!confirmPasswordVisible);
+                      }}
+                      icon="eye-off"
+                      color={isDark ? Colors.dark.text : Colors.light.text}
+                    />
+                  ) : (
+                    <TextInput.Icon
+                      onPress={() => {
+                        setConfirmPasswordVisible(!confirmPasswordVisible);
+                      }}
+                      icon="eye"
+                      color={isDark ? Colors.dark.text : Colors.light.text}
+                    />
+                  )
+                }
+              />
 
               <Button
                 mode="contained"
@@ -120,12 +149,12 @@ export const SigninPage = () => {
                   fontWeight: 700,
                   fontSize: 16,
                 }}
-                className="font-bold"
+                className="font-bold mt-8"
                 onPress={() => {
                   handleSubmit();
                 }}
               >
-                Signin
+                Signup
               </Button>
 
               {/* Sign Up Link */}
@@ -139,15 +168,15 @@ export const SigninPage = () => {
                     "text-base font-medium text-gray-500 dark:text-white/60"
                   }
                 >
-                  Don't have an account?
+                  Already have an account ?
                 </Text>
-                <Link href="/signup">
+                <Link href="/signin">
                   <Text
                     className={
                       " text-base font-medium underline underline-offset-2"
                     }
                   >
-                    Sign Up
+                    Signin
                   </Text>
                 </Link>
               </View>

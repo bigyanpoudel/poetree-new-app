@@ -24,7 +24,12 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
     <View className="flex flex-col gap-4">
       <View className="flex flex-col gap-1">
         <Link href={`/poem/${poem.slug}`} asChild>
-          <Text className="text-[28px] garamond -tracking-[0.5px]  font-bold ">
+          <Text
+            style={{
+              fontFamily: "garamond",
+            }}
+            className="text-[28px] garamond -tracking-[0.5px]  font-bold "
+          >
             Poem Title
           </Text>
         </Link>

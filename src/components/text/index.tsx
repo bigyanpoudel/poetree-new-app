@@ -10,9 +10,12 @@ export const Text: React.FC<ITextProps> = ({
   return (
     <RNText
       className={classnames(
-        "dark:text-darkTextColor text-ligtTextColor",
+        "dark:text-darkTextColor  text-ligtTextColor",
         className
       )}
+      style={{
+        fontFamily: "Poximanova",
+      }}
       {...props}
     >
       {children}

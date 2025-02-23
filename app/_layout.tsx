@@ -11,7 +11,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
+    Garamond: require("../assets/fonts/garamond.ttf"),
+    Poximanova: require("../assets/fonts/proxima-nova-medium.ttf"),
   });
 
   useEffect(() => {
@@ -28,9 +29,10 @@ export default function RootLayout() {
     <PaperProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
-        <Stack.Screen name="/poem/[id]" />
+        <Stack.Screen name="poem/[id]" />
         <Stack.Screen name="signin" />
         <Stack.Screen name="signup" />
+        <Stack.Screen name="forget-password" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

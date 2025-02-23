@@ -138,9 +138,8 @@ export enum ConfirmationTypeEnum {
 }
 
 export interface SelectInputOption {
-  value: string | number;
-  label: React.ReactNode;
-  [key: string]: any;
+  value: string;
+  label: string;
 }
 
 export enum SelectModeEnum {
@@ -191,3 +190,4 @@ export enum PurchaseStatusEnum {
   paid = "PAID",
   failed = "FAILED",
 }
+

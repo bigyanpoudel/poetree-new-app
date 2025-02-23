@@ -17,6 +17,9 @@ module.exports = {
           warning: "#fde965",
           info: "#266ede",
         },
+        darker: {
+          100: "#141414",
+        },
       },
       fontSize: {
         xss: [

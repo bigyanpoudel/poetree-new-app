@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "400",
     marginTop: 4,
+    fontFamily: "Poximanova",
   },
   tabBarIcon: {
     marginBottom: -4,
