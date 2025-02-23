@@ -2,11 +2,13 @@ import { Text } from "@/src/components/text";
 import { IAppPoem, POEMTYPE } from "@/src/types";
 import { getPoemType } from "@/src/utils/poem";
 import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
+import { Link } from "expo-router";
 import React from "react";
 import { Image, useColorScheme, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { ActionMenu } from "../actionMenu";
 import VideoScreen from "../videoPlayer";
+import { PoemActions } from "./helper/poemActions";
 import { PoemBody } from "./helper/poemBody";
 import { RenderHashTag } from "./helper/poemHashTag";
 import { PoemType } from "./helper/poemType";
@@ -21,9 +23,11 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
   return (
     <View className="flex flex-col gap-4">
       <View className="flex flex-col gap-1">
-        <Text className="text-[28px] garamond -tracking-[0.5px]  font-semibold ">
-          Poem Title
-        </Text>
+        <Link href={`/poem/${poem.slug}`} asChild>
+          <Text className="text-[28px] garamond -tracking-[0.5px]  font-bold ">
+            Poem Title
+          </Text>
+        </Link>
         <PoemType
           isAudio={Boolean(poem?.audio)}
           isVideo={Boolean(poem?.video)}
@@ -45,7 +49,7 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
       )}
       {poemType === POEMTYPE.video && poem.video && <VideoScreen />}
       <View className="flex flex-row gap-4 justify-between items-center">
-        <View className="flex flex-row gap-2">
+        <View className="flex flex-row gap-2 flex-1">
           <Avatar.Text
             size={40}
             label="XD"
@@ -56,7 +60,7 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
             className="dark:bg-black/50 bg-darkBackground "
           />
           <View className="flex flex-col">
-            <Text className="text-base font-semibold">User Name</Text>
+            <Text className="text-base font-bold">User Name</Text>
             <Text className="text-sm text-gray-500">2021-10-10</Text>
           </View>
         </View>
@@ -109,6 +113,7 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
           ]}
         />
       </View>
+      <PoemActions />
     </View>
   );
 };

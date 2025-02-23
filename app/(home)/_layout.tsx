@@ -5,7 +5,7 @@ import { IconSymbol } from "@/src/components";
 import { Obj } from "@/src/types";
 import { View } from "react-native";
 import { Appbar } from "react-native-paper";
-import {} from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 export default function TabLayout() {
   const items: ScreenProps[] = [
     {
@@ -13,7 +13,7 @@ export default function TabLayout() {
       options: {
         title: "Home",
         tabBarIcon: ({ color }: Obj) => (
-          <IconSymbol size={24} name="house.fill" color={color} />
+          <Entypo name="home" size={24} color={color} />
         ),
       },
     },
@@ -22,16 +22,7 @@ export default function TabLayout() {
       options: {
         title: "Marketplace",
         tabBarIcon: ({ color }: Obj) => (
-          <IconSymbol size={24} name="cart.fill" color={color} />
-        ),
-      },
-    },
-    {
-      name: "network",
-      options: {
-        title: "Users",
-        tabBarIcon: ({ color }: Obj) => (
-          <IconSymbol size={24} name="person.fill" color={color} />
+          <Entypo name="shop" size={24} color={color} />
         ),
       },
     },
@@ -40,7 +31,16 @@ export default function TabLayout() {
       options: {
         title: "Explore",
         tabBarIcon: ({ color }: Obj) => (
-          <IconSymbol size={24} name="map.fill" color={color} />
+          <MaterialIcons name="explore" size={24} color={color} />
+        ),
+      },
+    },
+    {
+      name: "account",
+      options: {
+        title: "Account",
+        tabBarIcon: ({ color }: Obj) => (
+          <MaterialIcons name="manage-accounts" size={24} color={color} />
         ),
       },
     },

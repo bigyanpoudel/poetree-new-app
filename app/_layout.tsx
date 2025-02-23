@@ -26,8 +26,11 @@ export default function RootLayout() {
 
   return (
     <PaperProvider>
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        <Stack.Screen name="/poem/[id]" />
+        <Stack.Screen name="signin" />
+        <Stack.Screen name="signup" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

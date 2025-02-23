@@ -21,12 +21,10 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
       onPress={() => helpers.setValue(!field.value)}
     >
       <View className="flex flex-row items-center gap-2">
-        <View className="border dark:border-white border-black rounded-md p-0">
-          <Checkbox
-            status={field.value ? "checked" : "unchecked"}
-            onPress={() => helpers.setValue(!field.value)}
-          />
-        </View>
+        <Checkbox
+          status={field.value ? "checked" : "unchecked"}
+          onPress={() => helpers.setValue(!field.value)}
+        />
         <Text className="text-lg">{label}</Text>
       </View>
       {meta.touched && meta.error && (

@@ -2,15 +2,19 @@ import { Colors } from "@/src/utils/constant/colors";
 import { AntDesign, Feather } from "@expo/vector-icons";
 import * as React from "react";
 import { useColorScheme } from "react-native";
-import { Button, Divider, Menu } from "react-native-paper";
+import { Button, Divider, IconButton, Menu } from "react-native-paper";
 interface IActionMenuProps {
   items: {
     label: string;
     leadingIcon: React.ReactNode;
     onPress: () => void;
   }[];
+  anchorPosition?: "bottom" | "top" | undefined;
 }
-export const ActionMenu: React.FC<IActionMenuProps> = ({ items }) => {
+export const ActionMenu: React.FC<IActionMenuProps> = ({
+  items,
+  anchorPosition,
+}) => {
   const colorSchema = useColorScheme();
   const [visible, setVisible] = React.useState(false);
 
@@ -20,6 +24,7 @@ export const ActionMenu: React.FC<IActionMenuProps> = ({ items }) => {
 
   return (
     <Menu
+      anchorPosition={anchorPosition}
       visible={visible}
       onDismiss={closeMenu}
       contentStyle={{
@@ -27,13 +32,12 @@ export const ActionMenu: React.FC<IActionMenuProps> = ({ items }) => {
           colorSchema == "dark" ? Colors.dark.scafoldColor : "white",
       }}
       anchor={
-        <Button onPress={openMenu}>
-          <Feather
-            name="more-vertical"
-            size={20}
-            className="dark:text-darkTextColor text-ligtTextColor"
-          />
-        </Button>
+        <Feather
+          onPress={openMenu}
+          name="more-vertical"
+          size={20}
+          className="dark:text-darkTextColor text-ligtTextColor"
+        />
       }
     >
       {items.map((item, index) => {

@@ -3,8 +3,10 @@ import React from "react";
 import { Appearance, Image, useColorScheme, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { Button } from "../button";
+import { useRouter } from "expo-router";
 export const MainAppBar = () => {
   const colorSchema = useColorScheme();
+  const router = useRouter();
   const isDarkTheme = colorSchema === "dark";
   const toggleTheme = () => {
     if (isDarkTheme) {
@@ -75,13 +77,16 @@ export const MainAppBar = () => {
         />
         <View>
           <Button
+            onPress={() => {
+              router.push("/signin");
+            }}
             mode="contained"
             className="text-sm flex  text-center items-center "
             labelStyle={{
               fontSize: 14,
             }}
           >
-            Login
+            Signin
           </Button>
         </View>
       </View>

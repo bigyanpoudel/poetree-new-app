@@ -21,7 +21,8 @@ export const PoemBody = ({
     // Add "..." if the content was truncated
     return lines.length > maxLines ? `${truncatedHtml}...` : truncatedHtml;
   };
-  const sanitizedHtml = truncateHtml(poem.body, maxLines);
+  const sanitizedHtml =
+    maxLines > 0 ? truncateHtml(poem.body, maxLines) : poem.body;
 
   // Custom styles for HTML tags
   const tagsStyles = {

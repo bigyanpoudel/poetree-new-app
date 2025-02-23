@@ -1,14 +1,17 @@
+import { Colors } from "@/src/utils/constant/colors";
+import { useField } from "formik";
 import React from "react";
 import { useColorScheme, View } from "react-native";
 import { TextInput, TextInputProps } from "react-native-paper";
 import { Text } from "../text";
-import { useField } from "formik";
 interface InputFieldProps extends TextInputProps {
   name: string;
+  height?: any;
 }
 export const InputField: React.FC<InputFieldProps> = ({
   label,
   name,
+  height = 48,
   ...props
 }) => {
   const colorSchema = useColorScheme();
@@ -17,15 +20,18 @@ export const InputField: React.FC<InputFieldProps> = ({
   console.log("field", field, meta, helpers);
   return (
     <View className="flex flex-col gap-3">
-      <Text className="text-lg pl-2">{label}</Text>
+      {label && <Text className="text-lg pl-2">{label}</Text>}
       <TextInput
         mode="outlined"
         contentStyle={{
           paddingLeft: 24,
           paddingRight: 24,
           paddingTop: 12,
-          paddingBottom: 12,
-          height: 48,
+          paddingBottom: 13,
+          color: isDark ? Colors.dark.text : Colors.light.text,
+        }}
+        style={{
+          height: height,
         }}
         outlineStyle={{
           borderRadius: 48,
