@@ -38,9 +38,9 @@ export default function HomeScreen() {
           name="Poems"
           children={HomePoems}
           options={{
-            tabBarIcon: ({ color }) => (
-              <IconSymbol name="house.fill" color={color} size={24} />
-            ),
+            // tabBarIcon: ({ color }) => (
+            //   <IconSymbol name="house.fill" color={color} size={24} />
+            // ),
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally
               alignItems: "center",
@@ -59,9 +59,9 @@ export default function HomeScreen() {
           children={HomeYourFeed}
           // component={HomeYourFeed}
           options={{
-            tabBarIcon: ({ color }) => (
-              <IconSymbol name="house.fill" color={color} size={24} />
-            ),
+            // tabBarIcon: ({ color }) => (
+            //   <IconSymbol name="house.fill" color={color} size={24} />
+            // ),
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally
               alignItems: "center",
@@ -79,9 +79,9 @@ export default function HomeScreen() {
           name="Trending"
           children={HomeTrending}
           options={{
-            tabBarIcon: ({ color }) => (
-              <IconSymbol name="person.fill" color={color} size={24} />
-            ),
+            // tabBarIcon: ({ color }) => (
+            //   <IconSymbol name="person.fill" color={color} size={24} />
+            // ),
             tabBarLabelStyle: {
               fontFamily: "Poximanova",
             },

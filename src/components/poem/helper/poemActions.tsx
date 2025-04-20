@@ -14,7 +14,9 @@ export const PoemActions = () => {
           size={20}
           className="dark:text-darkTextColor text-ligtTextColor"
         />
-        <Text className="text-sm font-semibold">1232</Text>
+        <Text fontWeight={500} className="text-sm font-semibold">
+          1232
+        </Text>
       </View>
       <View className="flex flex-row gap-2 items-center">
         <Feather
@@ -22,7 +24,9 @@ export const PoemActions = () => {
           size={20}
           className="dark:text-darkTextColor text-ligtTextColor"
         />
-        <Text className="text-sm font-semibold">1232</Text>
+        <Text fontWeight={500} className="text-sm font-semibold">
+          1232
+        </Text>
       </View>
       <View className="flex flex-row gap-2 items-center">
         <Feather

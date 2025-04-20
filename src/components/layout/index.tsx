@@ -3,17 +3,19 @@ import { router } from "expo-router";
 import React from "react";
 import { useColorScheme, View } from "react-native";
 import { Appbar } from "react-native-paper";
-import { Scafold } from "../view/Scafold";
+import { Scafold, ScafoldProps } from "../view/Scafold";
 interface IScreenLayoutProps {
   appBar: {
     title: string;
     action?: React.ReactNode;
   };
   children: React.ReactNode;
+  scafold?: ScafoldProps;
 }
 export const ScreenLayout: React.FC<IScreenLayoutProps> = ({
   appBar,
   children,
+  scafold,
 }) => {
   const colorSchema = useColorScheme();
   const isDarkTheme = colorSchema === "dark";
@@ -48,7 +50,7 @@ export const ScreenLayout: React.FC<IScreenLayoutProps> = ({
         />
         {appBar.action}
       </Appbar.Header>
-      <Scafold>{children}</Scafold>
+      <Scafold {...scafold}>{children}</Scafold>
     </View>
   );
 };

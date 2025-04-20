@@ -13,6 +13,10 @@ export default function RootLayout() {
   const [loaded] = useFonts({
     Garamond: require("../assets/fonts/garamond.ttf"),
     Poximanova: require("../assets/fonts/proxima-nova-medium.ttf"),
+    Poximanova400: require("../assets/fonts/proximanova_regular.ttf"),
+    Poximanova600: require("../assets/fonts/proximanova_semibold.otf"),
+    Poximanova700: require("../assets/fonts/proximanova_bold.otf"),
+    Poximanova800: require("../assets/fonts/proximanova_extrabold.otf"),
   });
 
   useEffect(() => {
@@ -29,6 +33,7 @@ export default function RootLayout() {
     <PaperProvider>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        <Stack.Screen name="user/profile" />
         <Stack.Screen name="poem/[id]" />
         <Stack.Screen name="signin" />
         <Stack.Screen name="signup" />

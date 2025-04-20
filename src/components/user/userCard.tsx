@@ -32,17 +32,19 @@ export const UserProfileCard = ({}) => {
             }
             numberOfLines={2}
             ellipsizeMode="tail"
+            fontWeight={600}
           >
             User Name
           </Text>
 
           {/* Followers and Following Section */}
-          <View className={"flex flex-row  gap-3 w-full"}>
+          <View className={"flex flex-row  gap-6 w-full"}>
             <View className={"items-center"}>
-              <Text className={"text-base font-normal dark:text-text-100"}>
+              <Text className={"text-sm font-normal dark:text-text-100"}>
                 Followers
               </Text>
               <Text
+                fontWeight={700}
                 className={
                   "text-base font-medium dark:text-white text-text-300"
                 }
@@ -51,10 +53,11 @@ export const UserProfileCard = ({}) => {
               </Text>
             </View>
             <View className={"items-center"}>
-              <Text className={"text-base font-normal dark:text-text-100"}>
+              <Text className={"text-sm font-normal dark:text-text-100"}>
                 Following
               </Text>
               <Text
+                fontWeight={700}
                 className={
                   "text-base font-medium dark:text-white text-text-300"
                 }

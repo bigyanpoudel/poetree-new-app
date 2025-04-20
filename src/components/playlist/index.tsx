@@ -1,15 +1,21 @@
 import { getAccountFormatter } from "@/src/utils/currency";
 import { ArrowUpRight, Edit } from "lucide-react-native"; // For icons
 import React from "react";
-import { View } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 import { IconButton } from "../button/iconButton";
 import { Text } from "../text";
-export const PlaylistCard = () => {
+interface IPlaylistCardProps {
+  style?: StyleProp<ViewStyle>;
+}
+export const PlaylistCard: React.FC<IPlaylistCardProps> = ({ style }) => {
   return (
     <View
-      style={{
-        width: 260,
-      }}
+      style={[
+        {
+          width: 260,
+        },
+        style,
+      ]}
       className="border-ui-border dark:border-ui-border/20 rounded-lg bg-white dark:bg-darker-100"
     >
       {/* Thumbnail or Placeholder */}

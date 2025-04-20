@@ -16,7 +16,7 @@ export const ForgetPasswordPage = () => {
   return (
     <ScreenLayout
       appBar={{
-        title: "Signin",
+        title: "Forget Password",
       }}
     >
       <View className={"w-full max-w-md"}>

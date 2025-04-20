@@ -4,6 +4,15 @@ module.exports = {
   content: ["./app/**/*.{js,tsx,ts,jsx}", "./src/**/*.{js,tsx,ts,jsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        proxima: {
+          light: "Poximanova400",
+          medium: "Poximanova",
+          semibold: "Poximanova600",
+          bold: "Poximanova700",
+          extrabold: "Poximanova800",
+        },
+      },
       colors: {
         darkTextColor: "#ECEDEE",
         ligtTextColor: "#11181C",

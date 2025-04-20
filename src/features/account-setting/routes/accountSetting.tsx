@@ -29,7 +29,9 @@ export const AccountSetting = () => {
           <ListItem
             title="Edit Profile"
             left={(props) => <UserCircle {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.navigate("/user/profile");
+            }}
           />
           <ListItem
             title="Change Password"
