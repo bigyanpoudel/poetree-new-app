@@ -1,6 +1,6 @@
 import { Obj } from "@/src/types";
 
-export const POEMS = [
+export const POEMS: any[] = [
   {
     _id: "1222",
     title: "Poem Title",

@@ -5,7 +5,6 @@ import {
   PaperProvider as RNPaperpProvider,
 } from "react-native-paper";
 import { ThemeProp } from "react-native-paper/lib/typescript/types";
-import { Colors } from "../utils/constant/colors";
 
 const darkTheme: ThemeProp = {
   ...DefaultTheme,

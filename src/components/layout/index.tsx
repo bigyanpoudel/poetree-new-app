@@ -20,7 +20,14 @@ export const ScreenLayout: React.FC<IScreenLayoutProps> = ({
   const colorSchema = useColorScheme();
   const isDarkTheme = colorSchema === "dark";
   return (
-    <View style={{ flex: 1 }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: isDarkTheme
+          ? Colors.dark.scafoldColor
+          : Colors.light.scafoldColor,
+      }}
+    >
       <Appbar.Header
         style={{
           paddingLeft: 0,

@@ -58,7 +58,9 @@ export const MainAppBar = () => {
             }}
             color={isDarkTheme ? Colors.dark.text : Colors.light.text}
             icon="magnify"
-            onPress={() => {}}
+            onPress={() => {
+              router.navigate("/search");
+            }}
           />
         </View>
         <Appbar.Action

@@ -37,6 +37,7 @@ export default function RootLayout() {
         <Stack.Screen name="poem/[id]" />
         <Stack.Screen name="signin" />
         <Stack.Screen name="signup" />
+        <Stack.Screen name="search" />
         <Stack.Screen name="forget-password" />
         <Stack.Screen name="+not-found" />
       </Stack>

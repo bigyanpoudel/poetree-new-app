@@ -7,6 +7,7 @@ export type ScafoldProps = ViewProps & {
   darkColor?: string;
   paddingVertical?: number;
   paddingHorizontal?: number;
+  paddingBottom?: number;
   isNormalView?: boolean;
 };
 
@@ -17,6 +18,7 @@ export function Scafold({
   paddingVertical,
   paddingHorizontal,
   isNormalView = false,
+  paddingBottom,
   ...otherProps
 }: ScafoldProps) {
   const colorSchema = useColorScheme();
@@ -32,7 +34,7 @@ export function Scafold({
             paddingHorizontal: paddingHorizontal ?? 20,
             paddingVertical: paddingVertical ?? 20,
             flex: 1,
-            paddingBottom: 100,
+            paddingBottom: paddingBottom ?? 100,
             height: "100%",
           },
           style,
