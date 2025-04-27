@@ -2,15 +2,31 @@ import { IPoemHasTag } from "@/src/types";
 import React from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Text } from "@/src/components/text";
-const HashtagButton = ({ item }: { item: IPoemHasTag }) => {
+import classNames from "classnames";
+export const HashtagButton = ({
+  title,
+  onPress,
+  className,
+  icon,
+}: {
+  title: string;
+  onPress?: () => void;
+  className?: string;
+  icon?: React.ReactNode;
+}) => {
   return (
     <TouchableOpacity
       style={styles.button}
-      className="dark:border-ui-border/60 border-ui-border"
+      onPress={onPress}
+      className={classNames(
+        "dark:border-ui-border/60 border-ui-border",
+        className
+      )}
     >
       <Text className="dark:text-darkTextColor text-base font-medium text-ligtTextColor">
-        #{item.name}
+        #{title}
       </Text>
+      {icon}
     </TouchableOpacity>
   );
 };
@@ -33,7 +49,7 @@ export const RenderHashTag = ({ hashtags }: { hashtags: IPoemHasTag[] }) => {
   return (
     <View className="flex flex-row gap-2 gap-y-4 flex-wrap">
       {hashtags.map((item) => (
-        <HashtagButton key={item._id} item={item} />
+        <HashtagButton key={item._id} title={item.name} />
       ))}
     </View>
   );

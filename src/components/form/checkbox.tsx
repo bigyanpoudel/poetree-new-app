@@ -28,7 +28,9 @@ export const CheckboxField: React.FC<CheckboxFieldProps> = ({
         <Text className="text-lg">{label}</Text>
       </View>
       {meta.touched && meta.error && (
-        <Text className="text-red-500 text-sm">{meta.error}</Text>
+        <Text className="dark:text-red-500 text-red-500 text-sm pl-2">
+          {meta.error}
+        </Text>
       )}
     </TouchableOpacity>
   );

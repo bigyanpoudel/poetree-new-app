@@ -23,7 +23,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
   const [field, meta, helpers] = useField(name); // Formik integration
   const isDark = colorSchema === "dark";
   return (
-    <View className="flex flex-col gap-3">
+    <View className="flex flex-col gap-2">
       <Text className="text-lg pl-2">{label}</Text>
       <Dropdown
         placeholder={placeholder}
@@ -65,7 +65,9 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
         hideMenuHeader
       />
       {meta.touched && meta.error && (
-        <Text className="text-red-500 text-sm pl-2">{meta.error}</Text>
+        <Text className="dark:text-red-500 text-red-500 text-sm pl-2">
+          {meta.error}
+        </Text>
       )}
     </View>
   );

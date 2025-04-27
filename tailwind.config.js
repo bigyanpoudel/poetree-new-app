@@ -28,6 +28,7 @@ module.exports = {
         },
         darker: {
           100: "#141414",
+          200: "#151718",
         },
       },
       fontSize: {

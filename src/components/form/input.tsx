@@ -17,9 +17,8 @@ export const InputField: React.FC<InputFieldProps> = ({
   const colorSchema = useColorScheme();
   const [field, meta, helpers] = useField(name);
   const isDark = colorSchema === "dark";
-  console.log("field", field, meta, helpers);
   return (
-    <View className="flex flex-col gap-3">
+    <View className="flex flex-col gap-2">
       {label && <Text className="text-lg pl-2">{label}</Text>}
       <TextInput
         mode="outlined"
@@ -43,7 +42,9 @@ export const InputField: React.FC<InputFieldProps> = ({
         {...props}
       />
       {meta.touched && meta.error && (
-        <Text className="text-red-500 text-sm pl-2">{meta.error}</Text>
+        <Text className="dark:text-red-500 text-red-500 text-sm pl-2">
+          {meta.error}
+        </Text>
       )}
     </View>
   );

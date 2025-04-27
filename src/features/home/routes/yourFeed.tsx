@@ -2,7 +2,6 @@ import { Button, Scafold, Text } from "@/src/components/";
 import React from "react";
 
 export const HomeYourFeed = () => {
-  console.log("okay poems-->");
   return (
     <Scafold
       style={{

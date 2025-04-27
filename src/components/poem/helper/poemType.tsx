@@ -9,7 +9,6 @@ interface IPoemTypeProps {
 export const PoemType: React.FC<IPoemTypeProps> = ({ isAudio, isVideo }) => {
   const iconName: any = isVideo ? "video" : isAudio ? "music" : "";
   const title = isVideo ? "Video" : isAudio ? "Audio" : "";
-  console.log("PoemType-->", isAudio, isVideo);
   if (!isAudio && !isVideo) return null;
   return (
     <View className="flex flex-row gap-2 items-center">

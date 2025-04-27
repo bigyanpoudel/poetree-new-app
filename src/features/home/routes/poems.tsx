@@ -6,8 +6,6 @@ import { ScrollView, View } from "react-native";
 import { Divider } from "react-native-paper";
 
 export const HomePoems = () => {
-  console.log("poems-->");
-
   return (
     <Scafold
       style={{

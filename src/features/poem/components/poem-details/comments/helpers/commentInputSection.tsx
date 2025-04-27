@@ -22,7 +22,6 @@ export const CommentInputSection = () => {
 
   // Handle Form Submission
   const handleSubmit = (values: Obj, { resetForm }: any) => {
-    console.log("Submitted Comment:", values.comment);
     resetForm(); // Clear the form after submission
   };
 

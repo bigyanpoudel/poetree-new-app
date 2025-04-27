@@ -29,7 +29,7 @@ export const TrendingSection = () => {
       <SectionHeading title="Latest Playlist" onPress={() => {}} />
       <FlatList
         data={data}
-        renderItem={PlaylistCard}
+        renderItem={() => <PlaylistCard />}
         keyExtractor={(item) => item.id}
         horizontal
         showsHorizontalScrollIndicator={false}

@@ -96,7 +96,6 @@ export const ProfileScreen = () => {
             }}
           >
             <Text
-              className="text-red-400"
               style={{
                 color:
                   activeTab === tab

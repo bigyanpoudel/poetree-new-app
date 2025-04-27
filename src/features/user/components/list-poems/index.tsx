@@ -5,7 +5,6 @@ import { View } from "react-native";
 import { Divider } from "react-native-paper";
 
 export const ListPeoms = () => {
-  console.log("hey");
   return (
     <View className="flex flex-1 flex-col gap-4 px-5">
       {POEMS.map((poem) => (

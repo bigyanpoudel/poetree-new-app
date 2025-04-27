@@ -4,7 +4,7 @@ import { getPoemType } from "@/src/utils/poem";
 import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import React from "react";
-import { Image, useColorScheme, View } from "react-native";
+import { Image, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { ActionMenu } from "../actionMenu";
 import VideoScreen from "../videoPlayer";
@@ -16,10 +16,7 @@ interface IPoemProps {
   poem: IAppPoem;
 }
 export const Poem: React.FC<IPoemProps> = ({ poem }) => {
-  const colorSchema = useColorScheme();
-
   const poemType: POEMTYPE = getPoemType({ ...poem });
-  console.log("Poem-->", poem?.video);
   return (
     <View className="flex flex-col gap-4">
       <View className="flex flex-col gap-1">

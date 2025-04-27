@@ -4,9 +4,6 @@ import React from "react";
 import { useColorScheme, View } from "react-native";
 
 export const HomeTrending = () => {
-  console.log("trending poems-->");
-  const colorSchema = useColorScheme();
-  const isDarked = colorSchema == "dark";
   return (
     <Scafold
       style={{
