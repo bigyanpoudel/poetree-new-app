@@ -81,7 +81,9 @@ export const AccountSetting = () => {
           <ListItem
             title="Payment Account"
             left={(props) => <LucideCreditCard {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.navigate("/account/payment-account");
+            }}
           />
           <ListItem
             title="Payment Details"
