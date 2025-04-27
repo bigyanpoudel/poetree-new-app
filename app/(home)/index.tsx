@@ -1,14 +1,10 @@
-import { IconSymbol } from "@/src/components";
 import { MainAppBar } from "@/src/components/appbar/mainAppBar";
 import { HomePoems } from "@/src/features/home/routes/poems";
-import { HomeTrending } from "@/src/features/home/routes/trending";
-import { HomeYourFeed } from "@/src/features/home/routes/yourFeed";
-import { Colors } from "@/src/utils/constant/colors";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
-import { useColorScheme, View, Text } from "react-native";
+import { useColorScheme, View } from "react-native";
 
-const Tab = createMaterialTopTabNavigator();
+// const Tab = createMaterialTopTabNavigator();
 
 export default function HomeScreen() {
   const colorScheme = useColorScheme();
@@ -21,7 +17,7 @@ export default function HomeScreen() {
     >
       <MainAppBar />
 
-      <Tab.Navigator
+      {/* <Tab.Navigator
         screenOptions={{
           tabBarActiveTintColor: Colors[colorScheme ?? "light"].primary,
           tabBarInactiveTintColor:
@@ -36,7 +32,7 @@ export default function HomeScreen() {
       >
         <Tab.Screen
           name="Poems"
-          children={HomePoems}
+          children={}
           options={{
             // tabBarIcon: ({ color }) => (
             //   <IconSymbol name="house.fill" color={color} size={24} />
@@ -95,7 +91,8 @@ export default function HomeScreen() {
             },
           }}
         />
-      </Tab.Navigator>
+      </Tab.Navigator> */}
+      <HomePoems />
     </View>
   );
 }

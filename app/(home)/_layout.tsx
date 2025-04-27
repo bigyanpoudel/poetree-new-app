@@ -38,9 +38,9 @@ export default function TabLayout() {
     {
       name: "account",
       options: {
-        title: "Account",
+        title: "More",
         tabBarIcon: ({ color }: Obj) => (
-          <MaterialIcons name="manage-accounts" size={24} color={color} />
+          <MaterialIcons name="dashboard" size={24} color={color} />
         ),
       },
     },
