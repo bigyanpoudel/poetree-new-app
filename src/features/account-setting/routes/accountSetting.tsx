@@ -9,6 +9,8 @@ import {
   Key as KeyIcon,
   LogIn,
   CreditCard as LucideCreditCard,
+  LucideListPlus,
+  LucidePlus,
   Mail,
   Palette as PaletteIcon,
   Shield,
@@ -25,32 +27,20 @@ export const AccountSetting = () => {
       <View className="flex flex-col">
         {/* Account Settings Section */}
         <List.Section>
-          <ListSubHeading>Account Settings</ListSubHeading>
+          <ListSubHeading>Account</ListSubHeading>
           <ListItem
             title="Edit Profile"
             left={(props) => <UserCircle {...props} size={20} />}
             onPress={() => {
-              router.navigate("/user/profile");
-            }}
-          />
-          <ListItem
-            title="Create Poem"
-            left={(props) => <KeyIcon {...props} size={20} />}
-            onPress={() => {
-              router.navigate("/create-poem");
-            }}
-          />
-          <ListItem
-            title="Create Plyalist"
-            left={(props) => <KeyIcon {...props} size={20} />}
-            onPress={() => {
-              router.navigate("/create-playlist");
+              router.navigate("/account/edit-profile");
             }}
           />
           <ListItem
             title="Change Password"
             left={(props) => <KeyIcon {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/account/change-password");
+            }}
           />
           <ListItem
             title="Sign In"
@@ -65,7 +55,24 @@ export const AccountSetting = () => {
             onPress={() => {}}
           />
         </List.Section>
-
+        <Divider />
+        <List.Section>
+          <ListSubHeading>Creator</ListSubHeading>
+          <ListItem
+            title="Create Poem"
+            left={(props) => <LucidePlus {...props} size={20} />}
+            onPress={() => {
+              router.navigate("/create-poem");
+            }}
+          />
+          <ListItem
+            title="Create Plyalist"
+            left={(props) => <LucideListPlus {...props} size={20} />}
+            onPress={() => {
+              router.navigate("/create-playlist");
+            }}
+          />
+        </List.Section>
         <Divider />
 
         {/* Payment Section */}

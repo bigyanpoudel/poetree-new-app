@@ -13,7 +13,7 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({ user }) => {
   const router = useRouter();
   return (
     <View className="h-fit w-full bg-white dark:bg-white/5 p-4 text-white flex flex-col gap-4">
-      <View className="flex flex-row gap-4 items-center">
+      <View className="flex flex-row gap-6 items-center">
         <TouchableOpacity className="relative w-24 h-24">
           {user.photo ? (
             <FastImage
@@ -32,13 +32,45 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({ user }) => {
             />
           )}
         </TouchableOpacity>
-        <View className="flex flex-col flex-1 justify-center ">
-          <Text fontWeight={700} className=" text-2xl font-semibold">
+        <View className="flex flex-col flex-1  ">
+          <Text fontWeight={700} className=" text-2xl mt-2 font-semibold">
             {user.name}
           </Text>
-          <Text className="dark:text-white/50 text-black/60  font-normal text-sm ">
-            @{user.slug}
-          </Text>
+          <View className="flex flex-row gap-8    items-center">
+            <TouchableOpacity className="flex flex-col items-center justify-center">
+              <Text
+                fontWeight={700}
+                className="text-lg font-semibold font-proxima-extrabold"
+              >
+                {formatPoemNumber(user.followingCount)}{" "}
+              </Text>
+              <Text className="text-sm font-normal dark:text-white/50 text-black/60">
+                Poem
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                router.push("/follower/123");
+              }}
+              className="flex flex-col items-center justify-center"
+            >
+              <Text fontWeight={700} className="text-lg font-semibold">
+                {formatPoemNumber(user.followingCount)}{" "}
+              </Text>
+              <Text className="text-sm font-normal dark:text-white/50 text-black/60">
+                Following
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity className="flex flex-col items-center justify-center">
+              <Text fontWeight={700} className="text-lg font-semibold">
+                {formatPoemNumber(user.followersCount)}
+              </Text>
+              <Text className="text-sm font-normal dark:text-white/50 text-black/60">
+                Followers
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
 
@@ -48,41 +80,6 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({ user }) => {
         </Text>
       )}
 
-      <View className="flex flex-row gap-8 my-2   items-center">
-        <TouchableOpacity className="flex flex-col items-center justify-center">
-          <Text
-            fontWeight={700}
-            className="text-lg font-semibold font-proxima-extrabold"
-          >
-            {formatPoemNumber(user.followingCount)}{" "}
-          </Text>
-          <Text className="text-sm font-normal dark:text-white/50 text-black/60">
-            Poem
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            router.push("/follower/123");
-          }}
-          className="flex flex-col items-center justify-center"
-        >
-          <Text fontWeight={700} className="text-lg font-semibold">
-            {formatPoemNumber(user.followingCount)}{" "}
-          </Text>
-          <Text className="text-sm font-normal dark:text-white/50 text-black/60">
-            Following
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity className="flex flex-col items-center justify-center">
-          <Text fontWeight={700} className="text-lg font-semibold">
-            {formatPoemNumber(user.followersCount)}
-          </Text>
-          <Text className="text-sm font-normal dark:text-white/50 text-black/60">
-            Followers
-          </Text>
-        </TouchableOpacity>
-      </View>
       <Button
         mode="contained"
         onPress={() => {}}

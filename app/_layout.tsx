@@ -43,6 +43,8 @@ export default function RootLayout() {
         <Stack.Screen name="follower/[id]" />
         <Stack.Screen name="create-playlist" />
         <Stack.Screen name="forget-password" />
+        <Stack.Screen name="account/edit-profile" />
+        <Stack.Screen name="account/change-password" />
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />
