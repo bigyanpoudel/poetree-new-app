@@ -41,6 +41,13 @@ export const AccountSetting = () => {
             }}
           />
           <ListItem
+            title="Create Plyalist"
+            left={(props) => <KeyIcon {...props} size={20} />}
+            onPress={() => {
+              router.navigate("/create-playlist");
+            }}
+          />
+          <ListItem
             title="Change Password"
             left={(props) => <KeyIcon {...props} size={20} />}
             onPress={() => {}}

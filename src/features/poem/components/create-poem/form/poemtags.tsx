@@ -61,8 +61,11 @@ export const TagInputField: React.FC<TagInputFieldProps> = ({
               paddingBottom: 13,
               color: isDark ? Colors.dark.text : Colors.light.text,
             }}
+            style={{
+              height: 48,
+            }}
             outlineStyle={{
-              borderRadius: 48,
+              borderRadius: 42,
             }}
             placeholderTextColor={isDark ? "#bdbdbd" : "#757575"}
             onSubmitEditing={handleAddTag} // Trigger adding a tag when pressing Enter

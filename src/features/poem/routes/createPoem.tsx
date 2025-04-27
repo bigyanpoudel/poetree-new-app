@@ -44,7 +44,12 @@ export const CreatePoem = () => {
                 label="Tags"
                 placeholder={"Enter poem tag"}
               />
-              <SwitchField name="availability" label="Availability" />
+              <SwitchField
+                leftText="Free"
+                rightText="Paid"
+                name="availability"
+                label="Availability"
+              />
               <FileUploader label={"Select Poem File"} name="file" />
 
               <Button

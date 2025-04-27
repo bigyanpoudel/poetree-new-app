@@ -34,7 +34,7 @@ export const PoemDetail = () => {
                 leadingIcon: (
                   <Octicons
                     name="report"
-                    size={20}
+                    size={20}a
                     className="dark:text-darkTextColor text-ligtTextColor"
                   />
                 ),

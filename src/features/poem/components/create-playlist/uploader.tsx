@@ -1,6 +1,4 @@
 import { Text } from "@/src/components";
-import { AudioPlayer } from "@/src/components/audioPlayer";
-import VideoScreen from "@/src/components/videoPlayer";
 import { Feather } from "@expo/vector-icons";
 import * as DocumentPicker from "expo-document-picker";
 import { useField } from "formik";
@@ -12,25 +10,16 @@ interface IUploaderProps {
   label?: string;
 }
 
-export const FileUploader: React.FC<IUploaderProps> = ({ name, label }) => {
-  const [postTypeField] = useField("postType");
+export const PlaylistFileUploader: React.FC<IUploaderProps> = ({
+  name,
+  label,
+}) => {
   const [field, meta, helpers] = useField(name);
   const [file, setFile] = useState<any>(null);
-  const postType = postTypeField.value;
-  const getAcceptType = React.useMemo(() => {
-    switch (postType) {
-      case "audio":
-        return "audio/*"; // Specify accepted audio formats
-      case "video":
-        return "video/*"; // Specify accepted video formats
-      default:
-        return "image/*"; // Specify accepted image formats
-    }
-  }, [postType]);
   const pickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: getAcceptType || "*/*",
+        type: "image/*",
         multiple: false,
       });
       if (result?.canceled) return; // If canceled, do nothing
@@ -46,19 +35,11 @@ export const FileUploader: React.FC<IUploaderProps> = ({ name, label }) => {
     setFile(field.value);
   }, [field.value]);
 
-
   const renderFilePreview = () => {
     if (!file) return null;
-    const { uri, name, mimeType: type } = file;
-    console.log("uri", uri, type);
+    const { uri, mimeType: type } = file;
     if (type?.startsWith("image")) {
       return <Image source={{ uri }} style={{ width: "100%", height: 200 }} />;
-    } else if (type?.startsWith("video")) {
-      return <VideoScreen />;
-    } else if (type?.startsWith("audio")) {
-      return <AudioPlayer uri={uri} />;
-    } else {
-      return <Text>{name}</Text>; // Show file name for unsupported file types
     }
   };
 
@@ -83,10 +64,8 @@ export const FileUploader: React.FC<IUploaderProps> = ({ name, label }) => {
           </Text>
         )}
       </View>
-      {label && (
-        <Text className="text-lg pl-2 capitalize">
-          {postType == "text" ? "Image" : postType} File Preview
-        </Text>
+      {file && (
+        <Text className="text-lg pl-2 capitalize">Thumbnail File Preview</Text>
       )}
       {/* Render the preview of the uploaded file */}
       <View>{renderFilePreview()}</View>
