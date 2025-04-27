@@ -7,17 +7,10 @@ import { Divider } from "react-native-paper";
 
 export const HomePoems = () => {
   return (
-    <Scafold
-      style={{
-        flex: 1, // This will ensure the container takes up the entire screen height
-      }}
-    >
+    <Scafold paddingHorizontal={0}>
       <View className="flex flex-col gap-4">
         {POEMS.map((poem) => (
-          <React.Fragment key={poem.slug + poem.title}>
-            <Poem poem={poem} />
-            <Divider className="mb-4 mt-1" />
-          </React.Fragment>
+          <Poem poem={poem} key={poem.slug + poem.title} />
         ))}
       </View>
     </Scafold>

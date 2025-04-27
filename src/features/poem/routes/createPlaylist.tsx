@@ -71,24 +71,28 @@ export const CreatePlaylist = () => {
                     label={"Select Plyalist Thumbnail"}
                     name="file"
                   />
-
-                  <Button
-                    mode="contained"
-                    contentStyle={{
-                      height: 48,
-                    }}
-                    labelStyle={{
-                      fontWeight: 700,
-                      fontSize: 16,
-                    }}
-                    className="font-bold mt-6"
-                    onPress={() => {
-                      setBottomSheetIndex(0);
-                      bottomSheetRef.current?.expand();
-                    }}
-                  >
-                    Add Poem
-                  </Button>
+                  <View className="flex flex-col gap-2">
+                    <Text className="text-lg pl-2">Select Playlist Poem</Text>
+                    <Button
+                      mode="contained"
+                      contentStyle={{
+                        height: 48,
+                      }}
+                      labelStyle={{
+                        fontWeight: 600,
+                        fontSize: 14,
+                        color: "white",
+                        textAlign: "left",
+                      }}
+                      className="font-bold text-left flex flex-row  bg-darker-200"
+                      onPress={() => {
+                        setBottomSheetIndex(0);
+                        bottomSheetRef.current?.expand();
+                      }}
+                    >
+                      Please Select Poem
+                    </Button>
+                  </View>
                   <PoemItem onPress={() => {}} />
                   <Button
                     mode="contained"
@@ -111,16 +115,18 @@ export const CreatePlaylist = () => {
             )}
           </Formik>
         </ScreenLayout>
-        <CustomDrawer
-          handleClose={() => {
-            setBottomSheetIndex(-1);
-            bottomSheetRef.current?.close();
-          }}
-          index={bottomSheetIndex}
-          ref={bottomSheetRef}
-          content={<SelectPoem />}
-          title="Select Poem"
-        />
+        {bottomSheetIndex > -1 && (
+          <CustomDrawer
+            handleClose={() => {
+              bottomSheetRef.current?.close();
+              setBottomSheetIndex(-1);
+            }}
+            index={bottomSheetIndex}
+            ref={bottomSheetRef}
+            content={<SelectPoem />}
+            title="Select Poem"
+          />
+        )}
       </View>
     </GestureHandlerRootView>
   );

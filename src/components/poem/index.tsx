@@ -18,7 +18,7 @@ interface IPoemProps {
 export const Poem: React.FC<IPoemProps> = ({ poem }) => {
   const poemType: POEMTYPE = getPoemType({ ...poem });
   return (
-    <View className="flex flex-col gap-4">
+    <View className="flex flex-col p-4 px-5 gap-4 dark:bg-darker-100 bg-white/90">
       <View className="flex flex-col gap-1">
         <Link href={`/poem/${poem.slug}`} asChild>
           <Text

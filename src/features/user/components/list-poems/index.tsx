@@ -6,7 +6,7 @@ import { Divider } from "react-native-paper";
 
 export const ListPeoms = () => {
   return (
-    <View className="flex flex-1 flex-col gap-4 px-5">
+    <View className="flex flex-1 flex-col gap-4">
       {POEMS.map((poem) => (
         <React.Fragment key={poem.slug + poem.title}>
           <Poem poem={poem} />

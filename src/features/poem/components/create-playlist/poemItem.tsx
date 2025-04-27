@@ -9,7 +9,7 @@ interface IPoemItemProps {
 export const PoemItem: React.FC<IPoemItemProps> = ({ onPress }) => {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <View className="flex flex-row gap-3 rounded-md p-3 justify-between bg-darker-200">
+      <View className="flex flex-row gap-3 rounded-md p-3 justify-between bg-darker-100">
         <View className="flex flex-row flex-1 gap-3">
           <Avatar.Text
             size={20}

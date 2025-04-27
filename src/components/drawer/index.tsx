@@ -69,7 +69,7 @@ export const CustomDrawer = forwardRef(
                   onPress={handleClose}
                 />
                 <Text className="text-lg" fontWeight={800}>
-                  Title
+                  {title}
                 </Text>
               </View>
             </TouchableWithoutFeedback>
