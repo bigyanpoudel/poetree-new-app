@@ -1,6 +1,7 @@
 import { Button, Text } from "@/src/components";
 import { IAppUser } from "@/src/types";
 import { formatPoemNumber } from "@/src/utils/poem";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import FastImage from "react-native-fast-image";
@@ -9,6 +10,7 @@ interface IProfileCardProps {
   user: IAppUser;
 }
 export const ProfileCard: React.FC<IProfileCardProps> = ({ user }) => {
+  const router = useRouter();
   return (
     <View className="h-fit w-full bg-white dark:bg-white/5 p-4 text-white flex flex-col gap-4">
       <View className="flex flex-row gap-4 items-center">
@@ -58,7 +60,12 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({ user }) => {
             Poem
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity className="flex flex-col items-center justify-center">
+        <TouchableOpacity
+          onPress={() => {
+            router.push("/follower/123");
+          }}
+          className="flex flex-col items-center justify-center"
+        >
           <Text fontWeight={700} className="text-lg font-semibold">
             {formatPoemNumber(user.followingCount)}{" "}
           </Text>
