@@ -10,7 +10,7 @@ interface IPoemTypeProps {
 }
 export const PoemType: React.FC<IPoemTypeProps> = ({ name, label }) => {
   const [field, meta, helpers] = useField(name);
-
+  const [fileField, _, fileHelper] = useField("file");
   const isDark = useIsDarkTheme();
 
   const POST_TYPES = [
@@ -30,6 +30,7 @@ export const PoemType: React.FC<IPoemTypeProps> = ({ name, label }) => {
 
   const handleTabChange = (tab: string) => {
     helpers.setValue(tab);
+    fileHelper.setValue(undefined);
   };
 
   console.log("field", field.value);
