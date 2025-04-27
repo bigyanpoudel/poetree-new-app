@@ -1,4 +1,5 @@
 import { getAccountFormatter } from "@/src/utils/currency";
+import { useRouter } from "expo-router";
 import { ArrowUpRight, Edit } from "lucide-react-native"; // For icons
 import React from "react";
 import { StyleProp, View, ViewStyle } from "react-native";
@@ -8,6 +9,7 @@ interface IPlaylistCardProps {
   style?: StyleProp<ViewStyle>;
 }
 export const PlaylistCard: React.FC<IPlaylistCardProps> = ({ style }) => {
+  const router = useRouter();
   return (
     <View
       style={[
@@ -60,6 +62,9 @@ export const PlaylistCard: React.FC<IPlaylistCardProps> = ({ style }) => {
               mode="contained"
             />
             <IconButton
+              onPress={() => {
+                router.navigate("/playlist/1231");
+              }}
               icon={(props) => <ArrowUpRight {...props} size={18} />}
               mode="contained"
             />

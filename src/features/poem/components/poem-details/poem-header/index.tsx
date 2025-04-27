@@ -27,7 +27,10 @@ export const PoemHeader = () => {
         <Button mode="contained">Follow</Button>
       </View>
 
-      <Text className="text-[28px] garamond -tracking-[0.5px]  font-semibold ">
+      <Text
+        fontWeight={600}
+        className="text-[28px] garamond -tracking-[0.5px]  font-semibold "
+      >
         Poem Title
       </Text>
     </View>
