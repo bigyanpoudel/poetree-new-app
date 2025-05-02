@@ -1,80 +1,64 @@
 import { ActionMenu } from "@/src/components/actionMenu";
 import { ScreenLayout } from "@/src/components/layout";
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { useGetCurrentUser } from "@/src/hooks/useRootHook";
 import { Colors } from "@/src/utils/constant/colors";
-import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { Feather, Octicons } from "@expo/vector-icons";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Pressable, Text, useColorScheme, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { ProfileCard } from "../components";
-import { ListPeoms } from "../components/list-poems";
 import { ListPlaylist } from "../components/list-playlist";
-
-const Tab = createMaterialTopTabNavigator();
+import { ListPeoms } from "../components/list-poems";
+import { useGetUserProfile } from "../hooks/user";
 
 export const ProfileScreen = () => {
   const [activeTab, setActiveTab] = React.useState("all");
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme == "dark";
+  const { slug } = useLocalSearchParams<{ id: string; slug: string }>();
+  const isDark = useIsDarkTheme();
+  const user = useGetUserProfile();
+  const currentUser = useGetCurrentUser();
+  const actionMenu = React.useMemo(() => {
+    let items = [];
+
+    if (user.data?._id === currentUser.data?._id) {
+      items.push({
+        label: "Edit Profile",
+        leadingIcon: (
+          <Feather
+            name="edit"
+            size={20}
+            className="dark:text-darkTextColor text-ligtTextColor"
+          />
+        ),
+        onPress: () => {},
+      });
+    } else {
+      items.push({
+        label: "Report User",
+        leadingIcon: (
+          <Octicons
+            name="report"
+            size={20}
+            className="dark:text-darkTextColor text-ligtTextColor"
+          />
+        ),
+        onPress: () => {},
+      });
+    }
+    return items;
+  }, [user.data, currentUser.data]);
   return (
     <ScreenLayout
       scafold={{
         paddingHorizontal: 0,
       }}
       appBar={{
-        title: "Profile",
-        action: (
-          <ActionMenu
-            anchorPosition="bottom"
-            items={[
-              {
-                label: "Report User",
-                leadingIcon: (
-                  <Octicons
-                    name="report"
-                    size={20}
-                    className="dark:text-darkTextColor text-ligtTextColor"
-                  />
-                ),
-                onPress: () => {},
-              },
-              {
-                label: "Edit Profile",
-                leadingIcon: (
-                  <Feather
-                    name="edit"
-                    size={20}
-                    className="dark:text-darkTextColor text-ligtTextColor"
-                  />
-                ),
-                onPress: () => {},
-              },
-            ]}
-          />
-        ),
+        title: slug ?? "Profile",
+        action: <ActionMenu anchorPosition="bottom" items={actionMenu} />,
       }}
     >
-      <ProfileCard
-        user={{
-          _id: "456",
-          name: "John Doe",
-          slug: "john_doe",
-          photo: "", // or set a photo URL here
-          about:
-            "Lover of words and rhythm. Sharing pieces of my soul through poetry.",
-          followingCount: 128,
-          followersCount: 420,
-          isFollowing: false,
-          createdAt: new Date().toISOString(),
-          email: "johndoe@example.com",
-          expiryDate: new Date().toISOString(),
-          isActive: true,
-          role: "user",
-          updatedAt: new Date().toISOString(),
-          platformAccess: "",
-          followings: [],
-          followers: [],
-        }}
-      />
+      <ProfileCard />
       <View className="h-[24px]"></View>
       <View
         style={{

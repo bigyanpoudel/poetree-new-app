@@ -62,9 +62,11 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
             className="dark:bg-black/50 bg-darkBackground "
           />
           <View className="flex flex-col">
-            <Text fontWeight={600} className="text-base font-bold">
-              User Name
-            </Text>
+            <Link href={"/user/profile"}>
+              <Text fontWeight={600} className="text-base font-bold">
+                User Name
+              </Text>
+            </Link>
             <Text className="text-sm text-gray-500">2021-10-10</Text>
           </View>
         </View>

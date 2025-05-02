@@ -2,15 +2,18 @@ import { Button, Text } from "@/src/components";
 import { DropdownField } from "@/src/components/form/dropdown";
 import { InputField } from "@/src/components/form/input";
 import { ScreenLayout } from "@/src/components/layout";
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { Obj } from "@/src/types";
 import { Colors } from "@/src/utils/constant/colors";
 import { COUNTRYLIST } from "@/src/utils/constant/countryConstant";
 import { generateSelectOptions } from "@/src/utils/form";
 import { Link } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
-import { useColorScheme, View } from "react-native";
+import { View } from "react-native";
 import { TextInput } from "react-native-paper";
 import * as Yup from "yup";
+import { useSignup } from "../hooks/auth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -42,8 +45,14 @@ export const SignupPage = () => {
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] =
     React.useState<boolean>(false);
-  const colorSchema = useColorScheme();
-  const isDark = colorSchema === "dark";
+  const isDark = useIsDarkTheme();
+  const signup = useSignup();
+
+  const handleSubmit = async (values: Obj) => {
+    console.log("values", values);
+    await signup.mutateAsync({ ...values, slug: values.email.split("@")[0] });
+  };
+
   return (
     <ScreenLayout
       appBar={{
@@ -64,9 +73,14 @@ export const SignupPage = () => {
         </View>
         <Formik
           initialValues={{
-            comment: "",
+            email: "",
+            password: "",
+            name: "",
+            country: "",
+            confirmPassword: "",
           }}
-          onSubmit={() => {}}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
         >
           {({ handleSubmit }) => (
             <View className="flex flex-col gap-4">
@@ -114,7 +128,7 @@ export const SignupPage = () => {
                 }
               />
               <InputField
-                name="confrimPassword"
+                name="confirmPassword"
                 mode="outlined"
                 label="Confirm Password"
                 placeholder="Enter confirm password"
@@ -141,6 +155,7 @@ export const SignupPage = () => {
               />
 
               <Button
+                loading={signup.isPending}
                 mode="contained"
                 contentStyle={{
                   height: 48,

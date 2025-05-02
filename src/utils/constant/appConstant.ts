@@ -1,5 +1,9 @@
 import { Obj } from "@/src/types";
-
+export const SOMETHING_WENT_WRONG = "Something went wrong!";
+export const TOKEN_ERROR = "Error acquiring token";
+export const SESSION_EXPIRED = "Your session has expired!";
+export const POETREE_USER = "POETREE_USER";
+export const REQUIRED_VALIDATION_MESSAGE = "This field is required";
 export const POEMS: any[] = [
   {
     _id: "1222",

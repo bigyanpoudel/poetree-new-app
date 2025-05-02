@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import React from "react";
 import { View } from "react-native";
 import * as Yup from "yup";
+import { useForgetPassword } from "../hooks/auth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -13,6 +14,10 @@ const validationSchema = Yup.object().shape({
 });
 
 export const ForgetPasswordPage = () => {
+  const forgetPassword = useForgetPassword();
+  const handleSubmit = async (values: { email: string }) => {
+    await forgetPassword.mutateAsync({ ...values });
+  };
   return (
     <ScreenLayout
       appBar={{
@@ -36,10 +41,10 @@ export const ForgetPasswordPage = () => {
         </View>
         <Formik
           initialValues={{
-            comment: "",
+            email: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
         >
           {({ handleSubmit }) => (
             <View className="flex flex-col gap-4">

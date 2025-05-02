@@ -2,14 +2,21 @@ import { Button } from "@/src/components";
 import { DropdownField } from "@/src/components/form/dropdown";
 import { InputField } from "@/src/components/form/input";
 import { ScreenLayout } from "@/src/components/layout";
+import { useGetCurrentUser } from "@/src/hooks/useRootHook";
 import { COUNTRYLIST } from "@/src/utils/constant/countryConstant";
 import { generateSelectOptions } from "@/src/utils/form";
 import { Formik } from "formik";
 import React from "react";
 import { View } from "react-native";
+import * as Yup from "yup";
 import { ProfileFileUploader } from "../components/edit-profile/uploadProfile";
+const validationSchema = Yup.object().shape({
+  country: Yup.string().required("Country is required"),
+  name: Yup.string().required("Name is required"),
+});
 
 export const EditProfile = () => {
+  const currentUser = useGetCurrentUser();
   return (
     <ScreenLayout
       appBar={{
@@ -18,9 +25,10 @@ export const EditProfile = () => {
     >
       <Formik
         initialValues={{
-          comment: "",
+          ...currentUser.data,
         }}
-        // validationSchema={}
+        enableReinitialize
+        validationSchema={validationSchema}
         onSubmit={() => {}}
       >
         {({ handleSubmit }) => (

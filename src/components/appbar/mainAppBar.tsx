@@ -1,12 +1,17 @@
+import { useGetCurrentUser } from "@/src/hooks/useRootHook";
+import { useAppProvider } from "@/src/provider/appProvider";
 import { Colors } from "@/src/utils/constant/colors";
+import { Link, useRouter } from "expo-router";
 import React from "react";
 import { Appearance, Image, useColorScheme, View } from "react-native";
-import { Appbar } from "react-native-paper";
+import { Appbar, Avatar } from "react-native-paper";
 import { Button } from "../button";
-import { useRouter } from "expo-router";
 export const MainAppBar = () => {
   const colorSchema = useColorScheme();
   const router = useRouter();
+  const { user } = useAppProvider();
+  const currentUser = useGetCurrentUser();
+  console.log("currentUser", currentUser.data);
   const isDarkTheme = colorSchema === "dark";
   const toggleTheme = () => {
     if (isDarkTheme) {
@@ -78,18 +83,37 @@ export const MainAppBar = () => {
           }}
         />
         <View>
-          <Button
-            onPress={() => {
-              router.push("/signin");
-            }}
-            mode="contained"
-            className="text-sm flex  text-center items-center "
-            labelStyle={{
-              fontSize: 14,
-            }}
-          >
-            Signin
-          </Button>
+          {!user && (
+            <Button
+              onPress={() => {
+                router.push("/signin");
+              }}
+              mode="contained"
+              className="text-sm flex  text-center items-center "
+              labelStyle={{
+                fontSize: 14,
+              }}
+            >
+              Signin
+            </Button>
+          )}
+          {user?._id && (
+            <Link href={`/user/${user?._id}?slug=${currentUser.data?.slug}`}>
+              <Avatar.Text
+                size={44}
+                label={
+                  currentUser?.data?.name
+                    ? currentUser?.data?.name.charAt(0)
+                    : ""
+                }
+                labelStyle={{
+                  fontSize: 16,
+                  color: "white",
+                }}
+                className="dark:bg-black/50 bg-darkBackground "
+              />
+            </Link>
+          )}
         </View>
       </View>
     </Appbar.Header>

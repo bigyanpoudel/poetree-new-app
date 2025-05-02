@@ -2,13 +2,16 @@ import { Button, Text } from "@/src/components";
 import { CheckboxField } from "@/src/components/form/checkbox";
 import { InputField } from "@/src/components/form/input";
 import { ScreenLayout } from "@/src/components/layout";
+import { Obj } from "@/src/types";
 import { Colors } from "@/src/utils/constant/colors";
+import { storageUtil } from "@/src/utils/storage";
 import { Link } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
 import { useColorScheme, View } from "react-native";
 import { TextInput } from "react-native-paper";
 import * as Yup from "yup";
+import { useSignin } from "../hooks/auth";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,8 +36,35 @@ const validationSchema = Yup.object().shape({
 
 export const SigninPage = () => {
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
+  const [initialValues, setInitialValues] = React.useState<Obj>({
+    email: "",
+    password: "",
+    isRemember: false,
+  });
   const colorSchema = useColorScheme();
   const isDark = colorSchema === "dark";
+  const signin = useSignin();
+  const isRemember = storageUtil.getItem("isRemember");
+  React.useEffect(() => {
+    handleGetRemember();
+  }, []);
+  const handleGetRemember = async () => {
+    const values = await storageUtil.getItem("isRemember");
+    if (values?.email) {
+      setInitialValues(values);
+    }
+  };
+  const handleSubmit = async (values: Obj) => {
+    if (values.isRemember) {
+      const data = await storageUtil.setItem(
+        "isRemember",
+        JSON.stringify(values)
+      );
+    } else {
+      await storageUtil.clearItem("isRemember");
+    }
+    await signin.mutateAsync({ ...values });
+  };
 
   return (
     <ScreenLayout
@@ -58,10 +88,11 @@ export const SigninPage = () => {
         </View>
         <Formik
           initialValues={{
-            comment: "",
+            ...initialValues,
           }}
+          enableReinitialize
           validationSchema={validationSchema}
-          onSubmit={() => {}}
+          onSubmit={handleSubmit}
         >
           {({ handleSubmit }) => (
             <View className="flex flex-col gap-4">
@@ -112,6 +143,7 @@ export const SigninPage = () => {
               </View>
 
               <Button
+                loading={signin.isPending}
                 mode="contained"
                 contentStyle={{
                   height: 48,
