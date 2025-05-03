@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { POETREE_USER } from "../utils/constant/appConstant";
 import { storageUtil } from "../utils/storage";
+import { useQueryClient } from "@tanstack/react-query";
+import { appQuery } from "../utils/constant/appQuery";
 
 type User = {
   _id?: string;
@@ -27,12 +29,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
-
+  const queryClient = useQueryClient();
   useEffect(() => {
     const loadUser = async () => {
       try {
         const userData = await storageUtil.getItem(POETREE_USER);
         if (userData) {
+          await queryClient.invalidateQueries({
+           queryKey: [appQuery.getCurrentUser],
+         });
           setUser(userData);
         }
       } catch (err) {

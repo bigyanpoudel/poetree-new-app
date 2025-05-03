@@ -7,8 +7,7 @@ import {
 import { formatPoemNumber } from "@/src/utils/poem";
 import { useRouter } from "expo-router";
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
-import FastImage from "react-native-fast-image";
+import { Image, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { useGetUserProfile } from "../../hooks/user";
 interface IProfileCardProps {}
@@ -29,12 +28,15 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
       });
     }
   };
+  if (user.isLoading) {
+    return <ProfileCardShimmer />;
+  }
   return (
     <View className="h-fit w-full bg-white dark:bg-white/5 p-4 py-6 text-white flex flex-col gap-4">
       <View className="flex flex-row gap-6 items-center">
         <TouchableOpacity className="relative w-24 h-24">
           {user.data?.photo ? (
-            <FastImage
+            <Image
               source={{ uri: user.data?.photo }}
               className="w-[90px] h-[90px] rounded-full border border-ui-border dark:border-ui-border/20"
             />
@@ -133,6 +135,30 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
           Edit Profile
         </Button>
       )}
+    </View>
+  );
+};
+
+const ProfileCardShimmer: React.FC = () => {
+  return (
+    <View className="w-full bg-white dark:bg-white/5 p-4 py-6 flex flex-col gap-4">
+      <View className="flex flex-row gap-6 items-center">
+        <View className="w-[90px] h-[90px] rounded-full bg-neutral-200 dark:bg-neutral-700 animate-pulse" />
+        <View className="flex-1 flex flex-col gap-2">
+          <View className="w-32 h-6 rounded-md bg-neutral-200 dark:bg-neutral-700 animate-pulse" />
+          <View className="flex flex-row gap-8 mt-2">
+            {[...Array(3)].map((_, idx) => (
+              <View key={idx} className="flex items-center gap-1">
+                <View className="w-10 h-4 rounded bg-neutral-200 dark:bg-neutral-700 animate-pulse" />
+                <View className="w-14 h-3 rounded bg-neutral-200 dark:bg-neutral-700 animate-pulse" />
+              </View>
+            ))}
+          </View>
+        </View>
+      </View>
+
+      <View className="w-full h-4 rounded bg-neutral-200 dark:bg-neutral-700 animate-pulse mt-4" />
+      <View className="w-full h-12 rounded-md bg-neutral-200 dark:bg-neutral-700 animate-pulse mt-4" />
     </View>
   );
 };

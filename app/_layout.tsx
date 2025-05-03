@@ -18,9 +18,11 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   return (
     <React.Suspense fallback={<></>}>
-      <AppProvider>
-        <AppBootStrap />
-      </AppProvider>
+      <QueryClientProvider client={queryClient}>
+        <AppProvider>
+          <AppBootStrap />
+        </AppProvider>
+      </QueryClientProvider>
     </React.Suspense>
   );
 }
@@ -50,27 +52,25 @@ const AppBootStrap = () => {
 
   return (
     <PaperProvider>
-      <QueryClientProvider client={queryClient}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(home)" options={{ headerShown: false }} />
-          <Stack.Screen name="user/[id]" />
-          <Stack.Screen name="poem/[id]" />
-          <Stack.Screen name="signin" />
-          <Stack.Screen name="signup" />
-          <Stack.Screen name="search" />
-          <Stack.Screen name="create-poem" />
-          <Stack.Screen name="playlist/[id]" />
-          <Stack.Screen name="follower/[id]" />
-          <Stack.Screen name="create-playlist" />
-          <Stack.Screen name="forget-password" />
-          <Stack.Screen name="account/edit-profile" />
-          <Stack.Screen name="account/change-password" />
-          <Stack.Screen name="account/payment-account" />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar style="auto" />
-        <ToastManager />
-      </QueryClientProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(home)" options={{ headerShown: false }} />
+        <Stack.Screen name="user/[id]" />
+        <Stack.Screen name="poem/[id]" />
+        <Stack.Screen name="signin" />
+        <Stack.Screen name="signup" />
+        <Stack.Screen name="search" />
+        <Stack.Screen name="create-poem" />
+        <Stack.Screen name="playlist/[id]" />
+        <Stack.Screen name="follower/[id]" />
+        <Stack.Screen name="create-playlist" />
+        <Stack.Screen name="forget-password" />
+        <Stack.Screen name="account/edit-profile" />
+        <Stack.Screen name="account/change-password" />
+        <Stack.Screen name="account/payment-account" />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar style="auto" />
+      <ToastManager />
     </PaperProvider>
   );
 };

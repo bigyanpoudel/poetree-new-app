@@ -110,7 +110,7 @@ export const MainAppBar = () => {
                   fontSize: 16,
                   color: "white",
                 }}
-                className="dark:bg-black/50 bg-darkBackground "
+                className="dark:bg-black/50 dark:border  dark:border-ui-border/90 bg-darker-100 "
               />
             </Link>
           )}

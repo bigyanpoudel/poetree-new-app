@@ -10,6 +10,7 @@ import React from "react";
 import { View } from "react-native";
 import * as Yup from "yup";
 import { ProfileFileUploader } from "../components/edit-profile/uploadProfile";
+import { useUpdateProfile } from "../hook/accountSetting";
 const validationSchema = Yup.object().shape({
   country: Yup.string().required("Country is required"),
   name: Yup.string().required("Name is required"),
@@ -17,6 +18,25 @@ const validationSchema = Yup.object().shape({
 
 export const EditProfile = () => {
   const currentUser = useGetCurrentUser();
+  const updateProfile = useUpdateProfile();
+
+  const hanndleSubmit = async (values: any) => {
+    let formData = new FormData();
+    formData.append("name", values.name);
+    formData.append("about", values.about);
+    formData.append("country", values.country);
+    if (typeof values.photo === "object") {
+      const photo = values.photo;
+      const file: any = {
+        uri: photo.uri,
+        type: photo.mimeType,
+        name: photo.name,
+      };
+      formData.append("photo", file);
+    }
+    await updateProfile.mutateAsync(formData);
+  };
+
   return (
     <ScreenLayout
       appBar={{
@@ -29,7 +49,7 @@ export const EditProfile = () => {
         }}
         enableReinitialize
         validationSchema={validationSchema}
-        onSubmit={() => {}}
+        onSubmit={hanndleSubmit}
       >
         {({ handleSubmit }) => (
           <View className="flex flex-col gap-4">
@@ -63,6 +83,7 @@ export const EditProfile = () => {
             />
 
             <Button
+              loading={updateProfile.isPending}
               mode="contained"
               contentStyle={{
                 height: 48,

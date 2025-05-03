@@ -18,7 +18,7 @@ export const ExpoRouteTabs: React.FC<IExpoRouteTabsProps> = ({ items }) => {
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].primary,
         tabBarInactiveTintColor: Colors[colorScheme ?? "light"].tabIconDefault,
         headerShown: false,
-        tabBarButton: (props) => (
+        tabBarButton: (props: any) => (
           <View style={styles.tabContainer}>
             {props.accessibilityState?.selected && (
               <View

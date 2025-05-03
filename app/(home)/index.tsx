@@ -1,6 +1,5 @@
 import { MainAppBar } from "@/src/components/appbar/mainAppBar";
 import { HomePoems } from "@/src/features/home/routes/poems";
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
 import { useColorScheme, View } from "react-native";
 
