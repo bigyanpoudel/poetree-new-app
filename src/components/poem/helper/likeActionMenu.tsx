@@ -1,15 +1,18 @@
 import { Text } from "@/src/components/text";
 import { REACTION_IMAGE } from "@/src/utils/constant/appConstant";
 import { Colors } from "@/src/utils/constant/colors";
+import { formatPoemNumber } from "@/src/utils/poem";
 import { Feather } from "@expo/vector-icons";
 import * as React from "react";
 import { TouchableOpacity, useColorScheme, Image, View } from "react-native";
 import { Menu } from "react-native-paper";
 interface IActionMenuProps {
   onHandleReaction: (key: string) => void;
+  poemCount?: number;
 }
 export const LikeActionMenu: React.FC<IActionMenuProps> = ({
   onHandleReaction,
+  poemCount,
 }) => {
   const colorSchema = useColorScheme();
   const [visible, setVisible] = React.useState(false);
@@ -38,7 +41,9 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({
             size={20}
             className="dark:text-darkTextColor text-ligtTextColor"
           />
-          <Text className="text-sm font-semibold">1232</Text>
+          <Text className="text-sm font-semibold">
+            {formatPoemNumber(poemCount)}
+          </Text>
         </TouchableOpacity>
       }
     >

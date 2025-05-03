@@ -5,8 +5,8 @@ import { StyleSheet, View, Button } from "react-native";
 const videoSource =
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
-export default function VideoScreen() {
-  const player = useVideoPlayer(videoSource, (player) => {
+export default function VideoScreen({ url }: { url: string }) {
+  const player = useVideoPlayer(url, (player) => {
     player.loop = false;
   });
 

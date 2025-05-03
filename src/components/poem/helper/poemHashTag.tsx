@@ -14,6 +14,7 @@ export const HashtagButton = ({
   className?: string;
   icon?: React.ReactNode;
 }) => {
+  console.log("title", title);
   return (
     <TouchableOpacity
       style={styles.button}
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
 // Example usage
 export const RenderHashTag = ({ hashtags }: { hashtags: IPoemHasTag[] }) => {
   return (
-    <View className="flex flex-row gap-2 gap-y-4 flex-wrap">
+    <View className="flex my-2 flex-row gap-2 gap-y-4 flex-wrap">
       {hashtags.map((item) => (
         <HashtagButton key={item._id} title={item.name} />
       ))}

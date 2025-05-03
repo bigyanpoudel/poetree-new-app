@@ -4,7 +4,7 @@ import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 import { Colors } from "@/src/utils/constant/colors";
 import { AntDesign } from "@expo/vector-icons";
 import { useField } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { TextInput } from "react-native-paper";
 interface TagInputFieldProps {
@@ -18,7 +18,7 @@ export const TagInputField: React.FC<TagInputFieldProps> = ({
   label,
   placeholder,
 }) => {
-  const [tags, setTags] = useState<string[]>([]);
+  const [tagField, _, tagsHelper] = useField("tags");
   const [field, meta, helpers] = useField(name);
   const isDark = useIsDarkTheme();
   const sanitizeTag = (input: string) => {
@@ -30,18 +30,18 @@ export const TagInputField: React.FC<TagInputFieldProps> = ({
     const value = field.value;
     if (value) {
       const sanitizedValue = sanitizeTag(value);
-      if (sanitizedValue && !tags.includes(sanitizedValue)) {
+      if (sanitizedValue && !tagField.value.includes(sanitizedValue)) {
         // Avoid duplicate and empty tags
-        const updatedTags = new Set([...tags, sanitizedValue]);
-        setTags([...updatedTags]);
+        const updatedTags = new Set([...tagField.value, sanitizedValue]);
+        tagsHelper.setValue([...updatedTags]);
         helpers.setValue(""); // Clear the input field
       }
     }
   };
 
   const handleRemoveTag = (tag: string) => {
-    const updatedTags = tags.filter((t) => t !== tag);
-    setTags(updatedTags);
+    const updatedTags = tagField.value.filter((t: string) => t !== tag);
+    tagsHelper.setValue(updatedTags);
   };
 
   return (
@@ -95,9 +95,9 @@ export const TagInputField: React.FC<TagInputFieldProps> = ({
           </Button>
         </TouchableOpacity>
       </View>
-      {tags.length > 0 && (
+      {tagField.value.length > 0 && (
         <View className="flex flex-row gap-3">
-          {tags.map((tag, index) => (
+          {tagField.value?.map((tag: string) => (
             <HashtagButton
               icon={
                 <AntDesign

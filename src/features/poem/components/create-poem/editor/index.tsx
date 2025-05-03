@@ -42,11 +42,9 @@ export const TentapEditorField: React.FC<TentapEditorFieldProps> = ({
   const [field, meta, helpers] = useField(name);
   const isDark = useIsDarkTheme();
   const editor = useEditorBridge({
-    autofocus: true,
     avoidIosKeyboard: true,
-
     editable: true,
-    initialContent: "",
+    initialContent: field.value ?? "",
     bridgeExtensions: [
       ...TenTapStartKit,
       CodeBridge.configureCSS(customTextCSS(isDark)),
@@ -57,9 +55,14 @@ export const TentapEditorField: React.FC<TentapEditorFieldProps> = ({
 
   React.useEffect(() => {
     if (content) {
-      helpers.setValue(content, false);
+      helpers.setValue(content);
     }
   }, [content]);
+  React.useEffect(() => {
+    if (!field.value) {
+      editor.setContent("");
+    }
+  }, [field.value]);
 
   return (
     <View className="flex flex-col gap-2">

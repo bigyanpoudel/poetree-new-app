@@ -1,13 +1,17 @@
-import { TouchableOpacity, View } from "react-native";
-import { Button } from "../../button";
-import { Feather } from "@expo/vector-icons";
 import { Text } from "@/src/components/text";
-import { Tooltip } from "react-native-paper";
+import { Feather } from "@expo/vector-icons";
+import { View } from "react-native";
 import { LikeActionMenu } from "./likeActionMenu";
-export const PoemActions = () => {
+import { IAppPoem } from "@/src/types";
+import React from "react";
+import { formatPoemNumber } from "@/src/utils/poem";
+interface IPoemActionsProps {
+  poem: IAppPoem;
+}
+export const PoemActions: React.FC<IPoemActionsProps> = ({ poem }) => {
   return (
     <View className="flex flex-row gap-3 items-center justify-between">
-      <LikeActionMenu onHandleReaction={() => {}} />
+      <LikeActionMenu poemCount={poem.likeCount} onHandleReaction={() => {}} />
       <View className="flex flex-row gap-2 items-center">
         <Feather
           name="message-square"
@@ -15,7 +19,7 @@ export const PoemActions = () => {
           className="dark:text-darkTextColor text-ligtTextColor"
         />
         <Text fontWeight={500} className="text-sm font-semibold">
-          1232
+          {formatPoemNumber(poem.commentCount)}
         </Text>
       </View>
       <View className="flex flex-row gap-2 items-center">
@@ -25,7 +29,7 @@ export const PoemActions = () => {
           className="dark:text-darkTextColor text-ligtTextColor"
         />
         <Text fontWeight={500} className="text-sm font-semibold">
-          1232
+          {formatPoemNumber(poem.viewsCount)}
         </Text>
       </View>
       <View className="flex flex-row gap-2 items-center">

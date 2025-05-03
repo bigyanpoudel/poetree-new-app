@@ -1,15 +1,44 @@
-import { Button, Scafold, Text } from "@/src/components/";
+import { Scafold } from "@/src/components/";
+import { Poem } from "@/src/components/poem";
 import React from "react";
+import { ActivityIndicator, FlatList } from "react-native";
+
+import { useGetInfiniteUserFeedPost } from "../hooks/home";
 
 export const HomeYourFeed = () => {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+    refetch,
+    isRefetching,
+  } = useGetInfiniteUserFeedPost();
+  const poems = data?.pages.flatMap((page: any) => page?.data) || [];
+  const handleRefresh = React.useCallback(() => {
+    refetch(); // this will trigger a refresh of the data
+  }, [refetch]);
   return (
-    <Scafold
-      style={{
-        flex: 1, // This will ensure the container takes up the entire screen height
-      }}
-    >
-      <Text>Hello world</Text>
-      <Button mode="contained">Hello</Button>
+    <Scafold isNormalView paddingVertical={0} paddingHorizontal={0}>
+      <FlatList
+        data={poems}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => {
+          return <Poem poem={item} key={item._id} />;
+        }}
+        onEndReached={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        refreshing={isRefetching}
+        onRefresh={handleRefresh}
+        contentContainerStyle={{ paddingVertical: 16 }}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+      />
     </Scafold>
   );
 };

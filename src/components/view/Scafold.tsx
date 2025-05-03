@@ -52,6 +52,7 @@ export function Scafold({
           ? Colors.dark.scafoldColor
           : Colors.light.scafoldColor,
       }}
+      nestedScrollEnabled={true}
     >
       <View
         style={[

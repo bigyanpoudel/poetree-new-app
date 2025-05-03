@@ -24,7 +24,7 @@ export const PlaylistContent = () => {
           </Text>
         </View>
       </View>
-      <VideoScreen />;
+      <VideoScreen url="" />;
       <PoemBody poem={POEMS[0]} maxLines={0} />
     </View>
   );

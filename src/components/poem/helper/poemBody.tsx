@@ -158,13 +158,13 @@ export const PoemBody = ({
       source={{ html: sanitizedHtml }}
       tagsStyles={tagsStyles}
       baseStyle={{
-        fontSize: 14,
+        fontSize: 16,
         color: colorSchema === "dark" ? Colors.dark.text : Colors.light.text,
         fontFamily: "Garamond",
         fontStyle: "normal",
         fontWeight: "normal",
         textAlign: "left",
-        lineHeight: 18,
+        lineHeight: 28,
       }}
     />
   );

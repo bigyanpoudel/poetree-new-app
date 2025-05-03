@@ -1,6 +1,8 @@
 import { Text } from "@/src/components/text";
+import { useAppProvider } from "@/src/provider/appProvider";
 import { IAppPoem, POEMTYPE } from "@/src/types";
 import { getPoemType } from "@/src/utils/poem";
+import { getCreatedDate } from "@/src/utils/poemDateFormat";
 import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
 import React from "react";
@@ -16,18 +18,75 @@ interface IPoemProps {
   poem: IAppPoem;
 }
 export const Poem: React.FC<IPoemProps> = ({ poem }) => {
+  const { user } = useAppProvider();
   const poemType: POEMTYPE = getPoemType({ ...poem });
+  const actionItems = React.useMemo(() => {
+    let items = [
+      {
+        label: "Details",
+        leadingIcon: (
+          <AntDesign
+            name="eyeo"
+            size={20}
+            className="dark:text-darkTextColor text-ligtTextColor"
+          />
+        ),
+        onPress: () => {},
+      },
+      {
+        label: "Report Poem",
+        leadingIcon: (
+          <Octicons
+            name="report"
+            size={20}
+            className="dark:text-darkTextColor text-ligtTextColor"
+          />
+        ),
+        onPress: () => {},
+      },
+    ];
+    if (poem?.postedBy?._id == user?._id) {
+      items = [
+        ...items,
+        {
+          label: "Delete Poem",
+          leadingIcon: (
+            <Feather
+              name="trash"
+              size={20}
+              className="dark:text-darkTextColor text-ligtTextColor"
+            />
+          ),
+          onPress: () => {},
+        },
+        {
+          label: "Edit Poem",
+          leadingIcon: (
+            <Feather
+              name="edit"
+              size={20}
+              className="dark:text-darkTextColor text-ligtTextColor"
+            />
+          ),
+          onPress: () => {},
+        },
+      ];
+    }
+    return items;
+  }, [poem, user]);
+
   return (
-    <View className="flex flex-col p-4 px-5 gap-4 dark:bg-darker-100 bg-white/90">
+    <View className="flex flex-col p-4 px-5 gap-3 dark:bg-darker-100 bg-white/90">
       <View className="flex flex-col gap-1">
         <Link href={`/poem/${poem.slug}`} asChild>
           <Text
             style={{
               fontFamily: "garamond",
             }}
-            className="text-[28px] garamond -tracking-[0.5px]  font-bold "
+            className="text-[24px] garamond -tracking-[0.5px]  font-bold "
+            numberOfLines={2}
           >
-            Poem Title
+            {poem.title}
           </Text>
         </Link>
         <PoemType
@@ -43,83 +102,54 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
         <View className="max-h-[280px] w-full">
           <Image
             source={{
-              uri: "https://picsum.photos/400/500",
+              uri: poem.thumbnail,
             }}
             className="h-full w-full object-contain"
           />
         </View>
       )}
-      {poemType === POEMTYPE.video && poem.video && <VideoScreen />}
-      <View className="flex flex-row gap-4 justify-between items-center">
+      {poemType === POEMTYPE.video && poem.video && (
+        <VideoScreen url={poem.video} />
+      )}
+      <View className="flex flex-row gap-4 mt-2 justify-between items-center">
         <View className="flex flex-row gap-2 flex-1">
-          <Avatar.Text
-            size={40}
-            label="XD"
-            labelStyle={{
-              fontSize: 16,
-              color: "white",
-            }}
-            className="dark:bg-black/50 bg-darkBackground "
-          />
+          <Link
+            href={`/user/${poem?.postedBy?._id}?slug=${poem?.postedBy?.slug}`}
+          >
+            {poem?.postedBy?.photo ? (
+              <Avatar.Image
+                size={40}
+                source={{ uri: poem?.postedBy?.photo }}
+                className="w-[40px] h-[40px] rounded-full border border-ui-border dark:border-ui-border/20"
+              />
+            ) : (
+              <Avatar.Text
+                size={40}
+                label={poem?.postedBy.name?.charAt(0) ?? ""}
+                labelStyle={{
+                  fontSize: 16,
+                  color: "white",
+                }}
+                className="dark:bg-black/50 bg-darkBackground "
+              />
+            )}
+          </Link>
           <View className="flex flex-col">
-            <Link href={"/user/profile"}>
+            <Link
+              href={`/user/${poem?.postedBy?._id}?slug=${poem?.postedBy?.slug}`}
+            >
               <Text fontWeight={600} className="text-base font-bold">
-                User Name
+                {poem?.postedBy.name}
               </Text>
             </Link>
-            <Text className="text-sm text-gray-500">2021-10-10</Text>
+            <Text className="text-sm text-gray-500">
+              {getCreatedDate(poem?.createdAt ?? "")}
+            </Text>
           </View>
         </View>
-        <ActionMenu
-          items={[
-            {
-              label: "Details",
-              leadingIcon: (
-                <AntDesign
-                  name="eyeo"
-                  size={20}
-                  className="dark:text-darkTextColor text-ligtTextColor"
-                />
-              ),
-              onPress: () => {},
-            },
-            {
-              label: "Report Poem",
-              leadingIcon: (
-                <Octicons
-                  name="report"
-                  size={20}
-                  className="dark:text-darkTextColor text-ligtTextColor"
-                />
-              ),
-              onPress: () => {},
-            },
-            {
-              label: "Delete Poem",
-              leadingIcon: (
-                <Feather
-                  name="trash"
-                  size={20}
-                  className="dark:text-darkTextColor text-ligtTextColor"
-                />
-              ),
-              onPress: () => {},
-            },
-            {
-              label: "Edit Poem",
-              leadingIcon: (
-                <Feather
-                  name="edit"
-                  size={20}
-                  className="dark:text-darkTextColor text-ligtTextColor"
-                />
-              ),
-              onPress: () => {},
-            },
-          ]}
-        />
+        <ActionMenu items={actionItems} />
       </View>
-      <PoemActions />
+      <PoemActions poem={poem} />
     </View>
   );
 };
