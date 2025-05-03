@@ -1,16 +1,20 @@
 import { ScreenLayout } from "@/src/components/layout";
 import { Colors } from "@/src/utils/constant/colors";
+import { formatPoemNumber } from "@/src/utils/poem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { useColorScheme, View } from "react-native";
-import { Searchbar } from "react-native-paper";
+import { useColorScheme } from "react-native";
 import { FollowerList } from "../components/follower/followerList";
 import { FollowingList } from "../components/follower/followingList";
+import { useGetUserProfile } from "../hooks/user";
 
 const Tab = createMaterialTopTabNavigator();
 
 export const FollowerScreen = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const { slug } = useLocalSearchParams<{ id: string; slug: string }>();
+  const user = useGetUserProfile();
   const colorScheme = useColorScheme();
   const isDark = colorScheme == "dark";
   return (
@@ -22,7 +26,7 @@ export const FollowerScreen = () => {
         paddingBottom: 0,
       }}
       appBar={{
-        title: "User Name",
+        title: slug ?? "",
       }}
     >
       <Tab.Navigator
@@ -39,7 +43,7 @@ export const FollowerScreen = () => {
         }}
       >
         <Tab.Screen
-          name="400 Followers"
+          name={`${formatPoemNumber(user.data?.followersCount)} Followers`}
           children={FollowerList}
           options={{
             tabBarItemStyle: {
@@ -56,7 +60,7 @@ export const FollowerScreen = () => {
           }}
         />
         <Tab.Screen
-          name="500 Following"
+          name={`${formatPoemNumber(user.data?.followingCount)} Following`}
           children={FollowingList}
           // component={HomeYourFeed}
           options={{

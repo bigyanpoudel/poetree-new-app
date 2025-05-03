@@ -1,11 +1,9 @@
-import { Scafold, Text } from "@/src/components/";
+import { Scafold } from "@/src/components/";
 import { Poem } from "@/src/components/poem";
-import { POEMS } from "@/src/utils/constant/appConstant";
+import { PoemShimmer } from "@/src/components/poem/poem.shimmer";
 import React from "react";
-import { ActivityIndicator, FlatList, ScrollView, View } from "react-native";
-import { Divider } from "react-native-paper";
+import { FlatList, View } from "react-native";
 import { useGetInfinitePost } from "../hooks/home";
-import { IAppPoem } from "@/src/types";
 
 export const HomePoems = () => {
   const {
@@ -14,7 +12,6 @@ export const HomePoems = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    error,
     refetch,
     isRefetching,
   } = useGetInfinitePost();
@@ -40,7 +37,24 @@ export const HomePoems = () => {
         onRefresh={handleRefresh}
         contentContainerStyle={{ paddingVertical: 16 }}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+        ListEmptyComponent={
+          isLoading ? (
+            <View className="gap-4 px-5">
+              {[...Array(3)].map((_, i) => (
+                <PoemShimmer key={i} />
+              ))}
+            </View>
+          ) : null
+        }
+        ListFooterComponent={
+          isFetchingNextPage ? (
+            <View className="gap-4 px-5 mt-2">
+              {[...Array(2)].map((_, i) => (
+                <PoemShimmer key={i} />
+              ))}
+            </View>
+          ) : null
+        }
       />
     </Scafold>
   );

@@ -1,15 +1,27 @@
+import { Scafold } from "@/src/components";
 import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 import { Colors } from "@/src/utils/constant/colors";
+import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { FlatList, View } from "react-native";
 import { Searchbar } from "react-native-paper";
+import { useGetUserFollowerList } from "../../hooks/user";
 import { UserItem } from "./userItem";
-import { Scafold } from "@/src/components";
 
 export const FollowerList = () => {
   const [searchQuery, setSearchQuery] = React.useState("");
+  const { id } = useLocalSearchParams<{ id: string; slug: string }>();
   const isDark = useIsDarkTheme();
-
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+    isRefetching,
+  } = useGetUserFollowerList({ userId: id });
+  const users = data?.pages.flatMap((page: any) => page?.data) || [];
   return (
     <Scafold isNormalView>
       <View className="flex flex-col gap-5">
@@ -46,11 +58,30 @@ export const FollowerList = () => {
         />
 
         <FlatList
-          data={[1, 2, 3, 5]}
-          renderItem={() => <UserItem />}
-          // keyExtractor={(item) => item}
+          data={users}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => {
+            console.log("item---->", item);
+            return <UserItem user={item} key={item._id} />;
+          }}
+          onEndReached={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
+          contentContainerStyle={{ paddingVertical: 16 }}
+          onEndReachedThreshold={0.5}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+          ListFooterComponent={
+            isFetchingNextPage ? (
+              <View className="gap-4 px-5 mt-2">
+                {/* {[...Array(2)].map((_, i) => (
+                         
+                        ))} */}
+              </View>
+            ) : null
+          }
         />
       </View>
     </Scafold>

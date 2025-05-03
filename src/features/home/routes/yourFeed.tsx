@@ -1,8 +1,9 @@
 import { Scafold } from "@/src/components/";
 import { Poem } from "@/src/components/poem";
 import React from "react";
-import { ActivityIndicator, FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 
+import { PoemShimmer } from "@/src/components/poem/poem.shimmer";
 import { useGetInfiniteUserFeedPost } from "../hooks/home";
 
 export const HomeYourFeed = () => {
@@ -12,7 +13,6 @@ export const HomeYourFeed = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    error,
     refetch,
     isRefetching,
   } = useGetInfiniteUserFeedPost();
@@ -37,7 +37,24 @@ export const HomeYourFeed = () => {
         onRefresh={handleRefresh}
         contentContainerStyle={{ paddingVertical: 16 }}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+        ListEmptyComponent={
+          isLoading ? (
+            <View className="gap-4 px-5">
+              {[...Array(3)].map((_, i) => (
+                <PoemShimmer key={i} />
+              ))}
+            </View>
+          ) : null
+        }
+        ListFooterComponent={
+          isFetchingNextPage ? (
+            <View className="gap-4 px-5 mt-2">
+              {[...Array(2)].map((_, i) => (
+                <PoemShimmer key={i} />
+              ))}
+            </View>
+          ) : null
+        }
       />
     </Scafold>
   );

@@ -1,10 +1,5 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import {
-  getAllFeedPoemApi,
-  getAllPoemApi,
-  getPoemHashTagsApi
-} from "../api/home";
-import { homeQuery } from "../constant/query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getAllFeedPoemApi, getAllPoemApi } from "../api/home";
 
 export const useGetInfinitePost = () => {
   const limit = 10;
@@ -13,8 +8,7 @@ export const useGetInfinitePost = () => {
     queryFn: ({ pageParam }) =>
       getAllPoemApi({ pageParam: pageParam + 1, limit }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage:any) => {
-      
+    getNextPageParam: (lastPage: any) => {
       if (lastPage?.currentPage < lastPage?.totalPages) {
         return lastPage?.currentPage; // Next page index
       }
@@ -30,8 +24,7 @@ export const useGetInfiniteUserFeedPost = () => {
     queryFn: ({ pageParam }) =>
       getAllFeedPoemApi({ pageParam: pageParam + 1, limit }),
     initialPageParam: 0,
-    getNextPageParam: (lastPage:any, pages) => {
-      
+    getNextPageParam: (lastPage: any, pages) => {
       if (lastPage?.currentPage < lastPage?.totalPages) {
         return lastPage?.currentPage; // Next page index
       }
@@ -39,15 +32,3 @@ export const useGetInfiniteUserFeedPost = () => {
     },
   });
 };
-
-export const useGetHasTags = () => {
-  const limit = 30;
-  return useQuery({
-    queryKey: [homeQuery.getTrendingHashTagsList],
-    queryFn: () => getPoemHashTagsApi({ pageParam: 1, limit }),
-  });
-};
-
-
-
-

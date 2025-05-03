@@ -1,10 +1,9 @@
 import { Poem } from "@/src/components/poem";
-import { POEMS } from "@/src/utils/constant/appConstant";
-import React from "react";
-import { ActivityIndicator, FlatList, View } from "react-native";
-import { Divider } from "react-native-paper";
-import { useGetInfiniteUserPoems } from "../../hooks/user";
+import { PoemShimmer } from "@/src/components/poem/poem.shimmer";
 import { useLocalSearchParams } from "expo-router";
+import React from "react";
+import { FlatList, View } from "react-native";
+import { useGetInfiniteUserPoems } from "../../hooks/user";
 
 export const ListPeoms = () => {
   const { id } = useLocalSearchParams<{ id: string; slug: string }>();
@@ -14,7 +13,6 @@ export const ListPeoms = () => {
     hasNextPage,
     isFetchingNextPage,
     isLoading,
-    error,
     refetch,
     isRefetching,
   } = useGetInfiniteUserPoems({ userId: id });
@@ -35,11 +33,26 @@ export const ListPeoms = () => {
             fetchNextPage();
           }
         }}
-        refreshing={isRefetching}
-        onRefresh={handleRefresh}
         contentContainerStyle={{ paddingVertical: 16 }}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={isFetchingNextPage ? <ActivityIndicator /> : null}
+        ListEmptyComponent={
+          isLoading ? (
+            <View className="gap-4 px-5">
+              {[...Array(3)].map((_, i) => (
+                <PoemShimmer key={i} />
+              ))}
+            </View>
+          ) : null
+        }
+        ListFooterComponent={
+          isFetchingNextPage ? (
+            <View className="gap-4 px-5 mt-2">
+              {[...Array(2)].map((_, i) => (
+                <PoemShimmer key={i} />
+              ))}
+            </View>
+          ) : null
+        }
       />
     </View>
   );

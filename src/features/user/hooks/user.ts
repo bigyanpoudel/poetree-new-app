@@ -1,17 +1,17 @@
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { userQuery } from "../constant/query";
 import { getCurrentUser } from "@/src/api/app";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useLocalSearchParams } from "expo-router";
 import {
   getUserFollowerListApi,
   getUserFollowingListApi,
   getUsersPoemApi,
 } from "../api/user";
+import { userQuery } from "../constant/query";
 
 export const useGetUserProfile = () => {
-  const { id, name } = useLocalSearchParams<{ id: string; name: string }>();
+  const { id } = useLocalSearchParams<{ id: string; slug: string }>();
   return useQuery({
-    queryKey: [userQuery.getUserProfile],
+    queryKey: [userQuery.getUserProfile, id],
     queryFn: () => getCurrentUser(id),
     enabled: Boolean(id),
   });
@@ -20,7 +20,7 @@ export const useGetUserProfile = () => {
 export const useGetInfiniteUserPoems = ({ userId }: { userId: string }) => {
   const limit = 10;
   return useInfiniteQuery({
-    queryKey: [userQuery.getUserPoems],
+    queryKey: [userQuery.getUserPoems, userId],
     queryFn: ({ pageParam = 0 }) =>
       getUsersPoemApi({ pageParam: pageParam + 1, limit, userId: userId }),
     initialPageParam: 0,

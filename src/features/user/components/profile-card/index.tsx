@@ -31,6 +31,7 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
   if (user.isLoading) {
     return <ProfileCardShimmer />;
   }
+  console.log(user.data, "user data");
   return (
     <View className="h-fit w-full bg-white dark:bg-white/5 p-4 py-6 text-white flex flex-col gap-4">
       <View className="flex flex-row gap-6 items-center">
@@ -70,7 +71,9 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                router.push("/follower/123");
+                router.push(
+                  `/follower/${user.data?._id}?slug=${user.data?.slug}`
+                );
               }}
               className="flex flex-col items-center justify-center"
             >
@@ -82,7 +85,14 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
               </Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex flex-col items-center justify-center">
+            <TouchableOpacity
+              onPress={() => {
+                router.push(
+                  `/follower/${user.data?._id}?slug=${user.data?.slug}`
+                );
+              }}
+              className="flex flex-col items-center justify-center"
+            >
               <Text fontWeight={700} className="text-lg font-semibold">
                 {formatPoemNumber(user.data?.followersCount)}{" "}
               </Text>

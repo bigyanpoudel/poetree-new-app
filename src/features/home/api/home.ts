@@ -33,21 +33,6 @@ export const getAllFeedPoemApi = async ({
   };
 };
 
-export const getPoemHashTagsApi = async ({
-  pageParam = 0,
-  limit,
-}: {
-  limit: number;
-  pageParam: number;
-}): Promise<IHastagsRes> => {
-  const data: any = await API.get(
-    `/posts/hastag?limit=${limit}&page=${pageParam}`
-  );
-  return {
-    ...data,
-    hasMore: data?.currentPage < data?.totalPage,
-  };
-};
 
 export const getTrendingPoemApi = async ({
   pageParam = 0,

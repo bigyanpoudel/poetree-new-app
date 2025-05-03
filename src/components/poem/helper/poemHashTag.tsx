@@ -32,6 +32,20 @@ export const HashtagButton = ({
   );
 };
 
+export const HashtagButtonShimmer = ({ className }: { className?: string }) => {
+  return (
+    <View
+      className={`flex-row items-center rounded-full px-4 py-2 border animate-pulse bg-gray-200 dark:bg-dark-200 dark:border-ui-border/60 border-ui-border ${className}`}
+    >
+      {/* Shimmer for text */}
+      <View className="h-4 w-20 bg-gray-300 dark:bg-dark-300 rounded" />
+
+      {/* Optional icon shimmer (if you want to simulate an icon) */}
+      <View className="ml-2 h-4 w-4 bg-gray-300 dark:bg-dark-300 rounded-full" />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
