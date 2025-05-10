@@ -3,10 +3,12 @@ import React from "react";
 import { useColorScheme } from "react-native";
 import { List } from "react-native-paper";
 import { Text } from "../text";
+import { Style } from "react-native-paper/lib/typescript/components/List/utils";
 interface ListItemProps {
   title: String;
-  left: React.FC;
+  left: (props: any) => React.ReactNode;
   onPress: () => void;
+  right?: (props: { color: string; style?: Style }) => React.ReactNode;
 }
 export const ListItem: React.FC<ListItemProps> = ({ left, ...props }) => {
   const colorSchema = useColorScheme();
@@ -21,7 +23,7 @@ export const ListItem: React.FC<ListItemProps> = ({ left, ...props }) => {
         fontSize: 16,
         color: isDark ? Colors.dark.text : Colors.light.text,
       }}
-      left={(props) =>
+      left={(props: any) =>
         left({ ...props, color: isDark ? Colors.dark.text : Colors.light.text })
       }
       {...props}

@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Appbar } from "react-native-paper";
 import { Scafold, ScafoldProps } from "../view/Scafold";
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 interface IScreenLayoutProps {
   appBar: {
     title: string;
@@ -22,8 +23,7 @@ export const ScreenLayout: React.FC<IScreenLayoutProps> = ({
   children,
   scafold,
 }) => {
-  const colorSchema = useColorScheme();
-  const isDarkTheme = colorSchema === "dark";
+  const isDarkTheme = useIsDarkTheme();
   return (
     <View
       style={{

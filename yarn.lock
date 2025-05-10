@@ -7120,7 +7120,7 @@ react-native-paper-dropdown@^2.3.1:
   dependencies:
     react-native-paper "^5.12.3"
 
-react-native-paper@^5.12.3, react-native-paper@^5.13.1:
+react-native-paper@^5.12.3:
   version "5.13.1"
   resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.13.1.tgz#50217012b2d008397296c9bfb755d603a373f48b"
   integrity sha512-8frKVKJ5JBd8WL1G3tpcYzOgK40kxkD/U+yLHGKNeLnD6v1Qc9W6DxWTHWN7lsX/DPYnhgvw1aKkYaPTmDj5pg==
@@ -7129,10 +7129,24 @@ react-native-paper@^5.12.3, react-native-paper@^5.13.1:
     color "^3.1.2"
     use-latest-callback "^0.1.5"
 
+react-native-paper@^5.14.1:
+  version "5.14.1"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.14.1.tgz#280883a41abe0531279cff72330fee60c97b7a97"
+  integrity sha512-3TAO7PtC0tqfnLLX1rGC6hhzO4v7yk2jy7RuKptzPaJSaMIJeEe+9VxxFQRmF/le5tS8N9DUOTeUxy3YBOls/Q==
+  dependencies:
+    "@callstack/react-theme-provider" "^3.0.9"
+    color "^3.1.2"
+    use-latest-callback "^0.2.3"
+
 react-native-pell-rich-editor@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/react-native-pell-rich-editor/-/react-native-pell-rich-editor-1.9.0.tgz#e222b4cd8ead9b5e1de7b6cf2f31a3315c82e570"
   integrity sha512-BKzlu++FySzPXrb5bczD8b/ZZJtfzcD4z7FvW7TrH+4OENEQtaIiEMfmb5N09Kv3YVJcfm8fut8Y+GLNAcCQHA==
+
+react-native-portalize@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-portalize/-/react-native-portalize-1.0.7.tgz#8b3c742a06f863654d526ea1075a8596625f8482"
+  integrity sha512-icqopPh9ZSV+I8C5LlZN9pQJ0OMeBDNqHhP80+qDx0hOGEcsDC09wgjogbEMfJE0GcMDM7PDYtyQkqa9gIqd1g==
 
 react-native-reanimated@~3.17.4:
   version "3.17.5"
@@ -7206,7 +7220,7 @@ react-native-tab-view@^4.0.5:
   dependencies:
     use-latest-callback "^0.2.1"
 
-react-native-vector-icons@*:
+react-native-vector-icons@*, react-native-vector-icons@^10.2.0:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-10.2.0.tgz#f438f2ca16f7d6be658fd6ec8f0d2b7e2132b91c"
   integrity sha512-n5HGcxUuVaTf9QJPs/W22xQpC2Z9u0nb0KgLPnVltP8vdUvOp6+R26gF55kilP/fV4eL4vsAHUqUjewppJMBOQ==

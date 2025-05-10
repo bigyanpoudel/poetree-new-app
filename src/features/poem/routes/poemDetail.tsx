@@ -5,7 +5,7 @@ import { PoemBody } from "@/src/components/poem/helper/poemBody";
 import { useAppProvider } from "@/src/provider/appProvider";
 import { IAppPoem } from "@/src/types";
 import { Feather, Octicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { RefreshControl } from "react-native";
 import { Divider } from "react-native-paper";
@@ -13,11 +13,18 @@ import { PoemCommentSections } from "../components/poem-details/comments";
 import { PoemHeader } from "../components/poem-details/poem-header";
 import { PoemDetailShimmer } from "../components/poem-details/shimmer/poemDetailShimmer";
 import { useGetPoemDetails, useUpdatePoemViewCount } from "../hooks/poemDetail";
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { useDeletePoem } from "@/src/hooks/useRootHook";
+import { CustomDailog } from "@/src/components/modal/dailog";
 
 export const PoemDetail = () => {
+  const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
   const { name, id } = useLocalSearchParams<{ id: string; name: string }>();
   const { isLoading, data, refetch, isRefetching } = useGetPoemDetails(id);
   const { user } = useAppProvider();
+  const router = useRouter();
+  const deletePoem = useDeletePoem();
+
   useUpdatePoemViewCount({
     id: data?._id ?? "",
   });
@@ -48,7 +55,9 @@ export const PoemDetail = () => {
               className="dark:text-darkTextColor text-ligtTextColor"
             />
           ),
-          onPress: () => {},
+          onPress: () => {
+            setOpenDeleteModal(true);
+          },
         },
         {
           label: "Edit Poem",
@@ -93,6 +102,23 @@ export const PoemDetail = () => {
           <Divider className="my-6" />
           <PoemCommentSections id={data?._id as string} />
         </>
+      )}
+      {openDeleteModal && (
+        <CustomDailog
+          visible={openDeleteModal}
+          onClose={() => {
+            setOpenDeleteModal(false);
+          }}
+          onConfirm={async () => {
+            await deletePoem.mutateAsync(data?._id);
+            router.back();
+          }}
+          isLoading={deletePoem.isPending}
+          title="Are you sure you want to delete poem?"
+          content={
+            "This action cannot be undone. This will permanently delete the poem."
+          }
+        />
       )}
     </ScreenLayout>
   );

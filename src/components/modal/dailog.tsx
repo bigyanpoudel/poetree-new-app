@@ -20,10 +20,12 @@ export const CustomDailog: React.FC<ICustomDailogProps> = ({
   onConfirm,
   isLoading,
 }) => {
-  const isDark = useIsDarkTheme();
+  const isDark = true;
+  // const isDark = useIsDarkTheme();
   return (
     <Portal>
       <Dialog
+        testID={title}
         style={{
           backgroundColor: isDark
             ? Colors.dark.background

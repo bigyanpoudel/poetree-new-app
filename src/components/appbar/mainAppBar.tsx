@@ -68,20 +68,39 @@ export const MainAppBar = () => {
             }}
           />
         </View>
-        <Appbar.Action
-          icon={isDarkTheme ? "brightness-3" : "brightness-7"}
-          onPress={toggleTheme}
-          color={isDarkTheme ? Colors.dark.text : Colors.light.text}
-          style={{
-            margin: 0,
-            borderWidth: 1,
-            borderRadius: "50%",
-            padding: 0,
-            borderColor: isDarkTheme
-              ? Colors.dark.borderColor
-              : Colors.light.borderColor,
-          }}
-        />
+        {user?._id ? (
+          <Appbar.Action
+            icon={"plus"}
+            onPress={() => {
+              router.push("/create-poem");
+            }}
+            color={isDarkTheme ? Colors.dark.text : Colors.light.text}
+            style={{
+              margin: 0,
+              borderWidth: 1,
+              borderRadius: "50%",
+              padding: 0,
+              borderColor: isDarkTheme
+                ? Colors.dark.borderColor
+                : Colors.light.borderColor,
+            }}
+          />
+        ) : (
+          <Appbar.Action
+            icon={isDarkTheme ? "brightness-3" : "brightness-7"}
+            onPress={toggleTheme}
+            color={isDarkTheme ? Colors.dark.text : Colors.light.text}
+            style={{
+              margin: 0,
+              borderWidth: 1,
+              borderRadius: "50%",
+              padding: 0,
+              borderColor: isDarkTheme
+                ? Colors.dark.borderColor
+                : Colors.light.borderColor,
+            }}
+          />
+        )}
         <View>
           {!user && (
             <Button
@@ -99,19 +118,27 @@ export const MainAppBar = () => {
           )}
           {user?._id && (
             <Link href={`/user/${user?._id}?slug=${currentUser.data?.slug}`}>
-              <Avatar.Text
-                size={44}
-                label={
-                  currentUser?.data?.name
-                    ? currentUser?.data?.name.charAt(0)
-                    : ""
-                }
-                labelStyle={{
-                  fontSize: 16,
-                  color: "white",
-                }}
-                className="dark:bg-black/50 dark:border  dark:border-ui-border/90 bg-darker-100 "
-              />
+              {currentUser?.data?.photo ? (
+                <Avatar.Image
+                  size={40}
+                  source={{ uri: currentUser?.data?.photo }}
+                  className="w-[40px] h-[40px] rounded-full border border-ui-border dark:border-ui-border/20"
+                />
+              ) : (
+                <Avatar.Text
+                  size={40}
+                  label={
+                    currentUser?.data?.name
+                      ? currentUser?.data?.name.charAt(0)
+                      : ""
+                  }
+                  labelStyle={{
+                    fontSize: 16,
+                    color: "white",
+                  }}
+                  className="dark:bg-black/50 dark:border  dark:border-ui-border/90 bg-darker-100 "
+                />
+              )}
             </Link>
           )}
         </View>

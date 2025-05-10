@@ -1,5 +1,9 @@
 import { Scafold } from "@/src/components";
 import { ListItem, ListSubHeading } from "@/src/components/list";
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { useAppProvider } from "@/src/provider/appProvider";
+import { Colors } from "@/src/utils/constant/colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import {
   CircleDollarSign,
@@ -18,81 +22,102 @@ import {
   UserPlus,
 } from "lucide-react-native";
 import React from "react";
-import { View } from "react-native";
-import { Divider, List } from "react-native-paper";
+import { Appearance, View } from "react-native";
+import { Appbar, Divider, List } from "react-native-paper";
 export const AccountSetting = () => {
   const router = useRouter();
+  const { user } = useAppProvider();
+  const isDark = useIsDarkTheme();
+  const toggleTheme = () => {
+    if (isDark) {
+      Appearance.setColorScheme("light");
+    } else {
+      Appearance.setColorScheme("dark");
+    }
+  };
   return (
     <Scafold paddingVertical={0}>
       <View className="flex flex-col">
         {/* Account Settings Section */}
         <List.Section>
           <ListSubHeading>Account</ListSubHeading>
-          <ListItem
-            title="Edit Profile"
-            left={(props) => <UserCircle {...props} size={20} />}
-            onPress={() => {
-              router.navigate("/account/edit-profile");
-            }}
-          />
-          <ListItem
-            title="Change Password"
-            left={(props) => <KeyIcon {...props} size={20} />}
-            onPress={() => {
-              router.push("/account/change-password");
-            }}
-          />
-          <ListItem
-            title="Sign In"
-            left={(props) => <LogIn {...props} size={20} />}
-            onPress={() => {
-              router.push("/signin");
-            }}
-          />
-          <ListItem
-            title="Sign Up"
-            left={(props) => <UserPlus {...props} size={20} />}
-            onPress={() => {}}
-          />
+          {user?._id ? (
+            <>
+              <ListItem
+                title="Edit Profile"
+                left={(props) => <UserCircle {...props} size={20} />}
+                onPress={() => {
+                  router.navigate("/account/edit-profile");
+                }}
+              />
+              <ListItem
+                title="Change Password"
+                left={(props) => <KeyIcon {...props} size={20} />}
+                onPress={() => {
+                  router.push("/account/change-password");
+                }}
+              />
+            </>
+          ) : (
+            <>
+              <ListItem
+                title="Sign In"
+                left={(props) => <LogIn {...props} size={20} />}
+                onPress={() => {
+                  router.push("/signin");
+                }}
+              />
+              <ListItem
+                title="Sign Up"
+                left={(props) => <UserPlus {...props} size={20} />}
+                onPress={() => {}}
+              />
+            </>
+          )}
         </List.Section>
         <Divider />
-        <List.Section>
-          <ListSubHeading>Creator</ListSubHeading>
-          <ListItem
-            title="Create Poem"
-            left={(props) => <LucidePlus {...props} size={20} />}
-            onPress={() => {
-              router.navigate("/create-poem");
-            }}
-          />
-          <ListItem
-            title="Create Plyalist"
-            left={(props) => <LucideListPlus {...props} size={20} />}
-            onPress={() => {
-              router.navigate("/create-playlist");
-            }}
-          />
-        </List.Section>
-        <Divider />
+        {user?._id && (
+          <>
+            <List.Section>
+              <ListSubHeading>Creator</ListSubHeading>
+              <ListItem
+                title="Create Poem"
+                left={(props) => <LucidePlus {...props} size={20} />}
+                onPress={() => {
+                  router.navigate("/create-poem");
+                }}
+              />
+              <ListItem
+                title="Create Plyalist"
+                left={(props) => <LucideListPlus {...props} size={20} />}
+                onPress={() => {
+                  router.navigate("/create-playlist");
+                }}
+              />
+            </List.Section>
 
-        {/* Payment Section */}
-        <List.Section>
-          <ListSubHeading>Payment</ListSubHeading>
-          <ListItem
-            title="Payment Account"
-            left={(props) => <LucideCreditCard {...props} size={20} />}
-            onPress={() => {
-              router.navigate("/account/payment-account");
-            }}
-          />
-          <ListItem
-            title="Payment Details"
-            left={(props) => <CircleDollarSign {...props} size={20} />}
-            onPress={() => {}}
-          />
-        </List.Section>
+            <Divider />
 
-        <Divider />
+            {/* Payment Section */}
+            <List.Section>
+              <ListSubHeading>Payment</ListSubHeading>
+              <ListItem
+                title="Payment Account"
+                left={(props) => <LucideCreditCard {...props} size={20} />}
+                onPress={() => {
+                  router.navigate("/account/payment-account");
+                }}
+              />
+              <ListItem
+                title="Payment Details"
+                left={(props) => <CircleDollarSign {...props} size={20} />}
+                onPress={() => {}}
+              />
+            </List.Section>
+
+            <Divider />
+          </>
+        )}
 
         {/* Preferences Section */}
         <List.Section>
@@ -100,7 +125,17 @@ export const AccountSetting = () => {
           <ListItem
             title="Theme"
             left={(props) => <PaletteIcon {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              toggleTheme();
+            }}
+            right={(props) => (
+              <MaterialCommunityIcons
+                name={isDark ? "brightness-3" : "brightness-7"}
+                size={20}
+                {...props}
+                color={isDark ? Colors.dark.text : Colors.light.text}
+              />
+            )}
           />
         </List.Section>
 

@@ -7,18 +7,22 @@ import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import React from "react";
 import { Image, View } from "react-native";
-import { Avatar } from "react-native-paper";
+import { Avatar, Portal } from "react-native-paper";
 import { ActionMenu } from "../actionMenu";
 import VideoScreen from "../videoPlayer";
 import { PoemActions } from "./helper/poemActions";
 import { PoemBody } from "./helper/poemBody";
 import { RenderHashTag } from "./helper/poemHashTag";
 import { PoemType } from "./helper/poemType";
+import { CustomDailog } from "../modal/dailog";
+import { useDeletePoem } from "@/src/hooks/useRootHook";
 interface IPoemProps {
   poem: IAppPoem;
 }
 export const Poem: React.FC<IPoemProps> = ({ poem }) => {
+  const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
   const { user } = useAppProvider();
+  const deletePoem = useDeletePoem();
   const router = useRouter();
   const poemType: POEMTYPE = getPoemType({ ...poem });
   const actionItems = React.useMemo(() => {
@@ -60,7 +64,9 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
               className="dark:text-darkTextColor text-ligtTextColor"
             />
           ),
-          onPress: () => {},
+          onPress: () => {
+            setOpenDeleteModal(true);
+          },
         },
         {
           label: "Edit Poem",
@@ -79,83 +85,101 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
   }, [poem, user]);
 
   return (
-    <View className="flex flex-col p-4 px-5 gap-3 dark:bg-darker-100 bg-white/90">
-      <View className="flex flex-col gap-1">
-        <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
-          <Text
-            style={{
-              fontFamily: "garamond",
-              fontWeight: 800,
-            }}
-            className="text-[24px] garamond -tracking-[0.5px]  font-bold "
-            numberOfLines={2}
-          >
-            {poem.title}
-          </Text>
-        </Link>
-        <PoemType
-          isAudio={Boolean(poem?.audio)}
-          isVideo={Boolean(poem?.video)}
-        />
-      </View>
-      {poem.body && <PoemBody poem={poem} />}
-      {poem.hashTags && poem.hashTags.length && (
-        <RenderHashTag hashtags={poem.hashTags} />
-      )}
-      {poemType === POEMTYPE.image && poem.thumbnail && (
-        <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
-          <View className="max-h-[280px] w-full">
-            <Image
-              source={{
-                uri: poem.thumbnail,
+    <View>
+      <View className="flex flex-col p-4 px-5 gap-3 dark:bg-darker-100 bg-white/90">
+        <View className="flex flex-col gap-1">
+          <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
+            <Text
+              style={{
+                fontFamily: "garamond",
+                fontWeight: 800,
               }}
-              className="h-full w-full object-contain"
-            />
-          </View>
-        </Link>
-      )}
-      {poemType === POEMTYPE.video && poem.video && (
-        <VideoScreen url={poem.video} />
-      )}
-      <View className="flex flex-row gap-4 mt-2 justify-between items-center">
-        <View className="flex flex-row gap-2 flex-1">
-          <Link
-            href={`/user/${poem?.postedBy?._id}?slug=${poem?.postedBy?.slug}`}
-          >
-            {poem?.postedBy?.photo ? (
-              <Avatar.Image
-                size={40}
-                source={{ uri: poem?.postedBy?.photo }}
-                className="w-[40px] h-[40px] rounded-full border border-ui-border dark:border-ui-border/20"
-              />
-            ) : (
-              <Avatar.Text
-                size={40}
-                label={poem?.postedBy.name?.charAt(0) ?? ""}
-                labelStyle={{
-                  fontSize: 16,
-                  color: "white",
-                }}
-                className="dark:bg-black/50 bg-darkBackground "
-              />
-            )}
+              className="text-[24px] garamond -tracking-[0.5px]  font-bold "
+              numberOfLines={2}
+            >
+              {poem.title}
+            </Text>
           </Link>
-          <View className="flex flex-col">
+          <PoemType
+            isAudio={Boolean(poem?.audio)}
+            isVideo={Boolean(poem?.video)}
+          />
+        </View>
+        {poem.body && <PoemBody poem={poem} />}
+        {poem.hashTags && poem.hashTags.length && (
+          <RenderHashTag hashtags={poem.hashTags} />
+        )}
+        {poemType === POEMTYPE.image && poem.thumbnail && (
+          <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
+            <View className="max-h-[280px] w-full">
+              <Image
+                source={{
+                  uri: poem.thumbnail,
+                }}
+                className="h-full w-full object-contain"
+              />
+            </View>
+          </Link>
+        )}
+        {poemType === POEMTYPE.video && poem.video && (
+          <VideoScreen url={poem.video} />
+        )}
+        <View className="flex flex-row gap-4 mt-2 justify-between items-center">
+          <View className="flex flex-row gap-2 flex-1">
             <Link
               href={`/user/${poem?.postedBy?._id}?slug=${poem?.postedBy?.slug}`}
             >
-              <Text fontWeight={600} className="text-base font-bold">
-                {poem?.postedBy.name}
-              </Text>
+              {poem?.postedBy?.photo ? (
+                <Avatar.Image
+                  size={40}
+                  source={{ uri: poem?.postedBy?.photo }}
+                  className="w-[40px] h-[40px] rounded-full border border-ui-border dark:border-ui-border/20"
+                />
+              ) : (
+                <Avatar.Text
+                  size={40}
+                  label={poem?.postedBy.name?.charAt(0) ?? ""}
+                  labelStyle={{
+                    fontSize: 16,
+                    color: "white",
+                  }}
+                  className="dark:bg-black/50 bg-darkBackground "
+                />
+              )}
             </Link>
-            <Text className="text-sm text-gray-500">
-              {getCreatedDate(poem?.createdAt ?? "")}
-            </Text>
+            <View className="flex flex-col">
+              <Link
+                href={`/user/${poem?.postedBy?._id}?slug=${poem?.postedBy?.slug}`}
+              >
+                <Text fontWeight={600} className="text-base font-bold">
+                  {poem?.postedBy.name}
+                </Text>
+              </Link>
+              <Text className="text-sm text-gray-500">
+                {getCreatedDate(poem?.createdAt ?? "")}
+              </Text>
+            </View>
           </View>
+          <ActionMenu items={actionItems} />
         </View>
-        <ActionMenu items={actionItems} />
+        <PoemActions poem={poem} />
       </View>
-      <PoemActions poem={poem} />
+      {openDeleteModal && (
+        <CustomDailog
+          visible={openDeleteModal}
+          onClose={() => {
+            setOpenDeleteModal(false);
+          }}
+          onConfirm={() => {
+            deletePoem.mutate(poem._id);
+          }}
+          isLoading={deletePoem.isPending}
+          title="Are you sure you want to delete poem?"
+          content={
+            "This action cannot be undone. This will permanently delete the poem."
+          }
+        />
+      )}
     </View>
   );
 };
