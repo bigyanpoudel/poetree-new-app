@@ -4,7 +4,7 @@ import { IAppPoem, POEMTYPE } from "@/src/types";
 import { getPoemType } from "@/src/utils/poem";
 import { getCreatedDate } from "@/src/utils/poemDateFormat";
 import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import React from "react";
 import { Image, View } from "react-native";
 import { Avatar } from "react-native-paper";
@@ -19,6 +19,7 @@ interface IPoemProps {
 }
 export const Poem: React.FC<IPoemProps> = ({ poem }) => {
   const { user } = useAppProvider();
+  const router = useRouter();
   const poemType: POEMTYPE = getPoemType({ ...poem });
   const actionItems = React.useMemo(() => {
     let items = [
@@ -31,7 +32,9 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
             className="dark:text-darkTextColor text-ligtTextColor"
           />
         ),
-        onPress: () => {},
+        onPress: () => {
+          router.push(`/poem/${poem.slug}?name=${poem.title}`);
+        },
       },
       {
         label: "Report Poem",
@@ -78,10 +81,11 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
   return (
     <View className="flex flex-col p-4 px-5 gap-3 dark:bg-darker-100 bg-white/90">
       <View className="flex flex-col gap-1">
-        <Link href={`/poem/${poem.slug}`} asChild>
+        <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
           <Text
             style={{
               fontFamily: "garamond",
+              fontWeight: 800,
             }}
             className="text-[24px] garamond -tracking-[0.5px]  font-bold "
             numberOfLines={2}
@@ -99,14 +103,16 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
         <RenderHashTag hashtags={poem.hashTags} />
       )}
       {poemType === POEMTYPE.image && poem.thumbnail && (
-        <View className="max-h-[280px] w-full">
-          <Image
-            source={{
-              uri: poem.thumbnail,
-            }}
-            className="h-full w-full object-contain"
-          />
-        </View>
+        <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
+          <View className="max-h-[280px] w-full">
+            <Image
+              source={{
+                uri: poem.thumbnail,
+              }}
+              className="h-full w-full object-contain"
+            />
+          </View>
+        </Link>
       )}
       {poemType === POEMTYPE.video && poem.video && (
         <VideoScreen url={poem.video} />

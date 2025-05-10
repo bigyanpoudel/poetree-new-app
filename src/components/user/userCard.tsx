@@ -62,11 +62,11 @@ export const UserProfileCard: React.FC<IUserProfileCardProps> = ({ user }) => {
           <Link href={`/user/${user?._id}?slug=${user?.slug}`}>
             <Text
               className={
-                "text-lg m-0 p-0 max-w-[90%] text-text-300 dark:text-white font-medium"
+                "text-lg m-0 p-0 max-w-[90%] text-text-300 dark:text-white "
               }
               numberOfLines={2}
               ellipsizeMode="tail"
-              fontWeight={600}
+              fontWeight={700}
             >
               {user.name}
             </Text>

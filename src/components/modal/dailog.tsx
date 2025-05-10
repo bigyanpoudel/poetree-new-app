@@ -8,11 +8,17 @@ interface ICustomDailogProps {
   visible: boolean;
   onClose: () => void;
   content: String;
+  title?: string;
+  onConfirm: () => void;
+  isLoading?: boolean;
 }
 export const CustomDailog: React.FC<ICustomDailogProps> = ({
   content,
   visible,
   onClose,
+  title,
+  onConfirm,
+  isLoading,
 }) => {
   const isDark = useIsDarkTheme();
   return (
@@ -27,7 +33,7 @@ export const CustomDailog: React.FC<ICustomDailogProps> = ({
         onDismiss={onClose}
       >
         <Dialog.Title className="text-lg dark:text-darkTextColor text-ligtTextColor mb-1">
-          Alert
+          {title ?? "Are your sure?"}
         </Dialog.Title>
         <Dialog.Content>
           <Text className="text-base">{content}</Text>
@@ -41,8 +47,9 @@ export const CustomDailog: React.FC<ICustomDailogProps> = ({
             labelStyle={{
               color: "white",
             }}
+            loading={isLoading}
             className="min-w-[150px] bg-ui-error text-white"
-            onPress={onClose}
+            onPress={onConfirm}
           >
             Confim
           </Button>

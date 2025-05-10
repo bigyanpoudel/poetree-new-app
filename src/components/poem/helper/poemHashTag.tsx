@@ -27,7 +27,7 @@ export const HashtagButton = ({
       <Text className="dark:text-darkTextColor text-base font-medium text-ligtTextColor">
         #{title}
       </Text>
-      {icon}
+      {icon && icon}
     </TouchableOpacity>
   );
 };

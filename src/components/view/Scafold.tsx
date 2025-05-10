@@ -1,4 +1,10 @@
-import { ScrollView, useColorScheme, View, type ViewProps } from "react-native";
+import {
+  RefreshControlProps,
+  ScrollView,
+  useColorScheme,
+  View,
+  type ViewProps,
+} from "react-native";
 
 import { Colors } from "@/src/utils/constant/colors";
 
@@ -9,6 +15,8 @@ export type ScafoldProps = ViewProps & {
   paddingHorizontal?: number;
   paddingBottom?: number;
   isNormalView?: boolean;
+  scrollView?: ScrollView;
+  refreshControl?: React.ReactElement<RefreshControlProps>;
 };
 
 export function Scafold({
@@ -19,6 +27,8 @@ export function Scafold({
   paddingHorizontal,
   isNormalView = false,
   paddingBottom,
+  scrollView,
+  refreshControl,
   ...otherProps
 }: ScafoldProps) {
   const colorSchema = useColorScheme();
@@ -53,6 +63,8 @@ export function Scafold({
           : Colors.light.scafoldColor,
       }}
       nestedScrollEnabled={true}
+      keyboardShouldPersistTaps="handled"
+      refreshControl={refreshControl}
     >
       <View
         style={[

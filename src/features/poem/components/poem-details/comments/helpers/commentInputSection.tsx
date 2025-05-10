@@ -1,4 +1,5 @@
 import { InputField } from "@/src/components/form/input";
+import { useAddComments } from "@/src/features/poem/hooks/poemDetail";
 import { Obj } from "@/src/types";
 import { Colors } from "@/src/utils/constant/colors";
 import { Formik } from "formik";
@@ -14,14 +15,24 @@ const CommentSchema = Yup.object().shape({
     .required("Comment is required")
     .max(500, "Comment must be less than 500 characters"),
 });
-
-export const CommentInputSection = () => {
+interface ICommentInputSectionProps {
+  id: string;
+}
+export const CommentInputSection: React.FC<ICommentInputSectionProps> = ({
+  id,
+}) => {
   const colorSchema = useColorScheme();
-
   const isDark = colorSchema === "dark";
-
+  const addComment = useAddComments(id);
   // Handle Form Submission
-  const handleSubmit = (values: Obj, { resetForm }: any) => {
+  const handleSubmit = async (values: Obj, { resetForm }: any) => {
+    if (addComment.isPending) return;
+    await addComment.mutateAsync({
+      id: id,
+      body: {
+        text: values.comment,
+      },
+    });
     resetForm(); // Clear the form after submission
   };
 
@@ -60,6 +71,7 @@ export const CommentInputSection = () => {
               onPress={() => {
                 handleSubmit();
               }}
+              loading={addComment.isPending}
               color={isDark ? Colors.dark.text : Colors.light.text}
               icon="send"
             />

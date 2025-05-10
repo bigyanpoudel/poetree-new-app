@@ -2,11 +2,11 @@ import { ScreenLayout } from "@/src/components/layout";
 import { Colors } from "@/src/utils/constant/colors";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import React from "react";
-import { useColorScheme, View } from "react-native";
+import { useColorScheme } from "react-native";
 import { Searchbar } from "react-native-paper";
-import { SearchUserList } from "../component/users";
-import { SearchPoemList } from "../component/poems";
 import { SearchPaylist } from "../component/playlist";
+import { SearchPoemList } from "../component/poems";
+import { SearchUserList } from "../component/users";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -74,11 +74,8 @@ export const SearchScreen = () => {
       >
         <Tab.Screen
           name="Users"
-          children={SearchUserList}
+          children={() => <SearchUserList search={searchQuery} />}
           options={{
-            // tabBarIcon: ({ color }) => (
-            //   <IconSymbol name="house.fill" color={color} size={24} />
-            // ),
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally
               alignItems: "center",
@@ -94,12 +91,8 @@ export const SearchScreen = () => {
         />
         <Tab.Screen
           name="Poems"
-          children={SearchPoemList}
-          // component={HomeYourFeed}
+          children={() => <SearchPoemList search={searchQuery} />}
           options={{
-            // tabBarIcon: ({ color }) => (
-            //   <IconSymbol name="house.fill" color={color} size={24} />
-            // ),
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally
               alignItems: "center",
@@ -115,11 +108,8 @@ export const SearchScreen = () => {
         />
         <Tab.Screen
           name="Playlist"
-          children={SearchPaylist}
+          children={() => <SearchPaylist search={searchQuery} />}
           options={{
-            // tabBarIcon: ({ color }) => (
-            //   <IconSymbol name="person.fill" color={color} size={24} />
-            // ),
             tabBarLabelStyle: {
               fontFamily: "Poximanova",
             },

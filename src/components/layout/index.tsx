@@ -1,7 +1,12 @@
 import { Colors } from "@/src/utils/constant/colors";
 import { router } from "expo-router";
 import React from "react";
-import { useColorScheme, View } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  useColorScheme,
+  View,
+} from "react-native";
 import { Appbar } from "react-native-paper";
 import { Scafold, ScafoldProps } from "../view/Scafold";
 interface IScreenLayoutProps {
@@ -57,7 +62,13 @@ export const ScreenLayout: React.FC<IScreenLayoutProps> = ({
         />
         {appBar.action}
       </Appbar.Header>
-      <Scafold {...scafold}>{children}</Scafold>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={20} // Adjust based on your header height
+      >
+        <Scafold {...scafold}>{children}</Scafold>
+      </KeyboardAvoidingView>
     </View>
   );
 };

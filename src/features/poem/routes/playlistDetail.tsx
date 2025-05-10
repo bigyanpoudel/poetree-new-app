@@ -70,9 +70,9 @@ export const PlaylistDetail = () => {
       <PlaylistContent />
       <PlaylistDetailSection />
       <PlaylistSection />
-      <View className="mt-4 px-5 py-4 dark:bg-darker-100 bg-white flex flex-col flex-1">
+      {/* <View className="mt-4 px-5 py-4 dark:bg-darker-100 bg-white flex flex-col flex-1">
         <PoemCommentSections />
-      </View>
+      </View> */}
     </ScreenLayout>
   );
 };

@@ -4,6 +4,7 @@ import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { FlatList, View } from "react-native";
 import { useGetInfiniteUserPoems } from "../../hooks/user";
+import { EmptyState } from "@/src/components/state/emptyState";
 
 export const ListPeoms = () => {
   const { id } = useLocalSearchParams<{ id: string; slug: string }>();
@@ -35,18 +36,21 @@ export const ListPeoms = () => {
         }}
         contentContainerStyle={{ paddingVertical: 16 }}
         onEndReachedThreshold={0.5}
+        ItemSeparatorComponent={() => <View className="h-5" />}
         ListEmptyComponent={
           isLoading ? (
-            <View className="gap-4 px-5">
+            <View className="gap-4">
               {[...Array(3)].map((_, i) => (
                 <PoemShimmer key={i} />
               ))}
             </View>
-          ) : null
+          ) : (
+            <EmptyState />
+          )
         }
         ListFooterComponent={
           isFetchingNextPage ? (
-            <View className="gap-4 px-5 mt-2">
+            <View className="gap-4 mt-2">
               {[...Array(2)].map((_, i) => (
                 <PoemShimmer key={i} />
               ))}

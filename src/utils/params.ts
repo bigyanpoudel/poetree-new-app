@@ -13,3 +13,4 @@ export const generateUrlWithParams = (baseUrl: string, params: Obj) => {
 
   return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 };
+

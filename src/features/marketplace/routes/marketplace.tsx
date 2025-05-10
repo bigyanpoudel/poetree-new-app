@@ -9,8 +9,8 @@ export const MarketplacePage = () => {
   return (
     <Scafold paddingHorizontal={0}>
       <View className="flex flex-col gap-6 pb-20">
-        <LatestSection />
-        <TrendingSection />
+        {/* <LatestSection />
+        <TrendingSection /> */}
       </View>
     </Scafold>
   );
