@@ -11,7 +11,7 @@ interface IPoemActionsProps {
 export const PoemActions: React.FC<IPoemActionsProps> = ({ poem }) => {
   return (
     <View className="flex flex-row gap-3 items-center justify-between">
-      <LikeActionMenu poemCount={poem.likeCount} onHandleReaction={() => {}} />
+      <LikeActionMenu poem={poem} poemCount={poem.likeCount} />
       <View className="flex flex-row gap-2 items-center">
         <Feather
           name="message-square"

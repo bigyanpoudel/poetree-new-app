@@ -36,7 +36,7 @@ export const ListPeoms = () => {
         }}
         contentContainerStyle={{ paddingVertical: 16 }}
         onEndReachedThreshold={0.5}
-        ItemSeparatorComponent={() => <View className="h-5" />}
+        ItemSeparatorComponent={() => <View className="h-2" />}
         ListEmptyComponent={
           isLoading ? (
             <View className="gap-4">
