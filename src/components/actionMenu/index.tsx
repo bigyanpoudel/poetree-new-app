@@ -45,7 +45,10 @@ export const ActionMenu: React.FC<IActionMenuProps> = ({
         return (
           <React.Fragment key={item.label}>
             <Menu.Item
-              onPress={item.onPress}
+              onPress={() => {
+                closeMenu();
+                item.onPress();
+              }}
               leadingIcon={() => item.leadingIcon}
               titleStyle={{
                 fontSize: 16,

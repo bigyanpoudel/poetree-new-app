@@ -10,9 +10,14 @@ import { Image, TouchableOpacity, View } from "react-native";
 interface IUploaderProps {
   name: string;
   label?: string;
+  deafultFile?: string;
 }
 
-export const FileUploader: React.FC<IUploaderProps> = ({ name, label }) => {
+export const FileUploader: React.FC<IUploaderProps> = ({
+  name,
+  label,
+  deafultFile,
+}) => {
   const [postTypeField] = useField("postType");
   const [field, meta, helpers] = useField(name);
   const [file, setFile] = useState<any>(null);
@@ -48,6 +53,20 @@ export const FileUploader: React.FC<IUploaderProps> = ({ name, label }) => {
   }, [field.value]);
 
   const renderFilePreview = () => {
+    if (deafultFile && !file) {
+      if (postType === "text") {
+        return (
+          <Image
+            source={{ uri: deafultFile }}
+            style={{ width: "100%", height: 200 }}
+          />
+        );
+      } else if (postType === "video") {
+        return <VideoScreen url={deafultFile as string} />;
+      } else if (postType === "audio") {
+        return <AudioPlayer uri={deafultFile} />;
+      }
+    }
     if (!file) return null;
     const { uri, name, mimeType: type } = file;
     console.log("uri video", uri, type);

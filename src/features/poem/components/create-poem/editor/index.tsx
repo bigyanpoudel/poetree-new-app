@@ -21,6 +21,7 @@ interface TentapEditorFieldProps {
   name: string;
   label?: string;
   height?: number;
+  deafultvalue?: string;
 }
 const customTextCSS = (isDark: boolean) => `
   body {
@@ -38,13 +39,14 @@ export const TentapEditorField: React.FC<TentapEditorFieldProps> = ({
   name,
   label,
   height = 300,
+  deafultvalue,
 }) => {
   const [field, meta, helpers] = useField(name);
   const isDark = useIsDarkTheme();
   const editor = useEditorBridge({
     avoidIosKeyboard: true,
     editable: true,
-    initialContent: field.value ?? "",
+    initialContent: field.value ?? deafultvalue ?? "",
     bridgeExtensions: [
       ...TenTapStartKit,
       CodeBridge.configureCSS(customTextCSS(isDark)),
@@ -62,7 +64,10 @@ export const TentapEditorField: React.FC<TentapEditorFieldProps> = ({
     if (!field.value) {
       editor.setContent("");
     }
-  }, [field.value]);
+    if (deafultvalue) {
+      editor.setContent(deafultvalue ?? "");
+    }
+  }, [field.value, deafultvalue]);
 
   return (
     <View className="flex flex-col gap-2">

@@ -2,23 +2,31 @@ import { Button } from "@/src/components";
 import { InputField } from "@/src/components/form/input";
 import { SwitchField } from "@/src/components/form/swtich";
 import { ScreenLayout } from "@/src/components/layout";
+import { PostVisibilitTypeEnum } from "@/src/types";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Formik, FormikHelpers } from "formik";
 import React from "react";
-import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import { View } from "react-native";
 import * as Yup from "yup";
 import { TentapEditorField } from "../components/create-poem/editor";
 import { TagInputField } from "../components/create-poem/form/poemtags";
 import { PoemType } from "../components/create-poem/form/poemType";
 import { FileUploader } from "../components/create-poem/form/uploader";
 import { useCreatePoem, useUpdatePoem } from "../hooks/addPoem";
+import { useGetPoemDetails } from "../hooks/poemDetail";
 const validationSchema = Yup.object().shape({
   title: Yup.string().required("Poem title is required"),
   body: Yup.string().required("Poem content is required"),
 });
 export const CreatePoem = () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data } = useGetPoemDetails(id);
+  console.log("data", data);
   const createPoem = useCreatePoem();
   const updatePoem = useUpdatePoem();
+  const router = useRouter();
   const handleSubmit = async (values: any, formHelper: FormikHelpers<any>) => {
+    console.log("values -->", values);
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("body", values.body);
@@ -45,41 +53,39 @@ export const CreatePoem = () => {
         formData.append("video", file);
       }
     }
-    const res = await createPoem.mutateAsync(formData);
-    if (res) {
-      formHelper.resetForm();
+    if (!id) {
+      console.log("create -->");
+      const res = await createPoem.mutateAsync(formData);
+      if (res) {
+        formHelper.resetForm();
+      }
+    } else {
+      console.log("update -->");
+      const res = await updatePoem.mutateAsync({
+        id: data?._id as string,
+        body: formData,
+      });
+      router.push(`/poem/${data?.slug}?name=${values?.title}`);
     }
-    // if (!poem?._id) {
-
-    // } else {
-    //   const res = await updatePoem.mutateAsync({
-    //     id: poem?._id,item
-    //     body: formData,
-    //   });
-    //   if (res) {
-    //     router.push(APPROUTES.poemDetails.replaceAll(":id", poem.slug));
-    //   }
-    // }
-    console.log("values-->", values);
   };
   return (
     <ScreenLayout
       appBar={{
-        title: "Create Poem",
+        title: id ? "Update Poem" : "Create Poem",
       }}
     >
       <Formik
         initialValues={{
-          title: "",
-          body: "",
-          postType: "text",
-          availability: false,
-          tags: [],
+          title: data?.title ?? "",
+          body: data?.body ?? "",
+          postType: data?.audio ? "audio" : data?.video ? "video" : "text",
+          availability: data?.visibility === PostVisibilitTypeEnum.paid,
+          tags: data?.hashTags.map((item) => item.name) ?? [],
           tag: "",
           file: null,
         }}
         enableReinitialize
-        // validationSchema={validationSchema}
+        validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
         {({ handleSubmit }) => (
@@ -91,7 +97,11 @@ export const CreatePoem = () => {
               label={"Title"}
               placeholder={"Enter poem title"}
             />
-            <TentapEditorField label="Poem Content" name={"body"} />
+            <TentapEditorField
+              deafultvalue={data?.body}
+              label="Poem Content"
+              name={"body"}
+            />
             <TagInputField
               name="tag"
               label="Tags"
@@ -103,10 +113,14 @@ export const CreatePoem = () => {
               name="availability"
               label="Availability"
             />
-            <FileUploader label={"Select Poem File"} name="file" />
+            <FileUploader
+              deafultFile={data?.thumbnail ?? data?.audio ?? data?.video}
+              label={"Select Poem File"}
+              name="file"
+            />
 
             <Button
-              loading={createPoem.isPending}
+              loading={createPoem.isPending || updatePoem.isPending}
               mode="contained"
               contentStyle={{
                 height: 48,
@@ -120,7 +134,7 @@ export const CreatePoem = () => {
                 handleSubmit();
               }}
             >
-              Save Poem
+              {id ? "Update Poem" : "Save Poem"}
             </Button>
           </View>
         )}

@@ -77,7 +77,9 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
               className="dark:text-darkTextColor text-ligtTextColor"
             />
           ),
-          onPress: () => {},
+          onPress: () => {
+            router.push(`/create-poem?id=${poem._id}`);
+          },
         },
       ];
     }
