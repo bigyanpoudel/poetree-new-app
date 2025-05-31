@@ -7,13 +7,22 @@ import { Searchbar } from "react-native-paper";
 import { SearchPaylist } from "../component/playlist";
 import { SearchPoemList } from "../component/poems";
 import { SearchUserList } from "../component/users";
+import { useLocalSearchParams } from "expo-router";
 
 const Tab = createMaterialTopTabNavigator();
 
 export const SearchScreen = () => {
-  const [searchQuery, setSearchQuery] = React.useState("");
+  const { query } = useLocalSearchParams<{ query?: string }>();
+  const [searchQuery, setSearchQuery] = React.useState(query || "");
   const colorScheme = useColorScheme();
   const isDark = colorScheme == "dark";
+
+  // Update search query when URL parameter changes
+  React.useEffect(() => {
+    if (query) {
+      setSearchQuery(query);
+    }
+  }, [query]);
   return (
     <ScreenLayout
       scafold={{

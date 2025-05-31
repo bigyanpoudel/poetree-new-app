@@ -3,6 +3,7 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, View } from "react-native";
 import { Text } from "@/src/components/text";
 import classNames from "classnames";
+import { useRouter } from "expo-router";
 export const HashtagButton = ({
   title,
   onPress,
@@ -61,10 +62,20 @@ const styles = StyleSheet.create({
 
 // Example usage
 export const RenderHashTag = ({ hashtags }: { hashtags: IPoemHasTag[] }) => {
+  const router = useRouter();
+
+  const handleHashtagPress = (hashtagName: string) => {
+    router.push(`/search?query=${encodeURIComponent(`#${hashtagName}`)}`);
+  };
+
   return (
     <View className="flex my-2 flex-row gap-2 gap-y-4 flex-wrap">
       {hashtags.map((item) => (
-        <HashtagButton key={item._id} title={item.name} />
+        <HashtagButton 
+          key={item._id} 
+          title={item.name} 
+          onPress={() => handleHashtagPress(item.name)}
+        />
       ))}
     </View>
   );
