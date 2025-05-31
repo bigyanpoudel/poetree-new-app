@@ -53,7 +53,7 @@ export const HomeYourFeed = () => {
           isLoading ? (
             <View className="gap-4">
               {[...Array(3)].map((_, i) => (
-                <PoemShimmer key={i} />
+                <PoemShimmer key={i + "p"} />
               ))}
             </View>
           ) : (
@@ -64,7 +64,7 @@ export const HomeYourFeed = () => {
           isFetchingNextPage ? (
             <View className="gap-4  mt-2">
               {[...Array(2)].map((_, i) => (
-                <PoemShimmer key={i} />
+                <PoemShimmer key={i + "p2"} />
               ))}
             </View>
           ) : null

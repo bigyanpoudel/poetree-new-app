@@ -61,7 +61,13 @@ const styles = StyleSheet.create({
 });
 
 // Example usage
-export const RenderHashTag = ({ hashtags }: { hashtags: IPoemHasTag[] }) => {
+export const RenderHashTag = ({
+  hashtags,
+  title,
+}: {
+  hashtags: IPoemHasTag[];
+  title: string;
+}) => {
   const router = useRouter();
 
   const handleHashtagPress = (hashtagName: string) => {
@@ -70,10 +76,10 @@ export const RenderHashTag = ({ hashtags }: { hashtags: IPoemHasTag[] }) => {
 
   return (
     <View className="flex my-2 flex-row gap-2 gap-y-4 flex-wrap">
-      {hashtags.map((item) => (
-        <HashtagButton 
-          key={item._id} 
-          title={item.name} 
+      {hashtags.map((item, index) => (
+        <HashtagButton
+          key={item._id + `${index} - ${title}`}
+          title={item.name}
           onPress={() => handleHashtagPress(item.name)}
         />
       ))}

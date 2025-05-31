@@ -1,8 +1,8 @@
 import { Colors } from "@/src/utils/constant/colors";
-import { AntDesign, Feather } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 import * as React from "react";
 import { useColorScheme } from "react-native";
-import { Button, Divider, IconButton, Menu } from "react-native-paper";
+import { Divider, Menu } from "react-native-paper";
 interface IActionMenuProps {
   items: {
     label: string;
@@ -43,7 +43,7 @@ export const ActionMenu: React.FC<IActionMenuProps> = ({
       {items.map((item, index) => {
         const isLast = index === items.length - 1;
         return (
-          <React.Fragment key={item.label}>
+          <React.Fragment key={item.label + index + "actionMenu"}>
             <Menu.Item
               onPress={() => {
                 closeMenu();

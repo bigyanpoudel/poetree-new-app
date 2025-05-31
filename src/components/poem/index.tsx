@@ -108,8 +108,8 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
           />
         </View>
         {poem.body && <PoemBody poem={poem} />}
-        {poem.hashTags && poem.hashTags.length && (
-          <RenderHashTag hashtags={poem.hashTags} />
+        {poem.hashTags && poem.hashTags.length > 0 && (
+          <RenderHashTag hashtags={poem.hashTags} title={poem?._id ?? ""} />
         )}
         {poemType === POEMTYPE.image && poem.thumbnail && (
           <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>

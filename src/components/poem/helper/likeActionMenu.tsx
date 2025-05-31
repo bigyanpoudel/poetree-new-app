@@ -104,6 +104,7 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) 
         {Object.entries(REACTION_IMAGE).map(([key, value]) => {
           return (
             <TouchableOpacity
+              key={key}
               onPress={() => {
                 closeMenu();
                 onHandleReaction(key);
