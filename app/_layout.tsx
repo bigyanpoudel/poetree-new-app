@@ -12,7 +12,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import "react-native-reanimated";
 import ToastManager from "toastify-react-native";
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -51,7 +51,30 @@ const AppBootStrap = () => {
   }, [loaded, isUserLoaded]);
 
   if (!loaded) {
-    return null;
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: isDark
+            ? Colors.dark.scafoldColor
+            : Colors.light.scafoldColor,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
+        <Image 
+          source={isDark 
+            ? require('../assets/images/poetree_logo_white.png') 
+            : require('../assets/images/poetree_logo.png')
+          }
+          style={{ 
+            width: 200, 
+            height: 200,
+            resizeMode: 'contain'
+          }}
+        />
+      </View>
+    );
   }
 
   return (
@@ -83,7 +106,60 @@ const AppBootStrap = () => {
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
-        <ToastManager />
+        <ToastManager 
+          theme={isDark ? 'dark' : 'light'}
+          textStyle={{
+            fontSize: 16,
+            fontFamily: 'Poximanova',
+            fontWeight: '500',
+          }}
+          style={{
+            success: {
+              backgroundColor: isDark ? '#065f46' : '#10b981',
+              borderRadius: 8,
+              marginHorizontal: 16,
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              shadowOpacity: isDark ? 0 : 0.2,
+              shadowOffset: { width: 0, height: 2 },
+              shadowRadius: isDark ? 0 : 4,
+              elevation: isDark ? 0 : 4,
+            },
+            error: {
+              backgroundColor: isDark ? '#7f1d1d' : '#ef4444',
+              borderRadius: 8,
+              marginHorizontal: 16,
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              shadowOpacity: isDark ? 0 : 0.2,
+              shadowOffset: { width: 0, height: 2 },
+              shadowRadius: isDark ? 0 : 4,
+              elevation: isDark ? 0 : 4,
+            },
+            warning: {
+              backgroundColor: isDark ? '#78350f' : '#f59e0b',
+              borderRadius: 8,
+              marginHorizontal: 16,
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              shadowOpacity: isDark ? 0 : 0.2,
+              shadowOffset: { width: 0, height: 2 },
+              shadowRadius: isDark ? 0 : 4,
+              elevation: isDark ? 0 : 4,
+            },
+            info: {
+              backgroundColor: isDark ? '#1e3a8a' : '#3b82f6',
+              borderRadius: 8,
+              marginHorizontal: 16,
+              paddingVertical: 12,
+              paddingHorizontal: 16,
+              shadowOpacity: isDark ? 0 : 0.2,
+              shadowOffset: { width: 0, height: 2 },
+              shadowRadius: isDark ? 0 : 4,
+              elevation: isDark ? 0 : 4,
+            },
+          }}
+        />
       </View>
     </PaperProvider>
   );

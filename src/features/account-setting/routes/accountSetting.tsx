@@ -189,14 +189,18 @@ export const AccountSetting = () => {
             }}
           />
         </List.Section>
-        <Divider />
-        <List.Section>
-          <ListItem
-            title="Logout"
-            left={(props) => <List.Icon {...props} icon="logout" />}
-            onPress={() => console.log("Logout pressed")}
-          />
-        </List.Section>
+        {user?._id && (
+          <>
+            <Divider />
+            <List.Section>
+              <ListItem
+                title="Logout"
+                left={(props) => <List.Icon {...props} icon="logout" />}
+                onPress={() => console.log("Logout pressed")}
+              />
+            </List.Section>
+          </>
+        )}
       </View>
     </Scafold>
   );
