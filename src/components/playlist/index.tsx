@@ -1,6 +1,7 @@
+import { useAppProvider } from "@/src/provider/appProvider";
 import { IAppPlayList } from "@/src/types";
 import { getAccountFormatter } from "@/src/utils/currency";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { ArrowUpRight, Edit } from "lucide-react-native"; // For icons
 import React from "react";
 import { Image, StyleProp, View, ViewStyle } from "react-native";
@@ -14,10 +15,11 @@ export const PlaylistCard: React.FC<IPlaylistCardProps> = ({
   style = {},
   playlist,
 }) => {
+  const { user } = useAppProvider();
   const router = useRouter();
   return (
     <View
-      className="border-ui-border dark:border-ui-border/20 rounded-lg bg-white dark:bg-darker-100"
+      className="border-ui-border h-[220px] dark:border-ui-border/20 rounded-lg bg-white dark:bg-darker-100"
       style={[
         {
           width: 260,
@@ -47,7 +49,7 @@ export const PlaylistCard: React.FC<IPlaylistCardProps> = ({
       </View>
 
       {/* Card Content */}
-      <View className={"px-4 py-3 flex flex-col gap-1 flex-1"}>
+      <View className={"px-4 py-3 flex flex-col justify-between gap-1 flex-1"}>
         {/* Title and Date */}
         <View className={"flex flex-col"}>
           {/* {playlist?.createdAt && (
@@ -76,18 +78,22 @@ export const PlaylistCard: React.FC<IPlaylistCardProps> = ({
           </Text>
 
           {/* Edit Button (Visible only to the owner) */}
-          <View className="flex flex-row gap-0">
-            <IconButton
-              icon={(props) => <Edit {...props} size={18} />}
-              mode="contained"
-            />
-            <IconButton
-              onPress={() => {
-                router.navigate("/playlist/1231");
-              }}
-              icon={(props) => <ArrowUpRight {...props} size={18} />}
-              mode="contained"
-            />
+          <View className="flex flex-row items-center justify-end gap-0">
+            {user?._id && playlist?.createdBy?._id === user._id && (
+              <IconButton
+                icon={(props) => <Edit {...props} size={18} />}
+                mode="contained"
+                onPress={() => {
+                  router.push(`/create-playlist?id=${playlist?._id}`);
+                }}
+              />
+            )}
+            <Link href={`/playlist/${playlist._id}?name=${playlist.title}`}>
+              <IconButton
+                icon={(props) => <ArrowUpRight {...props} size={18} />}
+                mode="contained"
+              />
+            </Link>
           </View>
         </View>
       </View>

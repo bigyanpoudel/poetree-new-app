@@ -59,7 +59,7 @@ return (
               }`}
               style={{
                 fontFamily:
-                  activeTab === tab ? "Poximanova700" : "Poximanova600",
+                  activeTab === tab ? "Poximanova700" : "Poximanova500",
               }}
             >
               {tab}

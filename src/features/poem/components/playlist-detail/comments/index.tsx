@@ -1,13 +1,16 @@
-import { Poem } from "@/src/components/poem";
-import { PoemShimmer } from "@/src/components/poem/poem.shimmer";
-import { EmptyState } from "@/src/components/state/emptyState";
-import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
-import { Colors } from "@/src/utils/constant/colors";
+import { Text } from "@/src/components";
+import { UserProfileCardShimmer } from "@/src/components/user/userCard.shimmer";
+import { useAppProvider } from "@/src/provider/appProvider";
 import React from "react";
 import { FlatList, View } from "react-native";
-import { useGetInfinitePost } from "../hooks/home";
-
-export const HomePoems = () => {
+import { useGetInfinitePlaylistComments } from "../../../hooks/palylistDetails";
+import { CommentInputSection } from "./helpers/commentInputSection";
+import { CommentItem } from "./helpers/commentItem";
+interface IPoemCommentSections {
+  id: string;
+}
+export const PlaylistCommentSections: React.FC<IPoemCommentSections> = ({ id }) => {
+  const { user } = useAppProvider();
   const {
     data,
     fetchNextPage,
@@ -16,27 +19,23 @@ export const HomePoems = () => {
     isLoading,
     refetch,
     isRefetching,
-  } = useGetInfinitePost();
-  const isDarked = useIsDarkTheme();
-  const poems = data?.pages.flatMap((page: any) => page?.data) || [];
+  } = useGetInfinitePlaylistComments({ id });
+  const comments = data?.pages.flatMap((page: any) => page?.data) || [];
   const handleRefresh = React.useCallback(() => {
-    refetch(); // this will trigger a refresh of the data
+    refetch();
   }, [refetch]);
+  console.log("comments", comments);
   return (
-    <View
-      className="flex flex-1 pb-20"
-      style={{
-        flex: 1,
-        backgroundColor: isDarked
-          ? Colors.dark.scafoldColor
-          : Colors.light.scafoldColor,
-      }}
-    >
+    <View className="flex flex-col flex-1 gap-4">
+      <Text fontWeight={600} className={"text-lg "}>
+        Comments
+      </Text>
+      {user?._id && <CommentInputSection id={id} />}
       <FlatList
-        data={poems}
+        data={comments}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
-          return <Poem poem={item} key={item._id} />;
+          return <CommentItem poemId={id} comment={item} key={item._id} />;
         }}
         onEndReached={() => {
           if (hasNextPage && !isFetchingNextPage) {
@@ -52,18 +51,16 @@ export const HomePoems = () => {
           isLoading ? (
             <View className="gap-4">
               {[...Array(3)].map((_, i) => (
-                <PoemShimmer key={i} />
+                <UserProfileCardShimmer key={i +'loading'} />
               ))}
             </View>
-          ) : (
-            <EmptyState />
-          )
+          ) : null
         }
         ListFooterComponent={
           isFetchingNextPage ? (
             <View className="gap-4 mt-2">
               {[...Array(2)].map((_, i) => (
-                <PoemShimmer key={i} />
+                <UserProfileCardShimmer key={i + 'loading'} />
               ))}
             </View>
           ) : null

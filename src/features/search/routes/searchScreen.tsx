@@ -26,7 +26,6 @@ export const SearchScreen = () => {
         title: "Search",
         action: (
           <Searchbar
-            autoFocus
             inputStyle={{
               fontSize: 14,
               margin: 0,

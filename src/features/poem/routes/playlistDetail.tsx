@@ -5,7 +5,8 @@ import { IAppPoem } from "@/src/types";
 import { Feather } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { RefreshControl } from "react-native";
+import { RefreshControl, View } from "react-native";
+import { PlaylistCommentSections } from "../components/playlist-detail/comments";
 import { PlaylistContent } from "../components/playlist-detail/playlistContent";
 import { PlaylistDetailSection } from "../components/playlist-detail/playlistDetailSection";
 import { PlayListTabs } from "../components/playlist-detail/playlistTabs";
@@ -25,12 +26,7 @@ export const PlaylistDetail = () => {
     }
   }, [data?.poems]);
 
-  const handleActivePoem = (poem: IAppPoem, index: number) => {
-    setActivePoem(poem);
-    setActiveIndex(index);
-  };
   const handlePoemChange = (index: number) => {
-    console.log("index", index);
     const oldPoems = data?.poems ?? [];
     const poems = [...oldPoems];
     const activePoem = poems[index - 1];
@@ -93,14 +89,21 @@ export const PlaylistDetail = () => {
             activeTab={activeIndex}
           />
           {activePoem && (
-            <PlaylistContent poem={activePoem} number={activeIndex} />
+            <PlaylistContent
+              isLocked={data?.isLocked}
+              poem={activePoem}
+              price={data?.price}
+              number={activeIndex}
+              playlist={data}
+            />
           )}
+
           <PlaylistDetailSection playlist={data} />
+          <View className="mt-4 px-5 py-4 dark:bg-darker-100 bg-white flex flex-col flex-1">
+            <PlaylistCommentSections id={data?._id as string} />
+          </View>
         </>
       )}
-      {/* <View className="mt-4 px-5 py-4 dark:bg-darker-100 bg-white flex flex-col flex-1">
-        <PoemCommentSections />
-      </View> */}
     </ScreenLayout>
   );
 };

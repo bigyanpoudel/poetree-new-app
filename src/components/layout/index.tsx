@@ -1,15 +1,10 @@
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 import { Colors } from "@/src/utils/constant/colors";
 import { router } from "expo-router";
 import React from "react";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  useColorScheme,
-  View,
-} from "react-native";
+import { View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { Scafold, ScafoldProps } from "../view/Scafold";
-import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 interface IScreenLayoutProps {
   appBar: {
     title: string;
@@ -62,13 +57,7 @@ export const ScreenLayout: React.FC<IScreenLayoutProps> = ({
         />
         {appBar.action}
       </Appbar.Header>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={20} // Adjust based on your header height
-      >
-        <Scafold {...scafold}>{children}</Scafold>
-      </KeyboardAvoidingView>
+      <Scafold {...scafold}>{children}</Scafold>
     </View>
   );
 };

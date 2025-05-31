@@ -11,7 +11,7 @@ export const TrendingSection = () => {
   const { width } = useWindowDimensions();
   return (
     <View className="flex flex-col gap-4">
-      <SectionHeading title="Latest Playlist" />
+      <SectionHeading title="Trending Playlist" />
       <FlatList
         data={trending.data?.data}
         renderItem={({ item }) => <PlaylistCard playlist={item} />}

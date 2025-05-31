@@ -1,22 +1,28 @@
-import { Button, Text } from "@/src/components";
+import { Text } from "@/src/components";
 import { IAppPlayList } from "@/src/types";
 import { getCreatedDate } from "@/src/utils/poemDateFormat";
 import { Link } from "expo-router";
 import React from "react";
 import { View } from "react-native";
 import { Avatar } from "react-native-paper";
+import { PlaylistActions } from "./poemActions";
+import { usePurchasePlaylist } from "../../hooks/palylistDetails";
 interface IPlaylistDetailSectionProps {
   playlist?: IAppPlayList;
 }
 export const PlaylistDetailSection: React.FC<IPlaylistDetailSectionProps> = ({
   playlist,
 }) => {
+  const purchasePlaylist = usePurchasePlaylist();
   return (
     <View className="px-5 mt-4 flex flex-col gap-3 dark:bg-darker-100 bg-white py-3">
-      <View className="flex flex-col gap-3">
-        <Text fontWeight={600} className="text-2xl">
-          {playlist?.title}
-        </Text>
+      <View className="flex flex-col gap-8">
+        <View className="flex flex-col gap-5">
+          <Text fontWeight={600} className="text-2xl">
+            {playlist?.title}
+          </Text>
+          {playlist && <PlaylistActions poem={playlist} />}
+        </View>
         <View className="flex flex-row gap-3 justify-between items-center">
           <View className="flex flex-row gap-3 items-center">
             <Link
@@ -49,10 +55,8 @@ export const PlaylistDetailSection: React.FC<IPlaylistDetailSectionProps> = ({
               </Text>
             </View>
           </View>
-          <Button mode="contained">Follow</Button>
         </View>
       </View>
-      {/* <PoemActions /> */}
     </View>
   );
 };

@@ -111,9 +111,6 @@ export const HorizontalPlaylist: React.FC<IPlaylistCardProps> = ({
           )}
           <Link href={`/playlist/${playlist._id}?name=${playlist.title}`}>
             <IconButton
-              onPress={() => {
-                router.navigate("/playlist/1231");
-              }}
               icon={(props) => <ArrowUpRight {...props} size={18} />}
               mode="contained"
             />

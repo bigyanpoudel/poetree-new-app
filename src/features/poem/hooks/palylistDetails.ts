@@ -16,8 +16,9 @@ import {
   puchasePlaylistApi,
 } from "../api/playlistDetails";
 import { query } from "../constant/query";
+import { Linking } from "react-native";
 
-export const useGetPlaylistDetails = (id:string) => {
+export const useGetPlaylistDetails = (id: string) => {
   return useQuery({
     queryKey: [query.getPlaylistDetails, id],
     queryFn: () => getPlaylistDetailApi(id as string),
@@ -76,8 +77,11 @@ export const usePurchasePlaylist = () => {
   return useMutation({
     mutationFn: puchasePlaylistApi,
     onSuccess: (data: any) => {
+      console.log("Purchase Playlist Success", data);
       if (data.puhcaseUrl) {
-        window.open(data.puhcaseUrl);
+        Linking.openURL(data.puhcaseUrl).catch((err) =>
+          console.error("Failed to open URL:", err)
+        );
       }
     },
   });

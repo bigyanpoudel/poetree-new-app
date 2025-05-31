@@ -1,12 +1,12 @@
-import { Scafold } from "@/src/components/";
 import { Poem } from "@/src/components/poem";
 import React from "react";
 import { FlatList, View } from "react-native";
 
 import { PoemShimmer } from "@/src/components/poem/poem.shimmer";
-import { useGetInfiniteUserFeedPost } from "../hooks/home";
-import { SearchEmptyState } from "@/src/components/state/searchEmptyState";
 import { EmptyState } from "@/src/components/state/emptyState";
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { Colors } from "@/src/utils/constant/colors";
+import { useGetInfiniteUserFeedPost } from "../hooks/home";
 
 export const HomeYourFeed = () => {
   const {
@@ -18,12 +18,21 @@ export const HomeYourFeed = () => {
     refetch,
     isRefetching,
   } = useGetInfiniteUserFeedPost();
+  const isDarked = useIsDarkTheme();
   const poems = data?.pages.flatMap((page: any) => page?.data) || [];
   const handleRefresh = React.useCallback(() => {
     refetch(); // this will trigger a refresh of the data
   }, [refetch]);
   return (
-    <Scafold isNormalView paddingVertical={0} paddingHorizontal={0}>
+    <View
+      className="flex flex-1 pb-20"
+      style={{
+        flex: 1,
+        backgroundColor: isDarked
+          ? Colors.dark.scafoldColor
+          : Colors.light.scafoldColor,
+      }}
+    >
       <FlatList
         data={poems}
         keyExtractor={(item) => item._id}
@@ -61,6 +70,6 @@ export const HomeYourFeed = () => {
           ) : null
         }
       />
-    </Scafold>
+    </View>
   );
 };
