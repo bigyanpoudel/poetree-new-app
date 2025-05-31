@@ -149,12 +149,16 @@ export const AccountSetting = () => {
           <ListItem
             title="Terms and Conditions"
             left={(props) => <Shield {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/terms-and-conditions");
+            }}
           />
           <ListItem
             title="Privacy Policy"
             left={(props) => <Globe {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/privacy-policy");
+            }}
           />
         </List.Section>
 
@@ -166,17 +170,23 @@ export const AccountSetting = () => {
           <ListItem
             title="Support"
             left={(props) => <HelpCircle {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/support");
+            }}
           />
           <ListItem
             title="About Us"
             left={(props) => <Info {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/about-us");
+            }}
           />
           <ListItem
             title="Contact Us"
             left={(props) => <Mail {...props} size={20} />}
-            onPress={() => {}}
+            onPress={() => {
+              router.push("/contact-us");
+            }}
           />
         </List.Section>
         <Divider />
