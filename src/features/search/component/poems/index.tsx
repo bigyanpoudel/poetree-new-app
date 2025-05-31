@@ -34,7 +34,7 @@ export const SearchPoemList: React.FC<ISearchPoemListProps> = ({ search }) => {
         backgroundColor: isDarked
           ? Colors.dark.scafoldColor
           : Colors.light.scafoldColor,
-        paddingBottom: 20,
+        paddingBottom: 40,
       }}
       data={poems}
       keyExtractor={(item) => item._id}

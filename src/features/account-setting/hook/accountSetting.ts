@@ -1,9 +1,13 @@
 import { appQuery } from "@/src/utils/constant/appQuery";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Toast } from "toastify-react-native";
 import { userQuery } from "../../user/constant/query";
-import { updateUserProfileApi } from "../api/accountSetting";
+import {
+  getUserPaymentAccountDetailsApi,
+  updateUserProfileApi,
+} from "../api/accountSetting";
 import { useRouter } from "expo-router";
+import { query } from "../constant/query";
 
 export const useUpdateProfile = () => {
   const queryClient = useQueryClient();
@@ -26,3 +30,10 @@ export const useUpdateProfile = () => {
     });
   };
 
+
+  export const useGetUserPaymentAccountDetails = () => {
+    return useQuery({
+      queryKey: [query.getPaymentAccountDetails],
+      queryFn: getUserPaymentAccountDetailsApi,
+    });
+  };

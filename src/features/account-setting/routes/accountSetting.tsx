@@ -94,6 +94,13 @@ export const AccountSetting = () => {
                   router.navigate("/create-playlist");
                 }}
               />
+              <ListItem
+                title="My Purchase"
+                left={(props) => <LucideListPlus {...props} size={20} />}
+                onPress={() => {
+                  router.navigate("/my-purchase");
+                }}
+              />
             </List.Section>
 
             <Divider />
@@ -107,11 +114,6 @@ export const AccountSetting = () => {
                 onPress={() => {
                   router.navigate("/account/payment-account");
                 }}
-              />
-              <ListItem
-                title="Payment Details"
-                left={(props) => <CircleDollarSign {...props} size={20} />}
-                onPress={() => {}}
               />
             </List.Section>
 

@@ -3,13 +3,15 @@ import { CustomDrawer } from "@/src/components/drawer";
 import { InputField } from "@/src/components/form/input";
 import { SwitchField } from "@/src/components/form/swtich";
 import { ScreenLayout } from "@/src/components/layout";
+import { CustomDailog } from "@/src/components/modal/dailog";
+import { useGetCurrentUser } from "@/src/hooks/useRootHook";
 import { IAppPoem, Obj } from "@/src/types";
 import { Colors } from "@/src/utils/constant/colors";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Formik, FormikHelpers, isEmptyArray } from "formik";
 import React from "react";
-import { Pressable, View } from "react-native";
+import { Linking, Pressable, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Toast } from "toastify-react-native";
@@ -17,18 +19,32 @@ import { PoemItem } from "../components/create-playlist/poemItem";
 import { SelectPoem } from "../components/create-playlist/selectPoem";
 import { PlaylistFileUploader } from "../components/create-playlist/uploader";
 import { TagInputField } from "../components/create-poem/form/poemtags";
-import { useCreatePlayList, useUpdatePlayList } from "../hooks/createPlaylist";
+import {
+  useConnectAccount,
+  useCreatePlayList,
+  useUpdatePlayList,
+} from "../hooks/createPlaylist";
 import { useGetPlaylistDetails } from "../hooks/palylistDetails";
 
 export const CreatePlaylist = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const [addedPoemList, setAddedPoemList] = React.useState<IAppPoem[]>([]);
+  const [openConnectAccount, setOpenConnectAccount] =
+    React.useState<boolean>(false);
   const insets = useSafeAreaInsets();
+  const router = useRouter();
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const [bottomSheetIndex, setBottomSheetIndex] = React.useState<number>(-1);
   const createPlaylist = useCreatePlayList();
   const playlistDetail = useGetPlaylistDetails(id);
   const updatePlaylist = useUpdatePlayList();
+  const cureentUser = useGetCurrentUser();
+  const connectAccount = useConnectAccount();
+  React.useEffect(() => {
+    if (cureentUser.data && !cureentUser.data.isStripeCardAdded) {
+      setOpenConnectAccount(true);
+    }
+  }, [cureentUser.data]);
   React.useEffect(() => {
     if (playlistDetail.data?.poems && playlistDetail.data?.poems.length > 0) {
       setAddedPoemList(playlistDetail.data.poems);
@@ -219,6 +235,27 @@ export const CreatePlaylist = () => {
           </View>
         )}
       </Formik>
+      <CustomDailog
+        visible={openConnectAccount}
+        onClose={() => {
+          setOpenConnectAccount(false);
+          router.back();
+        }}
+        onConfirm={async () => {
+          const res: any = await connectAccount.mutateAsync();
+          if (res?.accountLink) {
+            Linking.openURL(res?.accountLink).catch((err) => {
+              console.error("Failed to open URL:", err);
+            });
+          }
+        }}
+        okText="Connect Account"
+        isLoading={connectAccount.isPending}
+        title="Setup Payouts To Recieve Payments"
+        content={
+          "To create the playlist, please setup payouts to recive payments with stripe. This information will only be used for the secure processing of your payment and will not be shared with any third parties. For any issues, please contact our support team at [support@example.com]"
+        }
+      />
     </GestureHandlerRootView>
   );
 };

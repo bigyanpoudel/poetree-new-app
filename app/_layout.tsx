@@ -79,6 +79,7 @@ const AppBootStrap = () => {
           <Stack.Screen name="account/edit-profile" />
           <Stack.Screen name="account/change-password" />
           <Stack.Screen name="account/payment-account" />
+          <Stack.Screen name="my-purchase" />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
