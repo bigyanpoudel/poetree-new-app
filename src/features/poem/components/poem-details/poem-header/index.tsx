@@ -1,7 +1,11 @@
 import { Button, Text } from "@/src/components";
-import { ActionMenu } from "@/src/components/actionMenu";
+import {
+  useFollowUser,
+  useGetCurrentUser,
+  useUnFollowUser,
+} from "@/src/hooks/useRootHook";
 import { IAppPoem } from "@/src/types";
-import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
+import { getCreatedDate } from "@/src/utils/poemDateFormat";
 import { Link } from "expo-router";
 import React from "react";
 import { View } from "react-native";
@@ -10,6 +14,20 @@ interface IPoemHeaderProp {
   poem?: IAppPoem;
 }
 export const PoemHeader: React.FC<IPoemHeaderProp> = ({ poem }) => {
+  const followUser = useFollowUser();
+  const unfollowUser = useUnFollowUser();
+  const currentUser = useGetCurrentUser();
+  const handleFollow = () => {
+    if (!poem?.isFollowedByCurrentUser) {
+      followUser.mutate({
+        targetId: poem?.postedBy?._id as string,
+      });
+    } else {
+      unfollowUser.mutate({
+        targetId: poem?.postedBy._id as string,
+      });
+    }
+  };
   console.log("poem?.postedBy?", poem?.postedBy);
   return (
     <View className="flex flex-col gap-3">
@@ -37,11 +55,16 @@ export const PoemHeader: React.FC<IPoemHeaderProp> = ({ poem }) => {
             )}
           </Link>
           <View className="flex flex-col">
-            <Text className="text-base font-bold">User Name</Text>
-            <Text className="text-sm text-gray-500">2021-10-10</Text>
+            <Text className="text-base font-bold">{poem?.postedBy.name}</Text>
+            <Text className="text-sm text-gray-500">
+              {getCreatedDate(poem?.createdAt ?? "")}
+            </Text>
           </View>
         </View>
-        <Button mode="contained">Follow</Button>
+        {currentUser.data?._id &&
+          currentUser.data?._id !== poem?.postedBy?._id && (
+            <Button mode="contained">Follow</Button>
+          )}
       </View>
 
       <Text

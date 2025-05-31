@@ -14,6 +14,8 @@ interface ICustomDailogProps {
   okText?: string;
   isHideCancel?: boolean;
   okClassName?: string;
+  body?: React.ReactNode;
+  isHIdeOk?: boolean;
 }
 export const CustomDailog: React.FC<ICustomDailogProps> = ({
   content,
@@ -25,6 +27,8 @@ export const CustomDailog: React.FC<ICustomDailogProps> = ({
   okText,
   isHideCancel = false,
   okClassName,
+  body,
+  isHIdeOk = false,
 }) => {
   const isDark = true;
   return (
@@ -43,7 +47,7 @@ export const CustomDailog: React.FC<ICustomDailogProps> = ({
           {title ?? "Are your sure?"}
         </Dialog.Title>
         <Dialog.Content>
-          <Text className="text-base text-left">{content}</Text>
+          {body ? body : <Text className="text-base text-left">{content}</Text>}
         </Dialog.Content>
         <Dialog.Actions>
           {!isHideCancel && (
@@ -55,20 +59,22 @@ export const CustomDailog: React.FC<ICustomDailogProps> = ({
               Cancel
             </Button>
           )}
-          <Button
-            mode="contained"
-            labelStyle={{
-              color: "white",
-            }}
-            loading={isLoading}
-            className={classNames(
-              "min-w-[150px] bg-ui-error text-white",
-              okClassName
-            )}
-            onPress={onConfirm}
-          >
-            {okText ?? "Confim"}
-          </Button>
+          {!isHIdeOk && (
+            <Button
+              mode="contained"
+              labelStyle={{
+                color: "white",
+              }}
+              loading={isLoading}
+              className={classNames(
+                "min-w-[150px] bg-ui-error text-white",
+                okClassName
+              )}
+              onPress={onConfirm}
+            >
+              {okText ?? "Confim"}
+            </Button>
+          )}
         </Dialog.Actions>
       </Dialog>
     </Portal>

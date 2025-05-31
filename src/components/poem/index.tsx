@@ -1,4 +1,5 @@
 import { Text } from "@/src/components/text";
+import { useDeletePoem, useReport } from "@/src/hooks/useRootHook";
 import { useAppProvider } from "@/src/provider/appProvider";
 import { IAppPoem, POEMTYPE } from "@/src/types";
 import { getPoemType } from "@/src/utils/poem";
@@ -7,23 +8,25 @@ import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import React from "react";
 import { Image, View } from "react-native";
-import { Avatar, Portal } from "react-native-paper";
+import { Avatar } from "react-native-paper";
 import { ActionMenu } from "../actionMenu";
+import { CustomDailog } from "../modal/dailog";
+import { ReportComponent } from "../report";
 import VideoScreen from "../videoPlayer";
 import { PoemActions } from "./helper/poemActions";
 import { PoemBody } from "./helper/poemBody";
 import { RenderHashTag } from "./helper/poemHashTag";
 import { PoemType } from "./helper/poemType";
-import { CustomDailog } from "../modal/dailog";
-import { useDeletePoem } from "@/src/hooks/useRootHook";
 interface IPoemProps {
   poem: IAppPoem;
 }
 export const Poem: React.FC<IPoemProps> = ({ poem }) => {
   const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
+  const [openReportModal, setOpenReportModal] = React.useState<boolean>(false);
   const { user } = useAppProvider();
   const deletePoem = useDeletePoem();
   const router = useRouter();
+  const reportPoem = useReport();
   const poemType: POEMTYPE = getPoemType({ ...poem });
   const actionItems = React.useMemo(() => {
     let items = [
@@ -49,7 +52,9 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
             className="dark:text-darkTextColor text-ligtTextColor"
           />
         ),
-        onPress: () => {},
+        onPress: () => {
+          setOpenReportModal(true);
+        },
       },
     ];
     if (poem?.postedBy?._id == user?._id) {
@@ -180,6 +185,39 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
           content={
             "This action cannot be undone. This will permanently delete the poem."
           }
+        />
+      )}
+
+      {openReportModal && (
+        <CustomDailog
+          visible={openReportModal}
+          onClose={() => {
+            setOpenReportModal(false);
+          }}
+          onConfirm={() => {
+            setOpenReportModal(false);
+          }}
+          title=""
+          content={""}
+          body={
+            <ReportComponent
+              onConfirm={async (reason) => {
+                if (reportPoem.isPending) return;
+                setOpenReportModal(false);
+                const payload = {
+                  type: "post",
+                  reportTo: poem?._id,
+                  reportType: reason,
+                };
+                reportPoem.mutateAsync(payload);
+                setOpenReportModal(false);
+              }}
+              isUser={false}
+            />
+          }
+          isHIdeOk
+          isHideCancel={true}
+          okText="Cancel"
         />
       )}
     </View>

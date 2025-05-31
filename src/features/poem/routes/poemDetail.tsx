@@ -13,17 +13,19 @@ import { PoemCommentSections } from "../components/poem-details/comments";
 import { PoemHeader } from "../components/poem-details/poem-header";
 import { PoemDetailShimmer } from "../components/poem-details/shimmer/poemDetailShimmer";
 import { useGetPoemDetails, useUpdatePoemViewCount } from "../hooks/poemDetail";
-import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
-import { useDeletePoem } from "@/src/hooks/useRootHook";
+import { useDeletePoem, useReport } from "@/src/hooks/useRootHook";
 import { CustomDailog } from "@/src/components/modal/dailog";
+import { ReportComponent } from "@/src/components/report";
 
 export const PoemDetail = () => {
   const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
+  const [openReportModal, setOpenReportModal] = React.useState<boolean>(false);
   const { name, id } = useLocalSearchParams<{ id: string; name: string }>();
   const { isLoading, data, refetch, isRefetching } = useGetPoemDetails(id);
   const { user } = useAppProvider();
   const router = useRouter();
   const deletePoem = useDeletePoem();
+  const reportPoem = useReport();
 
   useUpdatePoemViewCount({
     id: data?._id ?? "",
@@ -40,7 +42,9 @@ export const PoemDetail = () => {
             className="dark:text-darkTextColor text-ligtTextColor"
           />
         ),
-        onPress: () => {},
+        onPress: () => {
+          setOpenReportModal(true);
+        },
       },
     ];
     if (data?.postedBy?._id == user?._id) {
@@ -120,6 +124,38 @@ export const PoemDetail = () => {
           content={
             "This action cannot be undone. This will permanently delete the poem."
           }
+        />
+      )}
+      {openReportModal && (
+        <CustomDailog
+          visible={openReportModal}
+          onClose={() => {
+            setOpenReportModal(false);
+          }}
+          onConfirm={() => {
+            setOpenReportModal(false);
+          }}
+          title=""
+          content={""}
+          body={
+            <ReportComponent
+              onConfirm={async (reason) => {
+                if (reportPoem.isPending) return;
+                setOpenReportModal(false);
+                const payload = {
+                  type: "poem",
+                  reportTo: data?._id,
+                  reportType: reason,
+                };
+                reportPoem.mutateAsync(payload);
+                setOpenReportModal(false);
+              }}
+              isUser={false}
+            />
+          }
+          isHIdeOk
+          isHideCancel={true}
+          okText="Cancel"
         />
       )}
     </ScreenLayout>

@@ -3,10 +3,12 @@ import { InputField } from "@/src/components/form/input";
 import { SwitchField } from "@/src/components/form/swtich";
 import { ScreenLayout } from "@/src/components/layout";
 import { PostVisibilitTypeEnum } from "@/src/types";
+import { Colors } from "@/src/utils/constant/colors";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Formik, FormikHelpers } from "formik";
 import React from "react";
 import { View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Yup from "yup";
 import { TentapEditorField } from "../components/create-poem/editor";
 import { TagInputField } from "../components/create-poem/form/poemtags";
@@ -21,6 +23,7 @@ const validationSchema = Yup.object().shape({
 export const CreatePoem = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data } = useGetPoemDetails(id);
+  const insets = useSafeAreaInsets();
   console.log("data", data);
   const createPoem = useCreatePoem();
   const updatePoem = useUpdatePoem();
@@ -69,56 +72,65 @@ export const CreatePoem = () => {
     }
   };
   return (
-    <ScreenLayout
-      appBar={{
-        title: id ? "Update Poem" : "Create Poem",
+    <Formik
+      initialValues={{
+        title: data?.title ?? "",
+        body: data?.body ?? "",
+        postType: data?.audio ? "audio" : data?.video ? "video" : "text",
+        availability: data?.visibility === PostVisibilitTypeEnum.paid,
+        tags: data?.hashTags.map((item) => item.name) ?? [],
+        tag: "",
+        file: null,
       }}
+      enableReinitialize
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
     >
-      <Formik
-        initialValues={{
-          title: data?.title ?? "",
-          body: data?.body ?? "",
-          postType: data?.audio ? "audio" : data?.video ? "video" : "text",
-          availability: data?.visibility === PostVisibilitTypeEnum.paid,
-          tags: data?.hashTags.map((item) => item.name) ?? [],
-          tag: "",
-          file: null,
-        }}
-        enableReinitialize
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ handleSubmit }) => (
-          <View className="flex flex-col gap-4">
-            <PoemType label="Select Poem Medium" name="postType" />
-            <InputField
-              mode="outlined"
-              name={"title"}
-              label={"Title"}
-              placeholder={"Enter poem title"}
-            />
-            <TentapEditorField
-              deafultvalue={data?.body}
-              label="Poem Content"
-              name={"body"}
-            />
-            <TagInputField
-              name="tag"
-              label="Tags"
-              placeholder={"Enter poem tag"}
-            />
-            <SwitchField
-              leftText="Free"
-              rightText="Paid"
-              name="availability"
-              label="Availability"
-            />
-            <FileUploader
-              deafultFile={data?.thumbnail ?? data?.audio ?? data?.video}
-              label={"Select Poem File"}
-              name="file"
-            />
-
+      {({ handleSubmit }) => (
+        <View className="flex flex-1 relative">
+          <ScreenLayout
+            appBar={{
+              title: id ? "Update Poem" : "Create Poem",
+            }}
+          >
+            <View className="flex flex-col gap-4 pb-20">
+              <PoemType label="Select Poem Medium" name="postType" />
+              <InputField
+                mode="outlined"
+                name={"title"}
+                label={"Title"}
+                placeholder={"Enter poem title"}
+              />
+              <TentapEditorField
+                deafultvalue={data?.body}
+                label="Poem Content"
+                name={"body"}
+              />
+              <TagInputField
+                name="tag"
+                label="Tags"
+                placeholder={"Enter poem tag"}
+              />
+              <SwitchField
+                leftText="Free"
+                rightText="Paid"
+                name="availability"
+                label="Availability"
+              />
+              <FileUploader
+                deafultFile={data?.thumbnail ?? data?.audio ?? data?.video}
+                label={"Select Poem File"}
+                name="file"
+              />
+            </View>
+          </ScreenLayout>
+          <View
+            style={{
+              paddingBottom: insets.bottom + 8,
+              backgroundColor: Colors.light.primary,
+            }}
+            className="absolute px-5 pt-3 bottom-0 left-0 w-full z-[1]"
+          >
             <Button
               loading={createPoem.isPending || updatePoem.isPending}
               mode="contained"
@@ -129,7 +141,7 @@ export const CreatePoem = () => {
                 fontWeight: 700,
                 fontSize: 16,
               }}
-              className="font-bold mt-6"
+              className="font-bold"
               onPress={() => {
                 handleSubmit();
               }}
@@ -137,8 +149,8 @@ export const CreatePoem = () => {
               {id ? "Update Poem" : "Save Poem"}
             </Button>
           </View>
-        )}
-      </Formik>
-    </ScreenLayout>
+        </View>
+      )}
+    </Formik>
   );
 };

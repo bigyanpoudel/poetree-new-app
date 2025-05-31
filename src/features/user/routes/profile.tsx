@@ -1,12 +1,14 @@
 import { ActionMenu } from "@/src/components/actionMenu";
 import { ScreenLayout } from "@/src/components/layout";
 import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
-import { useGetCurrentUser } from "@/src/hooks/useRootHook";
+import { useGetCurrentUser, useReport } from "@/src/hooks/useRootHook";
 import { Colors } from "@/src/utils/constant/colors";
 import { Feather, Octicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
+import { CustomDailog } from "@/src/components/modal/dailog";
+import { ReportComponent } from "@/src/components/report";
 import { ProfileCard } from "../components";
 import { ListPlaylist } from "../components/list-playlist";
 import { ListPeoms } from "../components/list-poems";
@@ -14,10 +16,12 @@ import { useGetUserProfile } from "../hooks/user";
 
 export const ProfileScreen = () => {
   const [activeTab, setActiveTab] = React.useState("all");
+  const [openReportModal, setOpenReportModal] = React.useState<boolean>(false);
   const { slug } = useLocalSearchParams<{ id: string; slug: string }>();
   const isDark = useIsDarkTheme();
   const user = useGetUserProfile();
   const currentUser = useGetCurrentUser();
+  const reportUser = useReport();
   const actionMenu = React.useMemo(() => {
     let items = [];
 
@@ -43,7 +47,9 @@ export const ProfileScreen = () => {
             className="dark:text-darkTextColor text-ligtTextColor"
           />
         ),
-        onPress: () => {},
+        onPress: () => {
+          setOpenReportModal(true);
+        },
       });
     }
     return items;
@@ -100,6 +106,38 @@ export const ProfileScreen = () => {
       </View>
       {activeTab == "all" && <ListPeoms />}
       {activeTab == "playlist" && <ListPlaylist />}
+      {openReportModal && (
+        <CustomDailog
+          visible={openReportModal}
+          onClose={() => {
+            setOpenReportModal(false);
+          }}
+          onConfirm={() => {
+            setOpenReportModal(false);
+          }}
+          title=""
+          content={""}
+          body={
+            <ReportComponent
+              onConfirm={async (reason) => {
+                if (reportUser.isPending) return;
+                setOpenReportModal(false);
+                const payload = {
+                  type: "user",
+                  reportTo: user.data?._id,
+                  reportType: reason,
+                };
+                reportUser.mutateAsync(payload);
+                setOpenReportModal(false);
+              }}
+              isUser={true}
+            />
+          }
+          isHIdeOk
+          isHideCancel={true}
+          okText="Cancel"
+        />
+      )}
     </ScreenLayout>
   );
 };
