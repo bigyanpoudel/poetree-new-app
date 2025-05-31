@@ -10,6 +10,7 @@ import { useRouter } from "expo-router";
 import { Toast } from "toastify-react-native";
 import { POETREE_USER } from "@/src/utils/constant/appConstant";
 import { storageUtil } from "@/src/utils/storage";
+import { useAppProvider } from "@/src/provider/appProvider";
 
 export const useSignup = () => {
   const router = useRouter();
@@ -25,10 +26,12 @@ export const useSignup = () => {
 };
 export const useSignin = () => {
   const router = useRouter();
+  const { setUser } = useAppProvider();
   return useMutation({
     mutationFn: signinApi,
-    onSuccess: async (data) => {
+    onSuccess: async (data: any) => {
       await storageUtil.setItem(POETREE_USER, JSON.stringify(data));
+      setUser(data);
       console.log("data", data);
       router.navigate("/");
     },

@@ -3,8 +3,10 @@ import { ListItem, ListSubHeading } from "@/src/components/list";
 import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 import { useAppProvider } from "@/src/provider/appProvider";
 import { Colors } from "@/src/utils/constant/colors";
+import { performLogout } from "@/src/utils/logout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { Toast } from "toastify-react-native";
 import {
   CircleDollarSign,
   Globe,
@@ -26,13 +28,31 @@ import { Appearance, View } from "react-native";
 import { Divider, List } from "react-native-paper";
 export const AccountSetting = () => {
   const router = useRouter();
-  const { user } = useAppProvider();
+  const { user, setUser } = useAppProvider();
   const isDark = useIsDarkTheme();
+
   const toggleTheme = () => {
     if (isDark) {
       Appearance.setColorScheme("light");
     } else {
       Appearance.setColorScheme("dark");
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      // Use the shared logout function with setUser
+      const success = await performLogout(setUser);
+      
+      if (success) {
+        // Show success message
+        Toast.success("Logged out successfully!");
+      } else {
+        Toast.error("Failed to logout. Please try again.");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      Toast.error("Failed to logout. Please try again.");
     }
   };
   return (
@@ -196,7 +216,7 @@ export const AccountSetting = () => {
               <ListItem
                 title="Logout"
                 left={(props) => <List.Icon {...props} icon="logout" />}
-                onPress={() => console.log("Logout pressed")}
+                onPress={handleLogout}
               />
             </List.Section>
           </>
