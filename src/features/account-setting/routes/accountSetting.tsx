@@ -1,14 +1,13 @@
 import { Scafold } from "@/src/components";
 import { ListItem, ListSubHeading } from "@/src/components/list";
 import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { useGetCurrentUser } from "@/src/hooks/useRootHook";
 import { useAppProvider } from "@/src/provider/appProvider";
 import { Colors } from "@/src/utils/constant/colors";
 import { performLogout } from "@/src/utils/logout";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { Toast } from "toastify-react-native";
 import {
-  CircleDollarSign,
   Globe,
   HelpCircle,
   Info,
@@ -20,17 +19,20 @@ import {
   Mail,
   Palette as PaletteIcon,
   Shield,
+  ShoppingBag,
+  User,
   UserCircle,
   UserPlus,
 } from "lucide-react-native";
 import React from "react";
 import { Appearance, View } from "react-native";
 import { Divider, List } from "react-native-paper";
+import { Toast } from "toastify-react-native";
 export const AccountSetting = () => {
   const router = useRouter();
   const { user, setUser } = useAppProvider();
   const isDark = useIsDarkTheme();
-
+  const currentUser = useGetCurrentUser();
   const toggleTheme = () => {
     if (isDark) {
       Appearance.setColorScheme("light");
@@ -43,7 +45,7 @@ export const AccountSetting = () => {
     try {
       // Use the shared logout function with setUser
       const success = await performLogout(setUser);
-      
+
       if (success) {
         // Show success message
         Toast.success("Logged out successfully!");
@@ -63,6 +65,15 @@ export const AccountSetting = () => {
           <ListSubHeading>Account</ListSubHeading>
           {user?._id ? (
             <>
+              <ListItem
+                title="Profile"
+                left={(props) => <User {...props} size={20} />}
+                onPress={() => {
+                  router.navigate(
+                    `/user/${user._id}?slug=${currentUser?.data?.slug}`
+                  );
+                }}
+              />
               <ListItem
                 title="Edit Profile"
                 left={(props) => <UserCircle {...props} size={20} />}
@@ -116,7 +127,7 @@ export const AccountSetting = () => {
               />
               <ListItem
                 title="My Purchase"
-                left={(props) => <LucideListPlus {...props} size={20} />}
+                left={(props) => <ShoppingBag {...props} size={20} />}
                 onPress={() => {
                   router.navigate("/my-purchase");
                 }}

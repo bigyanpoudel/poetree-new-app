@@ -23,7 +23,7 @@ export const ListPlaylist = () => {
     refetch(); // this will trigger a refresh of the data
   }, [refetch]);
   return (
-    <View className="flex flex-1 flex-col gap-5 ">
+    <View className="flex flex-1 flex-col w-full gap-5 ">
       <FlatList
         data={poems}
         keyExtractor={(item) => item._id}

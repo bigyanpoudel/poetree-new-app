@@ -20,6 +20,7 @@ export const PlaylistDetail = () => {
   const { isLoading, data, refetch, isRefetching } = useGetPlaylistDetails(id);
   const { user } = useAppProvider();
   const router = useRouter();
+  console.log("playlist details data -->", data?.isLocked);
   React.useEffect(() => {
     if (data?.poems && activeIndex === 1) {
       setActivePoem(data.poems[activeIndex - 1]);
