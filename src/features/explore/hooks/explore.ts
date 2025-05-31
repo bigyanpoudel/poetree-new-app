@@ -3,7 +3,7 @@ import { exploreQuery } from "../constant/query";
 import { getPoemHashTagsApi, getUserListApi } from "../api/explore";
 
 export const useGetInfiniteHasTagsPost = () => {
-    const limit = 50;
+    const limit = 100;
     return useInfiniteQuery({
       queryKey: [exploreQuery.getPoemHashTags],
       queryFn: ({ pageParam }) =>
