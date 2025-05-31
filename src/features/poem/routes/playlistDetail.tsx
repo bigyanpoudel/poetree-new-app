@@ -1,75 +1,103 @@
 import { ActionMenu } from "@/src/components/actionMenu";
 import { ScreenLayout } from "@/src/components/layout";
-import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
+import { useAppProvider } from "@/src/provider/appProvider";
+import { IAppPoem } from "@/src/types";
+import { Feather } from "@expo/vector-icons";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
+import { RefreshControl } from "react-native";
 import { PlaylistContent } from "../components/playlist-detail/playlistContent";
 import { PlaylistDetailSection } from "../components/playlist-detail/playlistDetailSection";
-import { PlaylistSection } from "../components/playlist-detail/playlistSection";
 import { PlayListTabs } from "../components/playlist-detail/playlistTabs";
-import { PoemCommentSections } from "../components/poem-details/comments";
-import { View } from "react-native";
+import { PoemDetailShimmer } from "../components/poem-details/shimmer/poemDetailShimmer";
+import { useGetPlaylistDetails } from "../hooks/palylistDetails";
 
 export const PlaylistDetail = () => {
+  const [activePoem, setActivePoem] = React.useState<IAppPoem>();
+  const [activeIndex, setActiveIndex] = React.useState<number>(1);
+  const { name, id } = useLocalSearchParams<{ id: string; name: string }>();
+  const { isLoading, data, refetch, isRefetching } = useGetPlaylistDetails(id);
+  const { user } = useAppProvider();
+  const router = useRouter();
+  React.useEffect(() => {
+    if (data?.poems && activeIndex === 1) {
+      setActivePoem(data.poems[activeIndex - 1]);
+    }
+  }, [data?.poems]);
+
+  const handleActivePoem = (poem: IAppPoem, index: number) => {
+    setActivePoem(poem);
+    setActiveIndex(index);
+  };
+  const handlePoemChange = (index: number) => {
+    console.log("index", index);
+    const oldPoems = data?.poems ?? [];
+    const poems = [...oldPoems];
+    const activePoem = poems[index - 1];
+    setActivePoem(activePoem);
+    setActiveIndex(index);
+  };
+  console.log("playlist Details -->", name, id);
+  const actionItems = React.useMemo(() => {
+    let items: any[] = [];
+    if (data?.createdBy?._id == user?._id) {
+      items = [
+        ...items,
+        {
+          label: "Edit Playlist",
+          leadingIcon: (
+            <Feather
+              name="edit"
+              size={20}
+              className="dark:text-darkTextColor text-ligtTextColor"
+            />
+          ),
+          onPress: () => {
+            router.push(`/create-playlist?id=${data?._id}`);
+          },
+        },
+      ];
+    }
+    return items;
+  }, [data, user]);
   return (
     <ScreenLayout
       scafold={{
         paddingHorizontal: 0,
         paddingVertical: 0,
-      }}
-      appBar={{
-        title: "Playlist Details",
-        action: (
-          <ActionMenu
-            anchorPosition="bottom"
-            items={[
-              {
-                label: "Report Playlist",
-                leadingIcon: (
-                  <Octicons
-                    name="report"
-                    size={20}
-                    a
-                    className="dark:text-darkTextColor text-ligtTextColor"
-                  />
-                ),
-                onPress: () => {},
-              },
-              {
-                label: "Delete Playlist",
-                leadingIcon: (
-                  <Feather
-                    name="trash"
-                    size={20}
-                    className="dark:text-darkTextColor text-ligtTextColor"
-                  />
-                ),
-                onPress: () => {},
-              },
-              {
-                label: "Edit Playlist",
-                leadingIcon: (
-                  <Feather
-                    name="edit"
-                    size={20}
-                    className="dark:text-darkTextColor text-ligtTextColor"
-                  />
-                ),
-                onPress: () => {},
-              },
-            ]}
+        refreshControl: (
+          <RefreshControl
+            refreshing={isRefetching}
+            onRefresh={() => {
+              refetch();
+            }}
           />
         ),
       }}
+      appBar={{
+        title: name ?? "Playlist Details",
+        action: <ActionMenu anchorPosition="bottom" items={actionItems} />,
+      }}
     >
-      <PlayListTabs
-        tabs={[1, 2, 3, 4, 5, 9, 9, 9, 2, 2, 3, 4]}
-        activeTab={1}
-        isLoading={false}
-        handleTabChange={() => {}}
-      />
-      <PlaylistContent />
-      <PlaylistDetailSection />
-      <PlaylistSection />
+      {isLoading ? (
+        <PoemDetailShimmer />
+      ) : (
+        <>
+          <PlayListTabs
+            tabs={Array.from(
+              { length: data?.poems?.length ?? 1 },
+              (_, index) => index + 1
+            )}
+            isLoading={isLoading}
+            handleTabChange={handlePoemChange}
+            activeTab={activeIndex}
+          />
+          {activePoem && (
+            <PlaylistContent poem={activePoem} number={activeIndex} />
+          )}
+          <PlaylistDetailSection playlist={data} />
+        </>
+      )}
       {/* <View className="mt-4 px-5 py-4 dark:bg-darker-100 bg-white flex flex-col flex-1">
         <PoemCommentSections />
       </View> */}

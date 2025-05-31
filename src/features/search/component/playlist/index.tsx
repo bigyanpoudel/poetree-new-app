@@ -1,11 +1,10 @@
 import { Scafold } from "@/src/components";
-import { PlaylistCard } from "@/src/components/playlist";
+import { ShimmerHorizontalPlaylist } from "@/src/components/playlist/horizontalPlalylist.shimmer";
+import { HorizontalPlaylist } from "@/src/components/playlist/horizontalPlaylistItem";
+import { SearchEmptyState } from "@/src/components/state/searchEmptyState";
 import React from "react";
 import { FlatList, View } from "react-native";
 import { useGetHomeInfinitePlayList } from "../../hook/search";
-import { SearchEmptyState } from "@/src/components/state/searchEmptyState";
-import { UserProfileCardShimmer } from "@/src/components/user/userCard.shimmer";
-import { APPPLAYLIST } from "@/src/utils/constant/appConstant";
 interface ISearchPaylistProps {
   search?: string;
 }
@@ -30,7 +29,7 @@ export const SearchPaylist: React.FC<ISearchPaylistProps> = ({ search }) => {
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => {
           return (
-            <PlaylistCard
+            <HorizontalPlaylist
               style={{
                 width: "100%",
               }}
@@ -53,7 +52,7 @@ export const SearchPaylist: React.FC<ISearchPaylistProps> = ({ search }) => {
           isLoading ? (
             <View className="gap-4">
               {[...Array(3)].map((_, i) => (
-                <UserProfileCardShimmer key={i} />
+                <ShimmerHorizontalPlaylist key={i} />
               ))}
             </View>
           ) : (
@@ -64,7 +63,7 @@ export const SearchPaylist: React.FC<ISearchPaylistProps> = ({ search }) => {
           isFetchingNextPage ? (
             <View className="gap-4 mt-2">
               {[...Array(2)].map((_, i) => (
-                <UserProfileCardShimmer key={i} />
+                <ShimmerHorizontalPlaylist key={i} />
               ))}
             </View>
           ) : null

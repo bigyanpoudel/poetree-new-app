@@ -1,6 +1,5 @@
 import { IAppPlayList } from "@/src/types";
 import { getAccountFormatter } from "@/src/utils/currency";
-import dayjs from "dayjs";
 import { useRouter } from "expo-router";
 import { ArrowUpRight, Edit } from "lucide-react-native"; // For icons
 import React from "react";
@@ -18,13 +17,13 @@ export const PlaylistCard: React.FC<IPlaylistCardProps> = ({
   const router = useRouter();
   return (
     <View
+      className="border-ui-border dark:border-ui-border/20 rounded-lg bg-white dark:bg-darker-100"
       style={[
         {
           width: 260,
         },
         style,
       ]}
-      className="border-ui-border dark:border-ui-border/20 rounded-lg bg-white dark:bg-darker-100"
     >
       {/* Thumbnail or Placeholder */}
 
@@ -38,7 +37,7 @@ export const PlaylistCard: React.FC<IPlaylistCardProps> = ({
             source={{
               uri: playlist.thumbnail,
             }}
-            className="h-full w-full object-cover "
+            className="h-full w-full rounded-t-lg object-cover "
           />
         ) : (
           <Text className={"text-3xl text-center"}>
@@ -51,9 +50,11 @@ export const PlaylistCard: React.FC<IPlaylistCardProps> = ({
       <View className={"px-4 py-3 flex flex-col gap-1 flex-1"}>
         {/* Title and Date */}
         <View className={"flex flex-col"}>
-          <Text className={"text-sm dark:text-white/60 text-text-200"}>
-            {dayjs(playlist.createdAt).format("DD MMM YYYY")}
-          </Text>
+          {/* {playlist?.createdAt && (
+            <Text className={"text-sm dark:text-white/60 text-text-200"}>
+              {dayjs(playlist?.createdAt).format("DD MMM YYYY")}
+            </Text>
+          )} */}
 
           <Text
             className={"text-lg font-semibold dark:text-white text-text-300"}

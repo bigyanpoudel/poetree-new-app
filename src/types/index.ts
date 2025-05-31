@@ -183,6 +183,7 @@ export interface IAppPlayList {
   };
   isFollowedByCurrentUser?: boolean;
   isLocked?: boolean;
+  status?: boolean;
 }
 
 export enum PurchaseStatusEnum {

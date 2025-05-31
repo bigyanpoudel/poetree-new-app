@@ -16,6 +16,7 @@ export const PlayListTabs: React.FC<IQuestionTabsProps> = ({
   handleTabChange,
   isLoading = false,
 }) => {
+  console.log("activeTab", activeTab);
   return (
     <View className="w-full dark:bg-darker-100 bg-white border-b dark:border-ui-border/20 border-ui-border flex flex-row justify-end">
       <View className="flex items-center  overflow-hidden justify-center w-full">

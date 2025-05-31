@@ -23,7 +23,7 @@ import {
 } from "lucide-react-native";
 import React from "react";
 import { Appearance, View } from "react-native";
-import { Appbar, Divider, List } from "react-native-paper";
+import { Divider, List } from "react-native-paper";
 export const AccountSetting = () => {
   const router = useRouter();
   const { user } = useAppProvider();
@@ -88,7 +88,7 @@ export const AccountSetting = () => {
                 }}
               />
               <ListItem
-                title="Create Plyalist"
+                title="Create Playlist"
                 left={(props) => <LucideListPlus {...props} size={20} />}
                 onPress={() => {
                   router.navigate("/create-playlist");

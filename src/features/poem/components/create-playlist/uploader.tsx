@@ -8,11 +8,13 @@ import { Image, TouchableOpacity, View } from "react-native";
 interface IUploaderProps {
   name: string;
   label?: string;
+  defaultValue?: any;
 }
 
 export const PlaylistFileUploader: React.FC<IUploaderProps> = ({
   name,
   label,
+  defaultValue,
 }) => {
   const [field, meta, helpers] = useField(name);
   const [file, setFile] = useState<any>(null);
@@ -36,6 +38,14 @@ export const PlaylistFileUploader: React.FC<IUploaderProps> = ({
   }, [field.value]);
 
   const renderFilePreview = () => {
+    if (defaultValue && !file) {
+      return (
+        <Image
+          source={{ uri: defaultValue }}
+          style={{ width: "100%", height: 200 }}
+        />
+      );
+    }
     if (!file) return null;
     const { uri, mimeType: type } = file;
     if (type?.startsWith("image")) {

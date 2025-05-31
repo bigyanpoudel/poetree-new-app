@@ -49,6 +49,12 @@ export const CustomDrawer = forwardRef(
         enablePanDownToClose={true}
         backdropComponent={renderBackdrop}
         onChange={handleSheetChanges}
+        style={{
+          zIndex: 9999,
+        }}
+        containerStyle={{
+          zIndex: 9999,
+        }}
       >
         <BottomSheetView>
           {title && (

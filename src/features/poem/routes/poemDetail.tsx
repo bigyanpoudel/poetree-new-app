@@ -68,7 +68,9 @@ export const PoemDetail = () => {
               className="dark:text-darkTextColor text-ligtTextColor"
             />
           ),
-          onPress: () => {},
+          onPress: () => {
+            router.push(`/create-poem?id=${data?._id}`);
+          },
         },
       ];
     }

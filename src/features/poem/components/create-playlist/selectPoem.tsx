@@ -1,15 +1,30 @@
 import { Text } from "@/src/components";
 import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { IAppPoem } from "@/src/types";
 import { Colors } from "@/src/utils/constant/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { FlatList, TextInput, View } from "react-native";
+import { FlatList, View } from "react-native";
 import { IconButton, Searchbar, TouchableRipple } from "react-native-paper";
-
-export const SelectPoem = () => {
+import { useGetPoemSelectOption } from "../../hooks/createPlaylist";
+interface ISelectPoemProps {
+  poems: IAppPoem[];
+  setSelectedPoem: (args: any) => void;
+}
+export const SelectPoem: React.FC<ISelectPoemProps> = ({
+  poems,
+  setSelectedPoem,
+}) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const isDark = useIsDarkTheme();
-
+  const poemsList = useGetPoemSelectOption({ search: searchQuery });
+  const poemsListOption = React.useMemo(() => {
+    if (poemsList.data) {
+      const listIds = poems.map((item: any) => item._id);
+      return poemsList.data.data.filter((poem) => !listIds.includes(poem._id));
+    }
+    return [];
+  }, [poems, poemsList]);
   return (
     <View className="h-[80vh] flex flex-col gap-5">
       <Searchbar
@@ -45,26 +60,47 @@ export const SelectPoem = () => {
       />
 
       <FlatList
-        data={[1, 2, 3, 5]}
-        renderItem={() => <PoemItem />}
+        data={poemsListOption}
+        renderItem={({ item }) => (
+          <PoemItem
+            title={item.title}
+            onPress={() => {
+              setSelectedPoem(item);
+            }}
+            key={item._id}
+          />
+        )}
         // keyExtractor={(item) => item}
         showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => <View style={{ height: 4 }} />}
+        ListFooterComponent={
+          poemsList.isLoading || poemsList.isFetching ? (
+            <View className="gap-4 px-3 mt-2">
+              <PoemItemShimmer />
+              <PoemItemShimmer />
+              <PoemItemShimmer />
+            </View>
+          ) : null
+        }
       />
     </View>
   );
 };
-
-const PoemItem = () => {
+interface IPoemItemProps {
+  title: string;
+  onPress: () => void;
+}
+const PoemItem: React.FC<IPoemItemProps> = ({ title, onPress }) => {
   return (
     <TouchableRipple
-      onPress={() => console.log("Pressed")}
+      onPress={onPress}
       rippleColor="rgba(0, 0, 0, .32)"
-      className="py-2 px-3"
+      className="py-1 px-3"
     >
-      <View className="flex flex-row flex-1 justify-between items-center  h-[38px] gap-3">
-        <View className="flex flex-col">
+      <View className="flex flex-row flex-1 justify-between items-center   gap-3">
+        <View className="flex flex-col w-[70%]">
           <Text className="text-lg" numberOfLines={2}>
-            This is Poem Title
+            {title}
           </Text>
         </View>
         <IconButton
@@ -78,5 +114,22 @@ const PoemItem = () => {
         />
       </View>
     </TouchableRipple>
+  );
+};
+
+const PoemItemShimmer: React.FC = () => {
+  return (
+    <View className="">
+      <View className="flex flex-row justify-between items-center gap-3">
+        {/* Title lines (70% width) */}
+        <View className="w-[70%] flex flex-col gap-1">
+          <View className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-full" />
+          <View className="h-4 bg-gray-300 dark:bg-gray-700 rounded w-[90%]" />
+        </View>
+
+        {/* Icon placeholder */}
+        <View className="w-6 h-6 bg-gray-300 dark:bg-gray-700 rounded-full" />
+      </View>
+    </View>
   );
 };
