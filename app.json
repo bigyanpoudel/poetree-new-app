@@ -1,26 +1,24 @@
 {
   "expo": {
     "name": "Poetree",
-    "slug": "poetree",
-    "version": "1.0.0",
+    "slug": "Poetree",
+    "version": "4.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/ic_launcher.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.poetree-app"
+      "bundleIdentifier": "com.poetree.ca"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/ic_launcher.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.poetreeapp",
-      "config": {
-        "cleartextTraffic": true
-      }
+      "package": "com.poetree.ca",
+      "versionCode": 40
     },
     "web": {
       "bundler": "metro",
@@ -44,6 +42,12 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8544e800-a703-4edb-b2e8-4d03881839ae"
+      }
     }
   }
 }
