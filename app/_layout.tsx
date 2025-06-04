@@ -42,13 +42,13 @@ const AppBootStrap = () => {
   const isDark = useIsDarkTheme();
   useOnlineManager();
   useAppState(onAppStateChange);
-  const { isUserLoaded } = useAppProvider();
-  console.log("isUserLoaded", isUserLoaded);
+  const { isUserLoaded, hasSeenOnboarding, isOnboardingLoaded } = useAppProvider();
+  console.log("isUserLoaded", isUserLoaded, "hasSeenOnboarding", hasSeenOnboarding);
   useEffect(() => {
-    if (loaded && isUserLoaded) {
+    if (loaded && isUserLoaded && isOnboardingLoaded) {
       SplashScreen.hideAsync();
     }
-  }, [loaded, isUserLoaded]);
+  }, [loaded, isUserLoaded, isOnboardingLoaded]);
 
   if (!loaded) {
     return (
@@ -87,7 +87,11 @@ const AppBootStrap = () => {
             : Colors.light.scafoldColor,
         }}
       >
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack 
+          screenOptions={{ headerShown: false }}
+          initialRouteName={!hasSeenOnboarding ? "onboarding" : "(home)"}
+        >
+          <Stack.Screen name="onboarding" options={{ headerShown: false }} />
           <Stack.Screen name="(home)" options={{ headerShown: false }} />
           <Stack.Screen name="user/[id]" />
           <Stack.Screen name="poem/[id]" />

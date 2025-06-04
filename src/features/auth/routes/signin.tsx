@@ -8,7 +8,7 @@ import { storageUtil } from "@/src/utils/storage";
 import { Link } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
-import { useColorScheme, View } from "react-native";
+import { useColorScheme, View, Modal, TouchableOpacity } from "react-native";
 import { TextInput } from "react-native-paper";
 import * as Yup from "yup";
 import { useSignin } from "../hooks/auth";
@@ -36,6 +36,8 @@ const validationSchema = Yup.object().shape({
 
 export const SigninPage = () => {
   const [passwordVisible, setPasswordVisible] = React.useState<boolean>(false);
+  const [showSecurityModal, setShowSecurityModal] =
+    React.useState<boolean>(false);
   const [initialValues, setInitialValues] = React.useState<Obj>({
     email: "",
     password: "",
@@ -47,12 +49,28 @@ export const SigninPage = () => {
   const isRemember = storageUtil.getItem("isRemember");
   React.useEffect(() => {
     handleGetRemember();
+    checkSecurityNoticeShown();
   }, []);
+
   const handleGetRemember = async () => {
     const values = await storageUtil.getItem("isRemember");
     if (values?.email) {
       setInitialValues(values);
     }
+  };
+
+  const checkSecurityNoticeShown = async () => {
+    const hasSeenSecurityNotice = await storageUtil.getItem(
+      "hasSeenSecurityNotice"
+    );
+    if (!hasSeenSecurityNotice) {
+      setShowSecurityModal(true);
+    }
+  };
+
+  const handleCloseSecurityModal = async () => {
+    await storageUtil.setItem("hasSeenSecurityNotice", JSON.stringify(true));
+    setShowSecurityModal(false);
   };
   const handleSubmit = async (values: Obj) => {
     if (values.isRemember) {
@@ -186,7 +204,83 @@ export const SigninPage = () => {
             </View>
           )}
         </Formik>
+
+        {/* Security Update Notice */}
+        <View
+          className={
+            "mt-6 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+          }
+        >
+          <Text
+            className={
+              "text-sm font-semibold text-black dark:text-white mb-2"
+            }
+          >
+            🔒 Security Enhancement
+          </Text>
+          <Text
+            className={"text-sm text-gray-700 dark:text-gray-300 leading-5"}
+          >
+            We've upgraded our security with a new encryption system to better
+            protect your account. If you're an existing user and having trouble
+            signing in, please use "Forgot Password?" to reset your password and
+            continue enjoying Poetree securely.
+          </Text>
+        </View>
       </View>
+
+      {/* Security Update Modal */}
+      <Modal
+        visible={showSecurityModal}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleCloseSecurityModal}
+      >
+        <View className="flex-1 justify-center items-center bg-black/50 px-6">
+          <View
+            className={`w-full max-w-sm p-6 rounded-xl ${
+              isDark ? "bg-gray-800" : "bg-white"
+            }`}
+          >
+            <View className="items-center mb-4">
+              <Text
+                className={`text-lg font-bold text-center ${
+                  isDark ? "text-white" : "text-black"
+                }`}
+              >
+                Security Enhancement
+              </Text>
+            </View>
+
+            <Text
+              className={`text-base leading-6 text-center mb-6 ${
+                isDark ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
+              We've upgraded our security with a new encryption system to better
+              protect your account.
+              {"\n\n"}
+              If you're an existing user and having trouble signing in, please
+              use "Forgot Password?" to reset your password and continue
+              enjoying Poetree securely.
+            </Text>
+
+            <Button
+              mode="contained"
+              onPress={handleCloseSecurityModal}
+              contentStyle={{
+                height: 44,
+              }}
+              labelStyle={{
+                fontWeight: 600,
+                fontSize: 16,
+              }}
+            >
+              Got it!
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </ScreenLayout>
   );
 };
