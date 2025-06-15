@@ -27,6 +27,10 @@ export const getCreatedDate = (date: string) => {
   const now = dayjs();
   const createdDate = dayjs(date);
 
+  if (!createdDate.isValid() && !date) {
+    return "Invalid date";
+  }
+
   const diffInDays = now.diff(createdDate, "day");
 
   if (Math.abs(diffInDays) > 30) {

@@ -35,7 +35,12 @@ export const ListPlaylist = () => {
             fetchNextPage();
           }
         }}
-        onEndReachedThreshold={0.5}
+        onMomentumScrollBegin={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+        onEndReachedThreshold={0.01}
         ItemSeparatorComponent={() => <View className="h-2" />}
         ListEmptyComponent={
           isLoading ? (

@@ -72,8 +72,13 @@ export const FollowingList = () => {
               fetchNextPage();
             }
           }}
+          onMomentumScrollBegin={() => {
+            if (hasNextPage && !isFetchingNextPage) {
+              fetchNextPage();
+            }
+          }}
           contentContainerStyle={{ paddingVertical: 16 }}
-          onEndReachedThreshold={0.5}
+          onEndReachedThreshold={0.01}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
           ListFooterComponent={

@@ -18,7 +18,7 @@ export const useGetCurrentUser = () => {
   return useQuery({
     queryKey: [appQuery.getCurrentUser, user?._id],
     queryFn: () => getCurrentUser(user?._id as string),
-    enabled: Boolean(user?._id),
+    enabled: Boolean(user?._id) && Boolean(user),
   });
 };
 export const usePoemLike = () => {

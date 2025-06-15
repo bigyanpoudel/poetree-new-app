@@ -44,9 +44,14 @@ export const AllSection = () => {
             fetchNextPage();
           }
         }}
+        onMomentumScrollBegin={() => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
         contentContainerStyle={{ paddingVertical: 16 }}
         ItemSeparatorComponent={() => <View className="h-2" />}
-        onEndReachedThreshold={0.5}
+        onEndReachedThreshold={0.01}
         ListEmptyComponent={
           isLoading ? (
             <View className="gap-4">
