@@ -18,7 +18,6 @@ API.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
   if (tokenData?.accessToken) {
     config.headers.Authorization = `Bearer ${tokenData?.accessToken}`;
   }
-  console.log("config");
   return config;
 });
 
@@ -27,7 +26,6 @@ API.interceptors.response.use(
     return response.data;
   },
   async (error) => {
-    console.log("error", error.response);
     if (403 === error.response?.status) {
       Toast.error(SESSION_EXPIRED);
       // Perform automatic logout on session expiry

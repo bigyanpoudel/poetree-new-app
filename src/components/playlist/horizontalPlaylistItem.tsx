@@ -23,7 +23,6 @@ export const HorizontalPlaylist: React.FC<IPlaylistCardProps> = ({
 }) => {
   const router = useRouter();
   const { user } = useAppProvider();
-  console.log("playlist", playlist);
   return (
     <View className="border-ui-border h-[170px] dark:border-ui-border/20 flex flex-row gap-3 rounded-lg bg-white dark:bg-darker-100">
       {/* Thumbnail or Placeholder */}

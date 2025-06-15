@@ -72,7 +72,6 @@ export const CreatePlaylist = () => {
     addedPoemList.forEach((item, index) => {
       formData.append(`poems[${index}]`, item._id);
     });
-    console.log("formData", values);
     if (values?.file) {
       const file: any = {
         uri: values?.file.uri,

@@ -30,11 +30,10 @@ export const Tab: React.FC<TabProps> = ({ tabs, activeTab, onChange }) => {
         });
       },
       (error: any) => {
-        console.log("measure error", error);
+        // Handle measure error silently
       }
     );
   };
-console.log("activeTab", tabs);
 return (
   <View className="py-3 flex-1 px-4 max-w-[75%]">
     <ScrollView

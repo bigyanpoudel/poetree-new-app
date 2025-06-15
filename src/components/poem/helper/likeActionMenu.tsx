@@ -1,5 +1,6 @@
 import { Text } from "@/src/components/text";
 import { usePoemLike } from "@/src/hooks/useRootHook";
+import { useAppProvider } from "@/src/provider/appProvider";
 import { IAppPoem, Obj } from "@/src/types";
 import { REACTION_IMAGE } from "@/src/utils/constant/appConstant";
 import { Colors } from "@/src/utils/constant/colors";
@@ -12,12 +13,16 @@ interface IActionMenuProps {
   poemCount?: number;
   poem?: IAppPoem;
 }
-export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) => {
+export const LikeActionMenu: React.FC<IActionMenuProps> = ({
+  poemCount,
+  poem,
+}) => {
   const colorSchema = useColorScheme();
   const [visible, setVisible] = React.useState(false);
   const [count, setCount] = React.useState<number>(poemCount ?? 0);
   const [reaction, setReaction] = React.useState<Obj>(poem?.userLike ?? {});
   const likePoem = usePoemLike();
+  const { user } = useAppProvider();
   React.useEffect(() => {
     if (poem?.userLike) {
       setReaction(poem.userLike);
@@ -32,9 +37,11 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) 
     if (likePoem.isPending) return;
     setVisible(true);
   };
-  console.log("reaction", poem?.userLike);
   const closeMenu = () => setVisible(false);
   const onHandleReaction = (key: string) => {
+    if (!user?._id) {
+      return;
+    }
     if (!reaction?.type || reaction?.type !== key) {
       likePoem.mutate({
         id: poem?._id as string,

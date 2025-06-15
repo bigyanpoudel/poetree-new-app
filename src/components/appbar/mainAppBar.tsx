@@ -11,7 +11,6 @@ export const MainAppBar = () => {
   const router = useRouter();
   const { user } = useAppProvider();
   const currentUser = useGetCurrentUser();
-  console.log("currentUser", currentUser.data);
   const isDarkTheme = colorSchema === "dark";
   const toggleTheme = () => {
     if (isDarkTheme) {

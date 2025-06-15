@@ -14,7 +14,6 @@ import { appQuery } from "../utils/constant/appQuery";
 
 export const useGetCurrentUser = () => {
   const { user } = useAppProvider();
-  console.log("user", user);
   return useQuery({
     queryKey: [appQuery.getCurrentUser, user?._id],
     queryFn: () => getCurrentUser(user?._id as string),

@@ -31,7 +31,6 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
   if (user.isLoading) {
     return <ProfileCardShimmer />;
   }
-  console.log(user.data, "user data");
   return (
     <View className="h-fit w-full bg-white dark:bg-white/5 p-4 py-6 text-white flex flex-col gap-4">
       <View className="flex flex-row gap-6 items-center">

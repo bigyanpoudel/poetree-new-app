@@ -20,7 +20,6 @@ export const PlaylistDetail = () => {
   const { isLoading, data, refetch, isRefetching } = useGetPlaylistDetails(id);
   const { user } = useAppProvider();
   const router = useRouter();
-  console.log("playlist details data -->", data?.isLocked);
   React.useEffect(() => {
     if (data?.poems && activeIndex === 1) {
       setActivePoem(data.poems[activeIndex - 1]);
@@ -34,7 +33,6 @@ export const PlaylistDetail = () => {
     setActivePoem(activePoem);
     setActiveIndex(index);
   };
-  console.log("playlist Details -->", name, id);
   const actionItems = React.useMemo(() => {
     let items: any[] = [];
     if (data?.createdBy?._id == user?._id) {

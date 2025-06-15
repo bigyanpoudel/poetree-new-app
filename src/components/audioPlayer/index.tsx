@@ -25,7 +25,6 @@ export const AudioPlayer: React.FC<IAudioPlayer> = ({ uri }) => {
       }: { sound: any; status: AVPlaybackStatus | AVPlaybackStatusError } =
         await Audio.Sound.createAsync({ uri: uri }, { shouldPlay: false });
       setSound(sound);
-      console.log("sattus", status);
       // Check if status is of type AVPlaybackStatus
       if ("durationMillis" in status) {
         setDuration(status.durationMillis ?? 0); // Get duration in milliseconds
@@ -55,7 +54,6 @@ export const AudioPlayer: React.FC<IAudioPlayer> = ({ uri }) => {
   // Handle audio playback status update
   const updateProgress = async () => {
     const status = await sound.getStatusAsync();
-    console.log("status", status);
     if (status.positionMillis) {
       setPosition(status.positionMillis);
     }

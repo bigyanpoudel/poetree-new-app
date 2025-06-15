@@ -12,7 +12,6 @@ export const HashTagSection = () => {
   const { data, isLoading } = useGetInfiniteHasTagsPost();
   const router = useRouter();
   const hashTags = data?.pages.flatMap((page: any) => page?.data) || [];
-  console.log(hashTags, "hashTags");
 
   const handleViewAll = () => {
     router.push("/hashtags");

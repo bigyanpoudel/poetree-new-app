@@ -61,7 +61,6 @@ export const FollowerList = () => {
           data={users}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
-            console.log("item---->", item);
             return <UserItem user={item} key={item._id} />;
           }}
           onEndReached={() => {

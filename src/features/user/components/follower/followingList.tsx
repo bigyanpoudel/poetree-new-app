@@ -25,7 +25,6 @@ export const FollowingList = () => {
   const handleRefresh = React.useCallback(() => {
     refetch(); // this will trigger a refresh of the data
   }, [refetch]);
-  console.log("users---->", users);
   return (
     <Scafold isNormalView>
       <View className="flex flex-col gap-5">
@@ -64,7 +63,6 @@ export const FollowingList = () => {
           data={users}
           keyExtractor={(item) => item._id}
           renderItem={({ item }) => {
-            console.log("item---->", item);
             return <UserItem user={item} key={item._id} />;
           }}
           onEndReached={() => {

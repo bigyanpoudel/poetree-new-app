@@ -33,7 +33,6 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) 
     if (likePoem.isPending) return;
     setVisible(true);
   };
-  console.log("reaction", poem?.userLike);
   const closeMenu = () => setVisible(false);
   const onHandleReaction = (key: string) => {
     if (!reaction?.type || reaction?.type !== key) {

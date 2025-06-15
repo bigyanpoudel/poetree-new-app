@@ -16,7 +16,6 @@ interface ICommentItem {
 
 export const CommentItem: React.FC<ICommentItem> = ({ comment, poemId }) => {
   const [openDailog, setOpenDailog] = React.useState<boolean>(false);
-  console.log("coment", comment.commentedBy);
   const user = first(comment.commentedBy);
   const deleteComment = useDeleteComments(poemId);
   return (

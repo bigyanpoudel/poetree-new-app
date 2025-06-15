@@ -9,7 +9,6 @@ import { EmptyState } from "@/src/components/state/emptyState";
 export const LatestSection = () => {
   const latest = useGetLatestPlaylist();
   const { width } = useWindowDimensions();
-  console.log("kkkk", latest.data?.data);
   return (
     <View className="flex flex-col gap-4">
       <SectionHeading title="Latest Playlist" />

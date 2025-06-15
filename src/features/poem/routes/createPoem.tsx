@@ -24,12 +24,10 @@ export const CreatePoem = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data } = useGetPoemDetails(id);
   const insets = useSafeAreaInsets();
-  console.log("data", data);
   const createPoem = useCreatePoem();
   const updatePoem = useUpdatePoem();
   const router = useRouter();
   const handleSubmit = async (values: any, formHelper: FormikHelpers<any>) => {
-    console.log("values -->", values);
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("body", values.body);
@@ -57,13 +55,11 @@ export const CreatePoem = () => {
       }
     }
     if (!id) {
-      console.log("create -->");
       const res = await createPoem.mutateAsync(formData);
       if (res) {
         formHelper.resetForm();
       }
     } else {
-      console.log("update -->");
       const res = await updatePoem.mutateAsync({
         id: data?._id as string,
         body: formData,

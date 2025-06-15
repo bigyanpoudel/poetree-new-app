@@ -40,7 +40,6 @@ export const FileUploader: React.FC<IUploaderProps> = ({
       });
       if (result?.canceled) return; // If canceled, do nothing
       const file = result.assets[0];
-      console.log("picked file", file);
       setFile(file);
       helpers.setValue(file);
     } catch (error) {
@@ -69,7 +68,6 @@ export const FileUploader: React.FC<IUploaderProps> = ({
     }
     if (!file) return null;
     const { uri, name, mimeType: type } = file;
-    console.log("uri video", uri, type);
     if (type?.startsWith("image")) {
       return <Image source={{ uri }} style={{ width: "100%", height: 200 }} />;
     } else if (type?.startsWith("video")) {

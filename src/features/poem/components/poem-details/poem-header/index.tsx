@@ -28,7 +28,6 @@ export const PoemHeader: React.FC<IPoemHeaderProp> = ({ poem }) => {
       });
     }
   };
-  console.log("poem?.postedBy?", poem?.postedBy);
   return (
     <View className="flex flex-col gap-3">
       <View className="flex flex-row gap-3 justify-between items-center">

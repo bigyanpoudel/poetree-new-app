@@ -24,7 +24,6 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
   const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
   const [openReportModal, setOpenReportModal] = React.useState<boolean>(false);
   const { user } = useAppProvider();
-  console.log("porm", poem);
   const deletePoem = useDeletePoem();
   const router = useRouter();
   const reportPoem = useReport();
@@ -164,7 +163,7 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
                 </Text>
               </Link>
               <Text className="text-sm text-gray-500">
-                {/* {getCreatedDate(poem?.createdAt ?? poem.updatedAt)} */}
+                {getCreatedDate(poem?.createdAt ?? poem.updatedAt)}
               </Text>
             </View>
           </View>

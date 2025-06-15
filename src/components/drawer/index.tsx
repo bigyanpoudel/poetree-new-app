@@ -36,7 +36,6 @@ export const CustomDrawer = forwardRef(
       ),
       []
     );
-    console.log("index", index);
     return (
       <BottomSheet
         backgroundStyle={{

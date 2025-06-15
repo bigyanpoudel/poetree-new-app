@@ -2,7 +2,6 @@ import { API } from "@/src/lib/axios";
 import { Obj } from "@/src/types";
 
 export const SignupApi =  (body: Obj) => {
-  console.log("data", body);
   return  API.post("/user", body);
 };
 

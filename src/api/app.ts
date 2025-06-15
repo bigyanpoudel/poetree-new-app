@@ -2,7 +2,6 @@ import { API } from "@/src/lib/axios";
 import { IAppUser, Obj } from "@/src/types";
 
 export const getCurrentUser = async (id: string): Promise<IAppUser> => {
-  console.log("id", id);
   return API.get(`/user/${id}`);
 };
 

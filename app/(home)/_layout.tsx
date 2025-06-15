@@ -53,6 +53,5 @@ export default function TabLayout() {
       },
     },
   ];
-  console.log("items", items);
   return <ExpoRouteTabs items={items} />;
 }

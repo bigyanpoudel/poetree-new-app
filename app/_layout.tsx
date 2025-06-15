@@ -43,7 +43,6 @@ const AppBootStrap = () => {
   useOnlineManager();
   useAppState(onAppStateChange);
   const { isUserLoaded, hasSeenOnboarding, isOnboardingLoaded } = useAppProvider();
-  console.log("isUserLoaded", isUserLoaded, "hasSeenOnboarding", hasSeenOnboarding);
   useEffect(() => {
     if (loaded && isUserLoaded && isOnboardingLoaded) {
       SplashScreen.hideAsync();

@@ -32,7 +32,6 @@ export const useSignin = () => {
     onSuccess: async (data: any) => {
       await storageUtil.setItem(POETREE_USER, JSON.stringify(data));
       setUser(data);
-      console.log("data", data);
       router.navigate("/");
     },
   });

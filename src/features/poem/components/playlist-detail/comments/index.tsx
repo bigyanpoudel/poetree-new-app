@@ -24,7 +24,6 @@ export const PlaylistCommentSections: React.FC<IPoemCommentSections> = ({ id }) 
   const handleRefresh = React.useCallback(() => {
     refetch();
   }, [refetch]);
-  console.log("comments", comments);
   return (
     <View className="flex flex-col flex-1 gap-4">
       <Text fontWeight={600} className={"text-lg "}>

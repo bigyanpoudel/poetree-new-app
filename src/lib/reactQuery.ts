@@ -32,7 +32,6 @@ export const queryClient = new QueryClient({
   mutationCache: new MutationCache({
     onError: (error, _variables, _context, mutation) => {
       // If the mutation has its own onError, skip
-      console.log("error catch", error);
       if (mutation.options.onError) return;
 
       handleError(error as AxiosError<any, any>);

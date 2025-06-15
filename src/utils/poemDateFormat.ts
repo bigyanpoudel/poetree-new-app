@@ -1,33 +1,17 @@
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import 'dayjs/locale/en';
 
 dayjs.extend(relativeTime);
 
-// Override locale
-dayjs.locale('en', {
-    relativeTime: {
-      future: 'in %s',
-      past: '%s ago',
-      s: 'a few seconds',
-      m: '1 minute',
-      mm: '%d minutes',
-      h: '1 hour',
-      hh: '%d hours',
-      d: '1 day',
-      dd: '%d days',
-      M: '1 month',
-      MM: '%d months',
-      y: '1 year',
-      yy: '%d years',
-    },
-});
-  
 export const getCreatedDate = (date: string) => {
+  if (!date) {
+    return "";
+  }
+
   const now = dayjs();
   const createdDate = dayjs(date);
 
-  if (!createdDate.isValid() && !date) {
+  if (!createdDate.isValid()) {
     return "Invalid date";
   }
 

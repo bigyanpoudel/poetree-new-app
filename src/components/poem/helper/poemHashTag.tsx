@@ -15,7 +15,6 @@ export const HashtagButton = ({
   className?: string;
   icon?: React.ReactNode;
 }) => {
-  console.log("title", title);
   return (
     <TouchableOpacity
       style={styles.button}

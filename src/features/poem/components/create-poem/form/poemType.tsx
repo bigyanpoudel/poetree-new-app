@@ -33,7 +33,6 @@ export const PoemType: React.FC<IPoemTypeProps> = ({ name, label }) => {
     fileHelper.setValue(undefined);
   };
 
-  console.log("field", field.value);
   return (
     <View className="flex flex-col gap-2">
       {label && <Text className="text-lg pl-2">{label}</Text>}

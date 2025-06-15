@@ -49,7 +49,6 @@ export const SignupPage = () => {
   const signup = useSignup();
 
   const handleSubmit = async (values: Obj) => {
-    console.log("values", values);
     await signup.mutateAsync({ ...values, slug: values.email.split("@")[0] });
   };
 

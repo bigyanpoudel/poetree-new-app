@@ -77,7 +77,6 @@ export const usePurchasePlaylist = () => {
   return useMutation({
     mutationFn: puchasePlaylistApi,
     onSuccess: (data: any) => {
-      console.log("Purchase Playlist Success", data);
       if (data.puhcaseUrl) {
         Linking.openURL(data.puhcaseUrl).catch((err) =>
           console.error("Failed to open URL:", err)
