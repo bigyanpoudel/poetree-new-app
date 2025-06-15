@@ -3,6 +3,7 @@ import { POETREE_USER } from "../utils/constant/appConstant";
 import { storageUtil } from "../utils/storage";
 import { useQueryClient } from "@tanstack/react-query";
 import { appQuery } from "../utils/constant/appQuery";
+import { updateCachedToken } from "../lib/axios";
 
 type User = {
   _id?: string;
@@ -12,7 +13,7 @@ type User = {
 
 type AppContextType = {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setUser: (user: User | null) => void;
   isUserLoaded: boolean; // true once initial user load is complete
   hasSeenOnboarding: boolean;
   setHasSeenOnboarding: React.Dispatch<React.SetStateAction<boolean>>;
@@ -33,28 +34,41 @@ export const useAppProvider = () => useContext(AppContext);
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUserState] = useState<User | null>(null);
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const [hasSeenOnboarding, setHasSeenOnboarding] = useState(true);
   const [isOnboardingLoaded, setIsOnboardingLoaded] = useState(false);
   const queryClient = useQueryClient();
+
+  // Custom setUser function that also updates cached token
+  const setUser = (newUser: User | null) => {
+    setUserState(newUser);
+    updateCachedToken(newUser?.accessToken || null);
+  };
   useEffect(() => {
     const loadAppData = async () => {
       try {
-        // Load user data
-        const userData = await storageUtil.getItem(POETREE_USER);
+        // Load both user data and onboarding status in parallel
+        const [userData, onboardingStatus] = await Promise.all([
+          storageUtil.getItem(POETREE_USER),
+          storageUtil.getItem('hasSeenOnboarding')
+        ]);
+        
         if (userData) {
-          await queryClient.invalidateQueries({
-           queryKey: [appQuery.getCurrentUser],
-         });
-          setUser(userData);
+          setUserState(userData);
+          // Update cached token for API requests
+          updateCachedToken(userData.accessToken || null);
+          // Defer query invalidation to avoid blocking startup
+          setTimeout(() => {
+            queryClient.invalidateQueries({
+              queryKey: [appQuery.getCurrentUser],
+            });
+          }, 0);
         }
 
-        // Load onboarding status
-        const onboardingStatus = await storageUtil.getItem('hasSeenOnboarding');
         setHasSeenOnboarding(onboardingStatus === true);
       } catch (err) {
-        console.warn("Failed to load app data from storage", err);
+        // Silently handle storage errors during startup
       } finally {
         setIsUserLoaded(true);
         setIsOnboardingLoaded(true);
@@ -62,7 +76,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     loadAppData();
-  }, []);
+  }, [queryClient]);
 
   return (
     <AppContext.Provider value={{ 

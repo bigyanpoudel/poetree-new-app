@@ -11,6 +11,7 @@ import { Toast } from "toastify-react-native";
 import { POETREE_USER } from "@/src/utils/constant/appConstant";
 import { storageUtil } from "@/src/utils/storage";
 import { useAppProvider } from "@/src/provider/appProvider";
+import { updateCachedToken } from "@/src/lib/axios";
 
 export const useSignup = () => {
   const router = useRouter();
@@ -30,7 +31,11 @@ export const useSignin = () => {
   return useMutation({
     mutationFn: signinApi,
     onSuccess: async (data: any) => {
-      await storageUtil.setItem(POETREE_USER, JSON.stringify(data));
+      // Store user data in storage
+      await storageUtil.setItem(POETREE_USER, data);
+      // Update cached token immediately for axios requests
+      updateCachedToken(data.accessToken || null);
+      // Update user state (this will also update cached token via setUser)
       setUser(data);
       router.navigate("/");
     },

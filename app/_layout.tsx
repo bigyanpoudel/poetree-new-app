@@ -30,16 +30,72 @@ export default function RootLayout() {
   );
 }
 
+// Memoize toast styles to prevent recreation on every render
+const useToastStyles = (isDark: boolean) => React.useMemo(() => ({
+  success: {
+    backgroundColor: isDark ? '#065f46' : '#10b981',
+    borderRadius: 8,
+    marginHorizontal: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    shadowOpacity: isDark ? 0 : 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: isDark ? 0 : 4,
+    elevation: isDark ? 0 : 4,
+  },
+  error: {
+    backgroundColor: isDark ? '#7f1d1d' : '#ef4444',
+    borderRadius: 8,
+    marginHorizontal: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    shadowOpacity: isDark ? 0 : 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: isDark ? 0 : 4,
+    elevation: isDark ? 0 : 4,
+  },
+  warning: {
+    backgroundColor: isDark ? '#78350f' : '#f59e0b',
+    borderRadius: 8,
+    marginHorizontal: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    shadowOpacity: isDark ? 0 : 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: isDark ? 0 : 4,
+    elevation: isDark ? 0 : 4,
+  },
+  info: {
+    backgroundColor: isDark ? '#1e3a8a' : '#3b82f6',
+    borderRadius: 8,
+    marginHorizontal: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    shadowOpacity: isDark ? 0 : 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: isDark ? 0 : 4,
+    elevation: isDark ? 0 : 4,
+  },
+}), [isDark]);
+
 const AppBootStrap = () => {
+  // Load only essential fonts first, others can be loaded asynchronously
   const [loaded] = useFonts({
     Garamond: require("../assets/fonts/garamond.ttf"),
     Poximanova: require("../assets/fonts/proxima-nova-medium.ttf"),
     Poximanova400: require("../assets/fonts/proximanova_regular.ttf"),
+  });
+  
+  // Load additional fonts asynchronously after initial render
+  const [additionalLoaded] = useFonts({
     Poximanova600: require("../assets/fonts/proximanova_semibold.otf"),
     Poximanova700: require("../assets/fonts/proximanova_bold.otf"),
     Poximanova800: require("../assets/fonts/proximanova_extrabold.otf"),
   });
+  
   const isDark = useIsDarkTheme();
+  const toastStyles = useToastStyles(isDark);
+  
   useOnlineManager();
   useAppState(onAppStateChange);
   const { isUserLoaded, hasSeenOnboarding, isOnboardingLoaded } = useAppProvider();
@@ -116,52 +172,7 @@ const AppBootStrap = () => {
             fontFamily: 'Poximanova',
             fontWeight: '500',
           }}
-          style={{
-            success: {
-              backgroundColor: isDark ? '#065f46' : '#10b981',
-              borderRadius: 8,
-              marginHorizontal: 16,
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-              shadowOpacity: isDark ? 0 : 0.2,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: isDark ? 0 : 4,
-              elevation: isDark ? 0 : 4,
-            },
-            error: {
-              backgroundColor: isDark ? '#7f1d1d' : '#ef4444',
-              borderRadius: 8,
-              marginHorizontal: 16,
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-              shadowOpacity: isDark ? 0 : 0.2,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: isDark ? 0 : 4,
-              elevation: isDark ? 0 : 4,
-            },
-            warning: {
-              backgroundColor: isDark ? '#78350f' : '#f59e0b',
-              borderRadius: 8,
-              marginHorizontal: 16,
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-              shadowOpacity: isDark ? 0 : 0.2,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: isDark ? 0 : 4,
-              elevation: isDark ? 0 : 4,
-            },
-            info: {
-              backgroundColor: isDark ? '#1e3a8a' : '#3b82f6',
-              borderRadius: 8,
-              marginHorizontal: 16,
-              paddingVertical: 12,
-              paddingHorizontal: 16,
-              shadowOpacity: isDark ? 0 : 0.2,
-              shadowOffset: { width: 0, height: 2 },
-              shadowRadius: isDark ? 0 : 4,
-              elevation: isDark ? 0 : 4,
-            },
-          }}
+          style={toastStyles}
         />
       </View>
     </PaperProvider>

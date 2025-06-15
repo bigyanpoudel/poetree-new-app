@@ -1,6 +1,7 @@
 import { storageUtil } from "./storage";
 import { POETREE_USER } from "./constant/appConstant";
 import { queryClient } from "../lib/reactQuery";
+import { updateCachedToken } from "../lib/axios";
 import { router } from "expo-router";
 
 // Global logout utility function
@@ -8,6 +9,9 @@ export const performLogout = async (setUser?: (user: any) => void) => {
   try {
     // Clear user from storage
     await storageUtil.clearItem(POETREE_USER);
+    
+    // Clear cached token
+    updateCachedToken(null);
     
     // Clear user from app state if setUser function is provided
     if (setUser) {

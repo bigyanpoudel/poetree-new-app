@@ -6,6 +6,19 @@ import { POETREE_USER, SESSION_EXPIRED } from "../utils/constant/appConstant";
 import { storageUtil } from "../utils/storage";
 import { performLogout } from "../utils/logout";
 
+// Cache token to avoid repeated storage reads
+let cachedToken: string | null = null;
+let tokenPromise: Promise<any> | null = null;
+
+const getToken = async () => {
+  if (!tokenPromise) {
+    tokenPromise = storageUtil.getItem(POETREE_USER);
+  }
+  const tokenData = await tokenPromise;
+  cachedToken = tokenData?.accessToken || null;
+  return cachedToken;
+};
+
 export const API = axios.create({
   baseURL: APPENV.BACKEND_BASE_URL,
   headers: {
@@ -14,12 +27,21 @@ export const API = axios.create({
 });
 
 API.interceptors.request.use(async (config: InternalAxiosRequestConfig) => {
-  const tokenData = await storageUtil.getItem(POETREE_USER);
-  if (tokenData?.accessToken) {
-    config.headers.Authorization = `Bearer ${tokenData?.accessToken}`;
+  const token = cachedToken || await getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
+
+// Update cached token when user changes
+export const updateCachedToken = (newToken: string | null) => {
+  cachedToken = newToken;
+  tokenPromise = null; // Reset promise to force fresh storage read if needed
+};
+
+// Debug function to check current cached token
+export const getCurrentCachedToken = () => cachedToken;
 
 API.interceptors.response.use(
   (response) => {
