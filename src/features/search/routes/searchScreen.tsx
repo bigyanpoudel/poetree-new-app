@@ -14,13 +14,23 @@ const Tab = createMaterialTopTabNavigator();
 export const SearchScreen = () => {
   const { query } = useLocalSearchParams<{ query?: string }>();
   const [searchQuery, setSearchQuery] = React.useState(query || "");
+  const [debouncedQuery, setDebouncedQuery] = React.useState(query || "");
   const colorScheme = useColorScheme();
   const isDark = colorScheme == "dark";
+
+  // Debounce search query to prevent excessive API calls
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedQuery(searchQuery);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
   // Update search query when URL parameter changes
   React.useEffect(() => {
     if (query) {
       setSearchQuery(query);
+      setDebouncedQuery(query);
     }
   }, [query]);
   return (
@@ -82,7 +92,7 @@ export const SearchScreen = () => {
       >
         <Tab.Screen
           name="Users"
-          children={() => <SearchUserList search={searchQuery} />}
+          children={() => <SearchUserList search={debouncedQuery} />}
           options={{
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally
@@ -99,7 +109,7 @@ export const SearchScreen = () => {
         />
         <Tab.Screen
           name="Poems"
-          children={() => <SearchPoemList search={searchQuery} />}
+          children={() => <SearchPoemList search={debouncedQuery} />}
           options={{
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally
@@ -116,7 +126,7 @@ export const SearchScreen = () => {
         />
         <Tab.Screen
           name="Playlist"
-          children={() => <SearchPaylist search={searchQuery} />}
+          children={() => <SearchPaylist search={debouncedQuery} />}
           options={{
             tabBarLabelStyle: {
               fontFamily: "Poximanova",

@@ -20,15 +20,10 @@ import { PoemType } from "./helper/poemType";
 interface IPoemProps {
   poem: IAppPoem;
 }
-export const Poem: React.FC<IPoemProps> = ({ poem }) => {
-  const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
-  const [openReportModal, setOpenReportModal] = React.useState<boolean>(false);
-  const { user } = useAppProvider();
-  const deletePoem = useDeletePoem();
-  const router = useRouter();
-  const reportPoem = useReport();
-  const poemType: POEMTYPE = getPoemType({ ...poem });
-  const actionItems = React.useMemo(() => {
+
+// Memoize action items to prevent recreation on every render
+const useActionItems = (poem: IAppPoem, user: any, router: any, setOpenDeleteModal: (open: boolean) => void, setOpenReportModal: (open: boolean) => void) => {
+  return React.useMemo(() => {
     let items = [
       {
         label: "Details",
@@ -89,7 +84,25 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
       ];
     }
     return items;
-  }, [poem, user]);
+  }, [poem._id, poem.slug, poem.title, poem.postedBy?._id, user?._id, router, setOpenDeleteModal, setOpenReportModal]);
+};
+
+// Memoize style objects
+const titleStyle = {
+  fontFamily: "garamond",
+  fontWeight: 800,
+} as const;
+
+export const Poem: React.FC<IPoemProps> = React.memo(({ poem }) => {
+  const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
+  const [openReportModal, setOpenReportModal] = React.useState<boolean>(false);
+  const { user } = useAppProvider();
+  const deletePoem = useDeletePoem();
+  const router = useRouter();
+  const reportPoem = useReport();
+  const poemType: POEMTYPE = getPoemType({ ...poem });
+  
+  const actionItems = useActionItems(poem, user, router, setOpenDeleteModal, setOpenReportModal);
 
   return (
     <View>
@@ -97,10 +110,7 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
         <View className="flex flex-col gap-1">
           <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
             <Text
-              style={{
-                fontFamily: "garamond",
-                fontWeight: 800,
-              }}
+              style={titleStyle}
               className="text-[24px] garamond -tracking-[0.5px]  font-bold "
               numberOfLines={2}
             >
@@ -222,4 +232,4 @@ export const Poem: React.FC<IPoemProps> = ({ poem }) => {
       )}
     </View>
   );
-};
+});

@@ -37,16 +37,9 @@ export const SearchPoemList: React.FC<ISearchPoemListProps> = ({ search }) => {
         paddingBottom: 40,
       }}
       data={poems}
-      keyExtractor={(item) => item._id}
-      renderItem={({ item }) => {
-        return <Poem poem={item} key={item._id} />;
-      }}
+      keyExtractor={(item, index) => `${item._id}-${index}`}
+      renderItem={({ item }) => <Poem poem={item} />}
       onEndReached={() => {
-        if (hasNextPage && !isFetchingNextPage) {
-          fetchNextPage();
-        }
-      }}
-      onMomentumScrollBegin={() => {
         if (hasNextPage && !isFetchingNextPage) {
           fetchNextPage();
         }
@@ -55,7 +48,11 @@ export const SearchPoemList: React.FC<ISearchPoemListProps> = ({ search }) => {
       onRefresh={handleRefresh}
       contentContainerStyle={{ paddingVertical: 16 }}
       ItemSeparatorComponent={() => <View className="h-2" />}
-      onEndReachedThreshold={0.01}
+      onEndReachedThreshold={0.5}
+      removeClippedSubviews={true}
+      maxToRenderPerBatch={10}
+      updateCellsBatchingPeriod={50}
+      initialNumToRender={5}
       ListEmptyComponent={
         isLoading ? (
           <View className="gap-4">

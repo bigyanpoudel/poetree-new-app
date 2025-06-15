@@ -59,20 +59,32 @@ export const AudioPlayer: React.FC<IAudioPlayer> = ({ uri }) => {
     }
   };
 
-  // Unload the audio when the component unmounts
+  // Load audio when uri changes
   useEffect(() => {
     loadAudio();
-  }, [uri]);
-
-  useEffect(() => {
-    const interval = setInterval(updateProgress, 100); // Update progress every second
+    
+    // Cleanup on unmount or uri change
     return () => {
       if (sound) {
-        sound.unloadAsync();
+        sound.unloadAsync().catch(console.error);
       }
-      clearInterval(interval);
     };
-  }, [isLoading]);
+  }, [uri]);
+
+  // Progress update interval - only when playing and not loading
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null;
+    
+    if (!isLoading && sound && isPlaying) {
+      interval = setInterval(updateProgress, 500); // Reduced frequency from 100ms to 500ms
+    }
+    
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [sound, isLoading, isPlaying]);
 
   // Format the time into mm:ss
   const formatTime = (milliseconds: number) => {

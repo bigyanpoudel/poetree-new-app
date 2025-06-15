@@ -29,7 +29,7 @@ export const useGetInfiniteUsersList = ({ data }: { data: IUserListRes }) => {
 export const useGetInfiniteUsersPlayList = (params: Obj) => {
   const limit = 20;
   return useInfiniteQuery({
-    queryKey: [userQuery.getUserPlayList],
+    queryKey: [userQuery.getUserPlayList, params],
     queryFn: ({ pageParam }) =>
       getUserPlayListApi({ page: pageParam + 1, limit, params }),
     initialPageParam: 0,

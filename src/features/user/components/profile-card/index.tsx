@@ -10,14 +10,95 @@ import React from "react";
 import { Image, TouchableOpacity, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import { useGetUserProfile } from "../../hooks/user";
+
+// Memoize the profile image component
+const ProfileImage = React.memo<{ photo?: string; name?: string }>(({ photo, name }) => {
+  if (photo) {
+    return (
+      <Image
+        source={{ uri: photo }}
+        className="w-[90px] h-[90px] rounded-full border border-ui-border dark:border-ui-border/20"
+      />
+    );
+  }
+  
+  return (
+    <Avatar.Text
+      size={90}
+      label={name?.charAt(0) ?? ""}
+      labelStyle={{
+        fontSize: 16,
+        color: "white",
+      }}
+      className="dark:bg-black/50 bg-darkBackground "
+    />
+  );
+});
+
+// Memoize stats component
+const UserStats = React.memo<{ 
+  followingCount?: number; 
+  followersCount?: number; 
+  userId?: string; 
+  slug?: string;
+  router: any;
+}>(({ followingCount, followersCount, userId, slug, router }) => {
+  const handleFollowingPress = React.useCallback(() => {
+    router.push(`/follower/${userId}?slug=${slug}`);
+  }, [router, userId, slug]);
+
+  const handleFollowersPress = React.useCallback(() => {
+    router.push(`/follower/${userId}?slug=${slug}`);
+  }, [router, userId, slug]);
+
+  return (
+    <View className="flex flex-row gap-8 items-center">
+      <TouchableOpacity className="flex flex-col items-center justify-center">
+        <Text
+          fontWeight={700}
+          className="text-lg font-semibold font-proxima-extrabold"
+        >
+          {formatPoemNumber(0)}
+        </Text>
+        <Text className="text-sm font-normal dark:text-white/50 text-black/60">
+          Poem
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleFollowingPress}
+        className="flex flex-col items-center justify-center"
+      >
+        <Text fontWeight={700} className="text-lg font-semibold">
+          {formatPoemNumber(followingCount)}
+        </Text>
+        <Text className="text-sm font-normal dark:text-white/50 text-black/60">
+          Following
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={handleFollowersPress}
+        className="flex flex-col items-center justify-center"
+      >
+        <Text fontWeight={700} className="text-lg font-semibold">
+          {formatPoemNumber(followersCount)}
+        </Text>
+        <Text className="text-sm font-normal dark:text-white/50 text-black/60">
+          Followers
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+});
+
 interface IProfileCardProps {}
-export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
+export const ProfileCard: React.FC<IProfileCardProps> = React.memo(() => {
   const router = useRouter();
   const user = useGetUserProfile();
   const currentUser = useGetCurrentUser();
   const followUser = useFollowUser();
   const unfollowUser = useUnFollowUser();
-  const handleFollow = () => {
+  
+  const handleFollow = React.useCallback(() => {
     if (!user.data?.isFollowing) {
       followUser.mutate({
         targetId: user.data?._id as string,
@@ -27,7 +108,11 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
         targetId: user.data._id,
       });
     }
-  };
+  }, [user.data?.isFollowing, user.data?._id, followUser, unfollowUser]);
+
+  const handleEditProfile = React.useCallback(() => {
+    router.push("/account/edit-profile");
+  }, [router]);
   if (user.isLoading) {
     return <ProfileCardShimmer />;
   }
@@ -35,71 +120,19 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
     <View className="h-fit w-full bg-white dark:bg-white/5 p-4 py-6 text-white flex flex-col gap-4">
       <View className="flex flex-row gap-6 items-center">
         <TouchableOpacity className="relative w-24 h-24">
-          {user.data?.photo ? (
-            <Image
-              source={{ uri: user.data?.photo }}
-              className="w-[90px] h-[90px] rounded-full border border-ui-border dark:border-ui-border/20"
-            />
-          ) : (
-            <Avatar.Text
-              size={90}
-              label={user.data?.name?.charAt(0) ?? ""}
-              labelStyle={{
-                fontSize: 16,
-                color: "white",
-              }}
-              className="dark:bg-black/50 bg-darkBackground "
-            />
-          )}
+          <ProfileImage photo={user.data?.photo} name={user.data?.name} />
         </TouchableOpacity>
-        <View className="flex flex-col flex-1  ">
+        <View className="flex flex-col flex-1">
           <Text fontWeight={700} className=" text-2xl mt-2 font-semibold">
             {user.data?.name}
           </Text>
-          <View className="flex flex-row gap-8    items-center">
-            <TouchableOpacity className="flex flex-col items-center justify-center">
-              <Text
-                fontWeight={700}
-                className="text-lg font-semibold font-proxima-extrabold"
-              >
-                {formatPoemNumber(0)}
-              </Text>
-              <Text className="text-sm font-normal dark:text-white/50 text-black/60">
-                Poem
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                router.push(
-                  `/follower/${user.data?._id}?slug=${user.data?.slug}`
-                );
-              }}
-              className="flex flex-col items-center justify-center"
-            >
-              <Text fontWeight={700} className="text-lg font-semibold">
-                {formatPoemNumber(user.data?.followingCount)}{" "}
-              </Text>
-              <Text className="text-sm font-normal dark:text-white/50 text-black/60">
-                Following
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                router.push(
-                  `/follower/${user.data?._id}?slug=${user.data?.slug}`
-                );
-              }}
-              className="flex flex-col items-center justify-center"
-            >
-              <Text fontWeight={700} className="text-lg font-semibold">
-                {formatPoemNumber(user.data?.followersCount)}{" "}
-              </Text>
-              <Text className="text-sm font-normal dark:text-white/50 text-black/60">
-                Followers
-              </Text>
-            </TouchableOpacity>
-          </View>
+          <UserStats 
+            followingCount={user.data?.followingCount}
+            followersCount={user.data?.followersCount}
+            userId={user.data?._id}
+            slug={user.data?.slug}
+            router={router}
+          />
         </View>
       </View>
 
@@ -129,9 +162,7 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
       {user.data?._id === currentUser.data?._id && (
         <Button
           mode="contained"
-          onPress={() => {
-            router.push("/account/edit-profile");
-          }}
+          onPress={handleEditProfile}
           labelStyle={{
             fontSize: 20,
           }}
@@ -146,7 +177,7 @@ export const ProfileCard: React.FC<IProfileCardProps> = ({}) => {
       )}
     </View>
   );
-};
+});
 
 const ProfileCardShimmer: React.FC = () => {
   return (

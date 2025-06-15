@@ -8,16 +8,16 @@ import { useGetInfiniteUsersPlayList } from "../../hooks/users";
 
 export const ListPlaylist = () => {
   const { id } = useLocalSearchParams<{ id: string; slug: string }>();
-
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    refetch,
-    isRefetching,
-  } = useGetInfiniteUsersPlayList({ userId: id });
+console.log("id", id);
+const {
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  isLoading,
+  refetch,
+  isRefetching,
+} = useGetInfiniteUsersPlayList({ createdBy: id });
   const poems = data?.pages.flatMap((page: any) => page?.data) || [];
   const handleRefresh = React.useCallback(() => {
     refetch(); // this will trigger a refresh of the data

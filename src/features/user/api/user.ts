@@ -55,9 +55,20 @@ export const getUserFollowerListApi = ({
   );
 };
 
-export const getUserPlayListApi = async (
-  params: Obj
-): Promise<IUserPlayListRes> => {
-  const url = generateUrlWithParams("playlist/all", params);
+export const getUserPlayListApi = async ({
+  limit,
+  page,
+  params,
+}: {
+  page: number;
+  limit: number;
+  params: Obj;
+}): Promise<IUserPlayListRes> => {
+  const url = generateUrlWithParams("playlist/all", {
+    limit,
+    page,
+    ...params,
+  });
+  console.log("userl", url, params);
   return await API.get(url);
 };
