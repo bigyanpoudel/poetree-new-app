@@ -150,9 +150,14 @@ const AppBootStrap = () => {
           <Stack.Screen name="(home)" options={{ headerShown: false }} />
           <Stack.Screen name="user/[id]" />
           <Stack.Screen name="poem/[id]" />
+          <Stack.Screen name="anthology/[id]/submit" />
+          <Stack.Screen name="anthology/[id]" />
+          <Stack.Screen name="my-submissions" />
+          <Stack.Screen name="submission-detail" />
           <Stack.Screen name="signin" />
           <Stack.Screen name="signup" />
           <Stack.Screen name="search" />
+          <Stack.Screen name="anthologies" />
           <Stack.Screen name="create-poem" />
           <Stack.Screen name="playlist/[id]" />
           <Stack.Screen name="follower/[id]" />
@@ -162,6 +167,7 @@ const AppBootStrap = () => {
           <Stack.Screen name="account/change-password" />
           <Stack.Screen name="account/payment-account" />
           <Stack.Screen name="my-purchase" />
+
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

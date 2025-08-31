@@ -122,7 +122,15 @@ export const Poem: React.FC<IPoemProps> = React.memo(({ poem }) => {
             isVideo={Boolean(poem?.video)}
           />
         </View>
-        {poem.body && <PoemBody poem={poem} />}
+        {poem.body && (
+          <PoemBody
+            poem={poem}
+            onShowMore={() => {
+              router.push(`/poem/${poem.slug}?name=${poem.title}`);
+            }}
+            maxLines={5}
+          />
+        )}
         {poem.hashTags && poem.hashTags.length > 0 && (
           <RenderHashTag hashtags={poem.hashTags} title={poem?._id ?? ""} />
         )}

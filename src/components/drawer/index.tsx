@@ -79,7 +79,7 @@ export const CustomDrawer = forwardRef(
               </View>
             </TouchableWithoutFeedback>
           )}
-          <View className="px-5 py-3 max-h-[75vh]">{content}</View>
+          <View className="px-5 py-3 max-h-[75vh] overflow-x-auto">{content}</View>
         </BottomSheetView>
       </BottomSheet>
     );

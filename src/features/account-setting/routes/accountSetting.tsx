@@ -23,6 +23,8 @@ import {
   User,
   UserCircle,
   UserPlus,
+  BookOpen,
+  FileText,
 } from "lucide-react-native";
 import React from "react";
 import { Appearance, View } from "react-native";
@@ -135,7 +137,28 @@ export const AccountSetting = () => {
             </List.Section>
 
             <Divider />
+            {/* Anthology Section */}
+            <List.Section>
+              <ListSubHeading>Anthology</ListSubHeading>
+              <ListItem
+                title="Anthologies"
+                left={(props) => <BookOpen {...props} size={20} />}
+                onPress={() => {
+                  router.navigate("/anthologies");
+                }}
+              />
+              {user && (
+                <ListItem
+                  title="My Submissions"
+                  left={(props) => <FileText {...props} size={20} />}
+                  onPress={() => {
+                    router.navigate("/my-submissions");
+                  }}
+                />
+              )}
+            </List.Section>
 
+            <Divider />
             {/* Payment Section */}
             <List.Section>
               <ListSubHeading>Payment</ListSubHeading>
@@ -151,6 +174,8 @@ export const AccountSetting = () => {
             <Divider />
           </>
         )}
+
+
 
         {/* Preferences Section */}
         <List.Section>

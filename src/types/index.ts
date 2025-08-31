@@ -192,3 +192,52 @@ export enum PurchaseStatusEnum {
   failed = "FAILED",
 }
 
+
+
+export type AnthologyPricing = {
+  ebookPrice: number;
+  printPrice: number;
+  royaltyRate: number; // should be between 0 and 1
+};
+
+export enum AnthologyStatusEnum {
+  DRAFT = "draft",
+  Ongoing = "ongoing",
+  Completed = "completed",
+  PUBLISHED = "published",
+  CANCELLED = "cancelled",
+}
+
+export type IAppAnthology = {
+  _id: string;
+  title: string;
+  theme: string;
+  submissionDeadline: string;
+  coverImage?: string;
+  pricing?: AnthologyPricing;
+  createdAt: string;
+  updatedAt: string;
+  slug: string;
+  status: AnthologyStatusEnum;
+  submitted?: boolean;
+};
+
+export enum SubmissionStatusEnum {
+  PENDING = "pending",
+  ACCEPTED = "accepted",
+  REJECTED = "rejected",
+}
+
+export type IPoemSubmission = {
+  _id: string;
+  submittedAt: string;
+  poem: {
+    title: string;
+    content: string;
+  };
+  status: SubmissionStatusEnum;
+  poet: IAppUser;
+  anthology?: IAppAnthology;
+  rejectionReason?: string;
+};
+
