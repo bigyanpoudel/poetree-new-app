@@ -109,6 +109,28 @@ export const AccountSetting = () => {
           )}
         </List.Section>
         <Divider />
+        {/* Anthology Section */}
+        <List.Section>
+          <ListSubHeading>Anthology</ListSubHeading>
+          <ListItem
+            title="Anthologies"
+            left={(props) => <BookOpen {...props} size={20} />}
+            onPress={() => {
+              router.navigate("/anthologies");
+            }}
+          />
+          {user?._id && (
+            <ListItem
+              title="My Submissions"
+              left={(props) => <FileText {...props} size={20} />}
+              onPress={() => {
+                router.navigate("/my-submissions");
+              }}
+            />
+          )}
+        </List.Section>
+
+        <Divider />
         {user?._id && (
           <>
             <List.Section>
@@ -137,28 +159,7 @@ export const AccountSetting = () => {
             </List.Section>
 
             <Divider />
-            {/* Anthology Section */}
-            <List.Section>
-              <ListSubHeading>Anthology</ListSubHeading>
-              <ListItem
-                title="Anthologies"
-                left={(props) => <BookOpen {...props} size={20} />}
-                onPress={() => {
-                  router.navigate("/anthologies");
-                }}
-              />
-              {user && (
-                <ListItem
-                  title="My Submissions"
-                  left={(props) => <FileText {...props} size={20} />}
-                  onPress={() => {
-                    router.navigate("/my-submissions");
-                  }}
-                />
-              )}
-            </List.Section>
 
-            <Divider />
             {/* Payment Section */}
             <List.Section>
               <ListSubHeading>Payment</ListSubHeading>

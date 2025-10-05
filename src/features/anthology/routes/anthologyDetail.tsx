@@ -9,11 +9,13 @@ import React from "react";
 import { RefreshControl, ScrollView, View } from "react-native";
 import { useGetAnthologyDetails } from "../hooks";
 import { AnthologyDetailShimmer } from "../components/anthologyDetailShimmer";
+import { useAppProvider } from "@/src/provider/appProvider";
 
 
 export const AnthologyDetail = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { user } = useAppProvider()
   const { data: anthology, isLoading, refetch, isRefetching } = useGetAnthologyDetails();
   
 
@@ -139,7 +141,7 @@ export const AnthologyDetail = () => {
        
 
           {/* Action Buttons */}
-         {!anthology?.submitted && <View className="space-y-3">
+              {!anthology?.submitted && user?._id && <View className="space-y-3">
             <Button
               mode="contained"
               onPress={handleParticipate}

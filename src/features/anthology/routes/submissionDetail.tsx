@@ -3,12 +3,12 @@ import { PoemBody } from "@/src/components/poem/helper/poemBody";
 import { Text } from "@/src/components/text";
 import { IPoemSubmission, SubmissionStatusEnum } from "@/src/types";
 import { getCreatedDate } from "@/src/utils/poemDateFormat";
-import { MaterialIcons, Ionicons, Feather } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import classnames from "classnames";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
 import { View } from "react-native";
 import { Divider } from "react-native-paper";
-import classnames from "classnames";
 
 export const SubmissionDetail = () => {
   const { submission: submissionParam } = useLocalSearchParams<{ submission: string }>();
