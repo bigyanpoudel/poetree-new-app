@@ -55,7 +55,18 @@ export interface IAppUser {
   about?: string;
   suspendUntil?: string;
   stripeAccountId?: string;
+  stripeCustomerId?: string;
   isStripeCardAdded?: boolean;
+  subscription?: {
+    isSubscribed: boolean;
+    subscriptionActive: boolean;
+    paymentStatus: string;
+    plan?: string;
+    amount?: string;
+    nextBillingDate?: string;
+    isPaused?: boolean;
+    stripeSubscriptionId?: string;
+  };
 }
 
 export interface ICommonListApi<T> {
@@ -191,8 +202,6 @@ export enum PurchaseStatusEnum {
   paid = "PAID",
   failed = "FAILED",
 }
-
-
 
 export type AnthologyPricing = {
   ebookPrice: number;

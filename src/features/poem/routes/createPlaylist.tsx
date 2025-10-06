@@ -25,6 +25,9 @@ import {
   useUpdatePlayList,
 } from "../hooks/createPlaylist";
 import { useGetPlaylistDetails } from "../hooks/palylistDetails";
+import { SubscriptionPlanSelector } from "@/src/features/subscription/components";
+import { queryClient } from "@/src/lib/reactQuery";
+import { appQuery } from "@/src/utils/constant/appQuery";
 
 export const CreatePlaylist = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -35,11 +38,22 @@ export const CreatePlaylist = () => {
   const router = useRouter();
   const bottomSheetRef = React.useRef<BottomSheetModal>(null);
   const [bottomSheetIndex, setBottomSheetIndex] = React.useState<number>(-1);
+  const subscriptionBottomSheetRef = React.useRef<BottomSheetModal>(null);
+  const [subscriptionBottomSheetIndex, setSubscriptionBottomSheetIndex] = React.useState<number>(-1);
   const createPlaylist = useCreatePlayList();
   const playlistDetail = useGetPlaylistDetails(id);
   const updatePlaylist = useUpdatePlayList();
   const cureentUser = useGetCurrentUser();
   const connectAccount = useConnectAccount();
+
+  const handleCloseSubscriptionBottomSheet = () => {
+    subscriptionBottomSheetRef.current?.close();
+    setSubscriptionBottomSheetIndex(-1);
+    queryClient.invalidateQueries({
+      queryKey: [appQuery.getCurrentUser]
+    });
+  };
+
   React.useEffect(() => {
     if (cureentUser.data && !cureentUser.data.isStripeCardAdded) {
       setOpenConnectAccount(true);
@@ -229,6 +243,22 @@ export const CreatePlaylist = () => {
                   />
                 }
                 title="Select Poem"
+              />
+            )}
+            {subscriptionBottomSheetIndex > -1 && (
+              <CustomDrawer
+                handleClose={handleCloseSubscriptionBottomSheet}
+                index={subscriptionBottomSheetIndex}
+                ref={subscriptionBottomSheetRef}
+                content={
+                  <SubscriptionPlanSelector
+                    handleClose={handleCloseSubscriptionBottomSheet}
+                    title="Choose Your Plan"
+                    description="Select a plan to unlock premium features and start monetizing your poetry"
+                    feature="premium features"
+                  />
+                }
+                title="Upgrade Your Plan"
               />
             )}
           </View>

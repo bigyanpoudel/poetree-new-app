@@ -25,6 +25,7 @@ import {
   UserPlus,
   BookOpen,
   FileText,
+  Crown,
 } from "lucide-react-native";
 import React from "react";
 import { Appearance, View } from "react-native";
@@ -168,6 +169,13 @@ export const AccountSetting = () => {
                 left={(props) => <LucideCreditCard {...props} size={20} />}
                 onPress={() => {
                   router.navigate("/account/payment-account");
+                }}
+              />
+              <ListItem
+                title="Subscription"
+                left={(props) => <Crown {...props} size={20} />}
+                onPress={() => {
+                  router.navigate("/subscription");
                 }}
               />
             </List.Section>
