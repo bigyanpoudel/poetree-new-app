@@ -7,10 +7,11 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import React, { useRef } from "react";
 import { RefreshControl, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { Button } from "react-native-paper";
+
 import { SubscriptionPlanSelector } from "./SubscriptionPlanSelector";
 import { queryClient } from "@/src/lib/reactQuery";
 import { appQuery } from "@/src/utils/constant/appQuery";
+import { Button } from "@/src/components";
 
 export const NoSubscription = () => {
   const isDark = useIsDarkTheme();
@@ -76,7 +77,7 @@ export const NoSubscription = () => {
               color: isDark ? "#000" : "#fff",
             }}
           >
-            View Plans
+            Subscribe
           </Button>
         </View>
         {/* Subscription Bottom Sheet */}

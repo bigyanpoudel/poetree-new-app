@@ -26,6 +26,7 @@ import {
   BookOpen,
   FileText,
   Crown,
+  BookMarked,
 } from "lucide-react-native";
 import React from "react";
 import { Appearance, View } from "react-native";
@@ -113,6 +114,13 @@ export const AccountSetting = () => {
         {/* Anthology Section */}
         <List.Section>
           <ListSubHeading>Anthology</ListSubHeading>
+          <ListItem
+            title="Anthology Guide"
+            left={(props) => <BookMarked {...props} size={20} />}
+            onPress={() => {
+              router.navigate("/anthology-guide");
+            }}
+          />
           <ListItem
             title="Anthologies"
             left={(props) => <BookOpen {...props} size={20} />}

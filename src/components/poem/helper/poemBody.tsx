@@ -4,6 +4,7 @@ import {
   useWindowDimensions,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import { IAppPoem } from "@/src/types";
 import { Colors } from "@/src/utils/constant/colors";
@@ -27,23 +28,24 @@ export const PoemBody = ({
     // Input HTML is already cleaned, so use it directly
     const cleanedHtml = html;
 
+    // Calculate max characters based on lines
+    // Average characters per line on mobile: ~40-50 chars
+    const charsPerLine = 45;
+    const maxChars = maxLines * charsPerLine;
+
     // Remove HTML tags to count actual visible text
     const textContent = cleanedHtml
-      .replace(/<[^>]*>/g, " ")
+      .replace(/<[^>]*>/g, "")
+      .replace(/&nbsp;/g, " ")
       .replace(/\s+/g, " ")
       .trim();
-    const words = textContent.split(" ");
 
-    // Estimate words per line (rough estimation based on typical line length)
-    const wordsPerLine = 8;
-    const maxWords = maxLines * wordsPerLine;
-
-    if (words.length <= maxWords) {
+    if (textContent.length <= maxChars) {
       return { html: cleanedHtml, isTruncated: false };
     }
 
     // Find the position to truncate in the cleaned HTML at sentence end
-    let wordCount = 0;
+    let visibleCharCount = 0;
     let charPosition = 0;
     let inTag = false;
     let lastSentenceEnd = 0;
@@ -56,16 +58,14 @@ export const PoemBody = ({
       } else if (char === ">") {
         inTag = false;
       } else if (!inTag) {
-        if (/\s/.test(char)) {
-          wordCount++;
-        }
+        visibleCharCount++;
 
         // Check for sentence endings
         if (/[.!?]/.test(char)) {
           lastSentenceEnd = i + 1;
         }
 
-        if (wordCount >= maxWords) {
+        if (visibleCharCount >= maxChars) {
           charPosition = lastSentenceEnd > 0 ? lastSentenceEnd : i;
           break;
         }
@@ -77,8 +77,13 @@ export const PoemBody = ({
     // Truncate at sentence end and remove trailing spaces and HTML whitespace
     let truncated = cleanedHtml.substring(0, charPosition);
 
-    // Remove trailing whitespace including HTML entities and spaces
-    truncated = truncated.replace(/(\s|&nbsp;|<br\s*\/?>)*$/, "");
+    // Remove trailing whitespace including HTML entities, spaces, and br tags
+    truncated = truncated.replace(/(\s|&nbsp;|<br>|<br\s*\/?>|<\/br>)*$/gi, "").trim();
+
+    // Reduce multiple consecutive br tags to just one (including </br> variants)
+    truncated = truncated.replace(/(<br>[\s\n]*){2,}/gi, "<br>");
+    truncated = truncated.replace(/(<\/br>[\s\n]*){2,}/gi, "");
+    truncated = truncated.replace(/<\/br>/gi, ""); // Remove all </br> tags
 
     // Close any unclosed tags
     const openTags = [];
@@ -117,17 +122,20 @@ export const PoemBody = ({
       .replace(/<br\s*\/?\s*>/gi, "<br>") // Normalize all br variants to <br>
       
     // Step 2: Remove multiple consecutive br tags (2+ becomes 1)
-    cleaned = cleaned.replace(/(<br>\s*){2,}/gi, "<br>");
+    // First normalize spaces between br tags, then collapse multiple br tags
+    cleaned = cleaned.replace(/(<br>[\s\n]*){2,}/gi, "<br>");
     
     // Step 3: Clean up structural issues
     cleaned = cleaned
-      // Remove empty divs containing only br tags
+      // Remove empty divs containing only br tags or whitespace
       .replace(/<div>\s*<br>\s*<\/div>/gi, "<br>")
-      // Remove empty paragraphs
+      .replace(/<div>\s*<\/div>/gi, "")
+      // Remove empty paragraphs (with or without br tags)
+      .replace(/<p>\s*<br>\s*<\/p>/gi, "")
       .replace(/<p>\s*<\/p>/gi, "")
       // Remove empty spans
       .replace(/<span[^>]*>\s*<\/span>/gi, "")
-      
+
     // Step 4: Clean up inline styles (remove style attributes but keep content)
     cleaned = cleaned
       .replace(/<([^>]+)\s+style="[^"]*"([^>]*)>/gi, "<$1$2>")
@@ -146,8 +154,17 @@ export const PoemBody = ({
     // Step 7: Remove trailing br tags and whitespace
     cleaned = cleaned
       .replace(/(<br>\s*)+$/gi, "")
+      .replace(/(<\/br>\s*)+$/gi, "")
       .trim();
-      
+
+    // Step 7.5: Clean up empty tags again after all transformations
+    cleaned = cleaned
+      .replace(/<p>\s*<br>\s*<\/p>/gi, "")
+      .replace(/<p>\s*<\/p>/gi, "")
+      .replace(/<div>\s*<br>\s*<\/div>/gi, "<br>")
+      .replace(/<div>\s*<\/div>/gi, "")
+      .replace(/<span[^>]*>\s*<\/span>/gi, "");
+
     // Step 8: Final validation - ensure we don't have orphaned tags
     const allowedTags = ['p', 'div', 'br', 'span', 'strong', 'em', 'b', 'i', 'u', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
     
@@ -164,6 +181,16 @@ export const PoemBody = ({
       return ''; // Remove disallowed tags
     });
 
+    // Step 9: Final cleanup - remove any remaining empty tags and consecutive br tags
+    cleaned = cleaned
+      .replace(/(<br>[\s\n]*){2,}/gi, "<br>") // Reduce consecutive br tags again
+      .replace(/<p>\s*<\/p>/gi, "") // Remove empty p tags
+      .replace(/<div>\s*<\/div>/gi, "") // Remove empty div tags
+      .replace(/<span>\s*<\/span>/gi, "") // Remove empty span tags
+      .replace(/(<br>\s*)+$/gi, "") // Remove trailing br tags
+      .replace(/(<\/br>\s*)+/gi, "") // Remove any remaining closing br tags
+      .trim();
+
     return cleaned;
   };
 
@@ -179,12 +206,12 @@ export const PoemBody = ({
   // Custom styles for HTML tags
   const tagsStyles = {
     body: {
-      marginTop: 6, // Add spacing between paragraphs
+      marginTop: 0,
       marginBottom: 0,
     },
     p: {
       marginTop: 6, // Add spacing between paragraphs
-      marginBottom: 0, // Add spacing between paragraphs
+      marginBottom: 0,
     },
     h1: {
       marginTop: 6, // Add spacing between paragraphs
@@ -305,7 +332,7 @@ export const PoemBody = ({
   };
 
   return (
-    <>
+    <View>
       <RenderHtml
         contentWidth={width}
         source={{ html: sanitizedHtml }}
@@ -321,7 +348,7 @@ export const PoemBody = ({
         }}
       />
       {isTruncated && onShowMore && (
-        <TouchableOpacity onPress={onShowMore} style={{ marginTop: 4 }}>
+        <TouchableOpacity onPress={onShowMore} style={{ marginTop: 8 }}>
           <Text
             style={{
               fontSize: 16,
@@ -337,6 +364,6 @@ export const PoemBody = ({
           </Text>
         </TouchableOpacity>
       )}
-    </>
+    </View>
   );
 };
