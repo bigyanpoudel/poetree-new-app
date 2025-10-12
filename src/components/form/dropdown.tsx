@@ -40,12 +40,12 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
         placeholderStyle={{
           fontSize: 16,
           color: isDark ? '#bdbdbd' : '#757575',
-          fontFamily: 'Poximanova',
+          fontFamily: 'Karla',
         }}
         selectedTextStyle={{
           fontSize: 16,
           color: isDark ? Colors.dark.text : Colors.light.text,
-          fontFamily: 'Poximanova',
+          fontFamily: 'Karla',
         }}
         inputSearchStyle={{
           height: 40,
@@ -69,7 +69,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
         itemTextStyle={{
           fontSize: 16,
           color: isDark ? Colors.dark.text : Colors.light.text,
-          fontFamily: 'Poximanova',
+          fontFamily: 'Karla',
         }}
         itemContainerStyle={{
           backgroundColor: isDark ? '#151718' : 'white',
@@ -111,7 +111,7 @@ export const DropdownField: React.FC<DropdownFieldProps> = ({
                 style={{
                   fontSize: 16,
                   color: isDark ? Colors.dark.text : Colors.light.text,
-                  fontFamily: 'Poximanova',
+                  fontFamily: 'Karla',
                 }}
               >
                 {item.label}

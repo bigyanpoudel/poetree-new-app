@@ -100,7 +100,7 @@ export const SearchScreen = () => {
               display: "flex",
             },
             tabBarLabelStyle: {
-              fontFamily: "Poximanova",
+              fontFamily: "Karla",
             },
             tabBarIndicatorStyle: {
               backgroundColor: Colors[colorScheme ?? "light"].primary,
@@ -117,7 +117,7 @@ export const SearchScreen = () => {
               display: "flex",
             },
             tabBarLabelStyle: {
-              fontFamily: "Poximanova",
+              fontFamily: "Karla",
             },
             tabBarIndicatorStyle: {
               backgroundColor: Colors[colorScheme ?? "light"].primary,
@@ -129,7 +129,7 @@ export const SearchScreen = () => {
           children={() => <SearchPaylist search={debouncedQuery} />}
           options={{
             tabBarLabelStyle: {
-              fontFamily: "Poximanova",
+              fontFamily: "Karla",
             },
             tabBarItemStyle: {
               flexDirection: "row", // Align the icon and label horizontally

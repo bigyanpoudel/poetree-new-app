@@ -20,68 +20,68 @@ const darkTheme: ThemeProp = {
     ...DefaultTheme.fonts, // Preserve existing font configurations
     default: {
       ...DefaultTheme.fonts.default, // Preserve existing default font properties
-      fontFamily: "Poximanova", // Add custom font family
+      fontFamily: "Karla", // Add custom font family
     },
     labelLarge: {
       ...DefaultTheme.fonts.labelLarge, // Preserve existing labelLarge properties
-      fontFamily: "Poximanova", // Add custom font family
+      fontFamily: "Karla", // Add custom font family
     },
     // Add custom font family to other text variants if needed
     displayLarge: {
       ...DefaultTheme.fonts.displayLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     displayMedium: {
       ...DefaultTheme.fonts.displayMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     displaySmall: {
       ...DefaultTheme.fonts.displaySmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     headlineLarge: {
       ...DefaultTheme.fonts.headlineLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     headlineMedium: {
       ...DefaultTheme.fonts.headlineMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     headlineSmall: {
       ...DefaultTheme.fonts.headlineSmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     titleLarge: {
       ...DefaultTheme.fonts.titleLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     titleMedium: {
       ...DefaultTheme.fonts.titleMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     titleSmall: {
       ...DefaultTheme.fonts.titleSmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     bodyLarge: {
       ...DefaultTheme.fonts.bodyLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     bodyMedium: {
       ...DefaultTheme.fonts.bodyMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     bodySmall: {
       ...DefaultTheme.fonts.bodySmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     labelMedium: {
       ...DefaultTheme.fonts.labelMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     labelSmall: {
       ...DefaultTheme.fonts.labelSmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
   },
 };
@@ -103,68 +103,68 @@ const lightTheme: ThemeProp = {
     ...DefaultTheme.fonts, // Preserve existing font configurations
     default: {
       ...DefaultTheme.fonts.default, // Preserve existing default font properties
-      fontFamily: "Poximanova", // Add custom font family
+      fontFamily: "Karla", // Add custom font family
     },
     labelLarge: {
       ...DefaultTheme.fonts.labelLarge, // Preserve existing labelLarge properties
-      fontFamily: "Poximanova", // Add custom font family
+      fontFamily: "Karla", // Add custom font family
     },
     // Add custom font family to other text variants if needed
     displayLarge: {
       ...DefaultTheme.fonts.displayLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     displayMedium: {
       ...DefaultTheme.fonts.displayMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     displaySmall: {
       ...DefaultTheme.fonts.displaySmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     headlineLarge: {
       ...DefaultTheme.fonts.headlineLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     headlineMedium: {
       ...DefaultTheme.fonts.headlineMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     headlineSmall: {
       ...DefaultTheme.fonts.headlineSmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     titleLarge: {
       ...DefaultTheme.fonts.titleLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     titleMedium: {
       ...DefaultTheme.fonts.titleMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     titleSmall: {
       ...DefaultTheme.fonts.titleSmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     bodyLarge: {
       ...DefaultTheme.fonts.bodyLarge,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     bodyMedium: {
       ...DefaultTheme.fonts.bodyMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     bodySmall: {
       ...DefaultTheme.fonts.bodySmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     labelMedium: {
       ...DefaultTheme.fonts.labelMedium,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
     labelSmall: {
       ...DefaultTheme.fonts.labelSmall,
-      fontFamily: "Poximanova",
+      fontFamily: "Karla",
     },
   },
 };

@@ -123,7 +123,7 @@ export const SubmissionDetail = () => {
         </View>
         <Text
           fontWeight={800}
-          className="text-[24px] garamond -tracking-[0.5px] font-extrabold mb-4 px-2"
+          className="text-[24px] spectral -tracking-[0.5px] font-extrabold mb-4 px-2"
         >
           {submission.poem.title}
         </Text>

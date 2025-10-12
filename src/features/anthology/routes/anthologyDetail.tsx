@@ -18,6 +18,7 @@ import { queryClient } from "@/src/lib/reactQuery";
 import { appQuery } from "@/src/utils/constant/appQuery";
 import { CustomDrawer } from "@/src/components/drawer";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import dayjs from "dayjs";
 
 
 export const AnthologyDetail = () => {
@@ -28,6 +29,17 @@ export const AnthologyDetail = () => {
   const { data: anthology, isLoading, refetch, isRefetching } = useGetAnthologyDetails();
   const [bottomSheetIndex, setBottomSheetIndex] = React.useState<number>(-1);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  // Check if deadline has passed
+  const isDeadlinePassed = anthology?.submissionDeadline
+    ? dayjs().isAfter(dayjs(anthology.submissionDeadline))
+    : false;
+
+  // Determine actual status based on deadline
+  const actualStatus = anthology?.status !== AnthologyStatusEnum.Completed && isDeadlinePassed
+    ? AnthologyStatusEnum.Completed
+    : anthology?.status;
+
   const handleReactivate = () => {
     setBottomSheetIndex(0);
     bottomSheetRef.current?.expand();
@@ -41,16 +53,20 @@ export const AnthologyDetail = () => {
     })
   };
 
-  const getStatusColor = (status: AnthologyStatusEnum) => {
+  const getStatusColor = (status: AnthologyStatusEnum, isPassed: boolean) => {
+    // If deadline passed or status is completed, show green
+    if (status === AnthologyStatusEnum.Completed || isPassed) {
+      return "bg-ui-success text-white";
+    }
+    // If ongoing and not passed, show orange
+    if (status === AnthologyStatusEnum.Ongoing && !isPassed) {
+      return "bg-orange-400 text-white";
+    }
     switch (status) {
-      case AnthologyStatusEnum.Ongoing:
-        return "bg-green-400 text-green-800";
-      case AnthologyStatusEnum.Completed:
-        return "bg-blue-400 text-blue-800";
       case AnthologyStatusEnum.PUBLISHED:
-        return "bg-purple-400 text-purple-800";
+        return "bg-purple-400 text-white";
       case AnthologyStatusEnum.CANCELLED:
-        return "bg-red-400 text-red-800";
+        return "bg-red-400 text-white";
       case AnthologyStatusEnum.DRAFT:
         return "bg-yellow-400 text-yellow-800";
       default:
@@ -118,12 +134,12 @@ export const AnthologyDetail = () => {
                 <View className="absolute top-4 right-4">
                   <View
                     className={classnames(
-                      "px-3 py-1 rounded-full",
-                      getStatusColor(anthology?.status as any)
+                      "px-3 py-1 rounded-sm",
+                      getStatusColor(anthology?.status as any, isDeadlinePassed)
                     )}
                   >
-                    <Text className="text-xs font-medium capitalize" fontWeight={500}>
-                      {anthology?.status}
+                    <Text className="text-xs font-bold uppercase tracking-wider" fontWeight={700}>
+                      {actualStatus}
                     </Text>
                   </View>
                 </View>
@@ -179,9 +195,9 @@ export const AnthologyDetail = () => {
                     mode="contained"
                     onPress={handleParticipate}
                     className="w-full"
-                    disabled={anthology?.status === AnthologyStatusEnum.CANCELLED || anthology?.status === AnthologyStatusEnum.Completed}
+                    disabled={actualStatus === AnthologyStatusEnum.CANCELLED || actualStatus === AnthologyStatusEnum.Completed || isDeadlinePassed}
                   >
-                    {anthology?.status === AnthologyStatusEnum.Ongoing ? "Participate" : "View Details"}
+                    {actualStatus === AnthologyStatusEnum.Ongoing && !isDeadlinePassed ? "Participate" : "Submissions Closed"}
                   </Button>
 
                 </View>}

@@ -68,7 +68,7 @@ export const PoemHeader: React.FC<IPoemHeaderProp> = ({ poem }) => {
 
       <Text
         fontWeight={800}
-        className="text-[26px] garamond -tracking-[0.5px]  font-extrabold "
+        className="text-[26px] spectral -tracking-[0.5px]  font-extrabold "
       >
         {poem?.title}
       </Text>

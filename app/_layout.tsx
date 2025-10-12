@@ -7,7 +7,8 @@ import { PaperProvider } from "@/src/provider/paperProvider";
 import "@/src/style/global.css";
 import { Colors } from "@/src/utils/constant/colors";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { useFonts } from "expo-font";
+import { useFonts, Karla_400Regular, Karla_500Medium, Karla_600SemiBold, Karla_700Bold, Karla_800ExtraBold } from '@expo-google-fonts/karla';
+import { Spectral_400Regular, Spectral_500Medium, Spectral_600SemiBold, Spectral_700Bold, Spectral_800ExtraBold } from '@expo-google-fonts/spectral';
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -79,18 +80,20 @@ const useToastStyles = (isDark: boolean) => React.useMemo(() => ({
 }), [isDark]);
 
 const AppBootStrap = () => {
-  // Load only essential fonts first, others can be loaded asynchronously
+  // Load Google Fonts
   const [loaded] = useFonts({
-    Garamond: require("../assets/fonts/garamond.ttf"),
-    Poximanova: require("../assets/fonts/proxima-nova-medium.ttf"),
-    Poximanova400: require("../assets/fonts/proximanova_regular.ttf"),
-  });
-  
-  // Load additional fonts asynchronously after initial render
-  const [additionalLoaded] = useFonts({
-    Poximanova600: require("../assets/fonts/proximanova_semibold.otf"),
-    Poximanova700: require("../assets/fonts/proximanova_bold.otf"),
-    Poximanova800: require("../assets/fonts/proximanova_extrabold.otf"),
+    Karla: Karla_400Regular,
+    Karla_400Regular,
+    Karla_500Medium,
+    Karla_600SemiBold,
+    Karla_700Bold,
+    Karla_800ExtraBold,
+    Spectral: Spectral_400Regular,
+    Spectral_400Regular,
+    Spectral_500Medium,
+    Spectral_600SemiBold,
+    Spectral_700Bold,
+    Spectral_800ExtraBold,
   });
   
   const isDark = useIsDarkTheme();
@@ -171,11 +174,11 @@ const AppBootStrap = () => {
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
-        <ToastManager 
+        <ToastManager
           theme={isDark ? 'dark' : 'light'}
           textStyle={{
             fontSize: 16,
-            fontFamily: 'Poximanova',
+            fontFamily: 'Karla',
             fontWeight: '500',
           }}
           style={toastStyles}

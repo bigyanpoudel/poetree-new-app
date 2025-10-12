@@ -20,7 +20,7 @@ export const HashtagButton = ({
       style={styles.button}
       onPress={onPress}
       className={classNames(
-        "dark:border-ui-border/60 border-ui-border",
+        "dark:border-ui-border/60 rounded-full border-ui-border",
         className
       )}
     >

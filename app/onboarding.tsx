@@ -83,7 +83,7 @@ export default function OnboardingScreen() {
             <Text
               style={{
                 color: textColor,
-                fontFamily: "Poximanova",
+                fontFamily: "Karla",
                 fontSize: 16,
               }}
             >
@@ -119,7 +119,7 @@ export default function OnboardingScreen() {
               fontWeight: "bold",
               textAlign: "center",
               color: textColor,
-              fontFamily: "Garamond",
+              fontFamily: "Spectral",
               marginBottom: 16,
             }}
           >

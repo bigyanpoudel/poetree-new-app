@@ -52,7 +52,7 @@ export const FollowerScreen = () => {
               display: "flex",
             },
             tabBarLabelStyle: {
-              fontFamily: "Poximanova",
+              fontFamily: "Karla",
             },
             tabBarIndicatorStyle: {
               backgroundColor: Colors[colorScheme ?? "light"].primary,
@@ -73,7 +73,7 @@ export const FollowerScreen = () => {
               display: "flex",
             },
             tabBarLabelStyle: {
-              fontFamily: "Poximanova",
+              fontFamily: "Karla",
             },
             tabBarIndicatorStyle: {
               backgroundColor: Colors[colorScheme ?? "light"].primary,

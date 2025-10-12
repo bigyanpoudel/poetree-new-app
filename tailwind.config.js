@@ -5,13 +5,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        proxima: {
-          light: "Poximanova400",
-          medium: "Poximanova",
-          semibold: "Poximanova600",
-          bold: "Poximanova700",
-          extrabold: "Poximanova800",
+        karla: {
+          light: "Karla",
+          medium: "Karla",
+          semibold: "Karla",
+          bold: "Karla",
+          extrabold: "Karla",
         },
+        spectral: "Spectral",
       },
       colors: {
         darkTextColor: "#ECEDEE",

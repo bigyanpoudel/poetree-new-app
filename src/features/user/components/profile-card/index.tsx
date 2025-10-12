@@ -56,7 +56,7 @@ const UserStats = React.memo<{
       <TouchableOpacity className="flex flex-col items-center justify-center">
         <Text
           fontWeight={700}
-          className="text-lg font-semibold font-proxima-extrabold"
+          className="text-lg font-semibold font-karla-extrabold"
         >
           {formatPoemNumber(0)}
         </Text>

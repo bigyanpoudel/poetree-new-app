@@ -1445,6 +1445,16 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
+"@expo-google-fonts/karla@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.npmjs.org/@expo-google-fonts/karla/-/karla-0.4.2.tgz"
+  integrity sha512-a99ezH+aon+ya8XR4tJX+npPP5nis6DhIIbvqhYDQgoVVWp0jebKrBFOXFzzBonkxE8YAltrTS9DdXHW4n3LAw==
+
+"@expo-google-fonts/spectral@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.npmjs.org/@expo-google-fonts/spectral/-/spectral-0.4.1.tgz"
+  integrity sha512-9bbehW/XUAoHWAsd5rgLYRY/I1+FZFZJOyvbsM1mD9vqNJEB3izviAyZ5k7lEQpYcHV1cxChGg9HpWW+0YkJog==
+
 "@expo/cli@0.24.13":
   version "0.24.13"
   resolved "https://registry.npmjs.org/@expo/cli/-/cli-0.24.13.tgz"

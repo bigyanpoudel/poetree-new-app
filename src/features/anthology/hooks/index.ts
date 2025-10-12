@@ -66,7 +66,7 @@ export const useSubmitPoem = () => {
         getUserSubmissionsApi({
           pageParam: pageParam + 1,
           limit,
-          
+
         }),
       initialPageParam: 0,
       getNextPageParam: (lastPage: any) => {
@@ -77,4 +77,3 @@ export const useSubmitPoem = () => {
       },
     });
   };
-  

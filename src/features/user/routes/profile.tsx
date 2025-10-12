@@ -95,7 +95,7 @@ export const ProfileScreen = () => {
                     : isDark
                     ? "rgba(255,255,255,0.5)"
                     : "rgb(0,0,0,0.6)",
-                fontFamily: "Poximanova",
+                fontFamily: "Karla",
                 fontSize: 14,
               }}
             >

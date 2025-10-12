@@ -6,6 +6,7 @@ import { Colors } from "@/src/utils/constant/colors";
 import React from "react";
 import { FlatList, View } from "react-native";
 import { useGetInfinitePost } from "../hooks/home";
+import { ActiveAnthologyBanner } from "@/src/features/anthology/components/ActiveAnthologyBanner";
 
 export const HomePoems = () => {
   const {
@@ -50,6 +51,7 @@ export const HomePoems = () => {
         maxToRenderPerBatch={10}
         updateCellsBatchingPeriod={50}
         initialNumToRender={5}
+        ListHeaderComponent={<ActiveAnthologyBanner />}
         ListEmptyComponent={
           isLoading ? (
             <View className="gap-4">

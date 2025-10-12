@@ -12,11 +12,11 @@ export const Text: React.FC<ITextProps> = ({
   ...props
 }) => {
   const fontMapping: any = {
-    500: "Poximanova",
-    400: "Poximanova400",
-    600: "Poximanova600",
-    700: "Poximanova700",
-    800: "Poximanova800",
+    500: "Karla",
+    400: "Karla",
+    600: "Karla",
+    700: "Karla",
+    800: "Karla",
   };
   return (
     <RNText

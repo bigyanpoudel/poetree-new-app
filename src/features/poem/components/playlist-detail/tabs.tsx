@@ -57,8 +57,8 @@ return (
                 activeTab === tab ? "text-white font-bold" : "text-gray-800"
               }`}
               style={{
-                fontFamily:
-                  activeTab === tab ? "Poximanova700" : "Poximanova500",
+                fontFamily: "Karla",
+                fontWeight: activeTab === tab ? "700" : "500",
               }}
             >
               {tab}

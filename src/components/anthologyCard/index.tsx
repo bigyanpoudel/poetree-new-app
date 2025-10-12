@@ -5,7 +5,8 @@ import classnames from "classnames";
 import { Text } from "../text";
 import { Button } from "../button";
 import { FastImageComponent } from "../image";
-import { IAppAnthology } from "../../types";
+import { AnthologyStatusEnum, IAppAnthology } from "../../types";
+import dayjs from "dayjs";
 
 interface IAnthologyCardProps {
   anthology: IAppAnthology;
@@ -18,18 +19,33 @@ export const AnthologyCard: React.FC<IAnthologyCardProps> = ({
   onReadMore,
   className,
 }) => {
-  const getStatusColor = (status: string) => {
+  // Check if deadline has passed
+  const isDeadlinePassed = anthology?.submissionDeadline
+    ? dayjs().isAfter(dayjs(anthology.submissionDeadline))
+    : false;
+
+  // Determine actual status based on deadline
+  const actualStatus = anthology?.status !== AnthologyStatusEnum.Completed && isDeadlinePassed
+    ? AnthologyStatusEnum.Completed
+    : anthology?.status;
+
+  const getStatusColor = (status: string, isPassed: boolean) => {
+    // If deadline passed or status is completed, show green
+    if (status === AnthologyStatusEnum.Completed || isPassed) {
+      return "bg-ui-success";
+    }
+    // If ongoing and not passed, show orange
+    if (status === AnthologyStatusEnum.Ongoing && !isPassed) {
+      return "bg-orange-400";
+    }
+    // Other statuses
     switch (status) {
-      case "ongoing":
-        return "bg-green-400 text-green-800";
-      case "completed":
-        return "bg-blue-400 text-blue-800";
-      case "published":
-        return "bg-purple-400 text-purple-800";
-      case "cancelled":
-        return "bg-red-400 text-red-800";
+      case AnthologyStatusEnum.PUBLISHED:
+        return "bg-purple-400";
+      case AnthologyStatusEnum.CANCELLED:
+        return "bg-red-400";
       default:
-        return "bg-gray-400 text-gray-800";
+        return "bg-gray-400";
     }
   };
 
@@ -43,22 +59,22 @@ export const AnthologyCard: React.FC<IAnthologyCardProps> = ({
         <View className="absolute top-2 right-2">
           <View
             className={classnames(
-              "px-2 py-1 rounded-full",
-              getStatusColor(anthology.status)
+              "px-2 py-1 rounded-sm",
+              getStatusColor(anthology.status, isDeadlinePassed)
             )}
           >
-            <Text className="text-xs font-medium capitalize" fontWeight={500}>
-              {anthology.status}
+            <Text className="text-xs text-white font-bold uppercase tracking-wider" fontWeight={700}>
+              {actualStatus}
             </Text>
           </View>
         </View>
       </View>
-      
+
       <View className="p-4">
         <Text className="text-lg mb-2" fontWeight={700}>
           {anthology.title}
         </Text>
-        
+
         <Button
           mode="contained"
           onPress={() => onReadMore(anthology)}

@@ -24,8 +24,11 @@ export const HashtagsScreen = () => {
 
   const handleScroll = ({ nativeEvent }: any) => {
     const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
-    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
-    
+    const paddingToBottom = 100;
+    const isCloseToBottom =
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom;
+
     if (isCloseToBottom && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
@@ -67,15 +70,21 @@ export const HashtagsScreen = () => {
       appBar={{
         title: "All Hashtags",
       }}
+      scafold={{
+        paddingVertical: 0,
+        paddingHorizontal: 0,
+        isNormalView: true,
+        paddingBottom: 0
+      }}
     >
-      <ScrollView 
-        className="flex-1" 
+      <ScrollView
+        className="flex-1 h-full px-5 py-4 pb-8"
         onScroll={handleScroll}
-        scrollEventThrottle={400}
+        scrollEventThrottle={2}
       >
         <View className="flex flex-row flex-wrap gap-3">
           {hashTags.map((item, index) => (
-            <RenderHashTag key={`${item.hashtag._id}-${index}`} hashtags={[item.hashtag]} />
+            <RenderHashTag key={`${item.hashtag._id}-${index}`} hashtags={[item.hashtag]} title={""} />
           ))}
         </View>
         {isFetchingNextPage && (
@@ -83,6 +92,7 @@ export const HashtagsScreen = () => {
             <ActivityIndicator size="small" color="#666" />
           </View>
         )}
+        <View className="h-10"></View>
       </ScrollView>
     </ScreenLayout>
   );

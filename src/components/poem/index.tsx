@@ -89,7 +89,7 @@ const useActionItems = (poem: IAppPoem, user: any, router: any, setOpenDeleteMod
 
 // Memoize style objects
 const titleStyle = {
-  fontFamily: "garamond",
+  fontFamily: "Spectral",
   fontWeight: 800,
 } as const;
 
@@ -111,7 +111,7 @@ export const Poem: React.FC<IPoemProps> = React.memo(({ poem }) => {
           <Link href={`/poem/${poem.slug}?name=${poem.title}`} asChild>
             <Text
               style={titleStyle}
-              className="text-[24px] garamond -tracking-[0.5px]  font-bold "
+              className="text-[24px] spectral -tracking-[0.5px]  font-bold "
               numberOfLines={2}
             >
               {poem.title}
@@ -128,7 +128,7 @@ export const Poem: React.FC<IPoemProps> = React.memo(({ poem }) => {
             onShowMore={() => {
               router.push(`/poem/${poem.slug}?name=${poem.title}`);
             }}
-            maxLines={5}
+            maxLines={4}
           />
         )}
         {poem.hashTags && poem.hashTags.length > 0 && (

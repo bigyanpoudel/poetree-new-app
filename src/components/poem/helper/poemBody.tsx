@@ -8,6 +8,7 @@ import {
 import { IAppPoem } from "@/src/types";
 import { Colors } from "@/src/utils/constant/colors";
 import React from "react";
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 
 export const PoemBody = ({
   poem,
@@ -20,6 +21,7 @@ export const PoemBody = ({
 }) => {
   const { width } = useWindowDimensions();
   const colorSchema = useColorScheme();
+  const isDark = useIsDarkTheme();
   if (!poem?.body) return null;
   const truncateHtml = (html: string, maxLines: number) => {
     // Input HTML is already cleaned, so use it directly
@@ -131,10 +133,10 @@ export const PoemBody = ({
       .replace(/<([^>]+)\s+style="[^"]*"([^>]*)>/gi, "<$1$2>")
       .replace(/<([^>]+)\s+style='[^']*'([^>]*)>/gi, "<$1$2>")
       
-    // Step 5: Remove dangerous or unnecessary attributes
+    // Step 5: Remove dangerous or unnecessary attributes and color styles
     cleaned = cleaned
-      .replace(/\s+(class|id|onclick|onload|onerror)="[^"]*"/gi, "")
-      
+      .replace(/\s+(class|id|onclick|onload|onerror|color)="[^"]*"/gi, "")
+
     // Step 6: Whitespace cleanup
     cleaned = cleaned
       .replace(/\s+/g, " ") // Multiple spaces to single space
@@ -310,11 +312,8 @@ export const PoemBody = ({
         tagsStyles={tagsStyles}
         baseStyle={{
           fontSize: 20,
-          color:
-            colorSchema === "dark"
-              ? "rgba(255,255,255,0.8)"
-              : "rgba(0,0,0,0.8)",
-          fontFamily: "Garamond",
+          color: isDark ? "white" : "#11181C",
+          fontFamily: "Spectral",
           fontStyle: "normal",
           fontWeight: 500,
           textAlign: "left",
@@ -330,7 +329,7 @@ export const PoemBody = ({
                 colorSchema === "dark"
                   ? Colors.dark.primary
                   : Colors.light.primary,
-              fontFamily: "Poximanova",
+              fontFamily: "Karla",
               fontWeight: "500",
             }}
           >

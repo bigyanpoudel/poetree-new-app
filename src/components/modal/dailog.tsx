@@ -72,7 +72,7 @@ export const CustomDailog: React.FC<ICustomDailogProps> = ({
               )}
               onPress={onConfirm}
             >
-              {okText ?? "Confim"}
+              {okText ?? "Confirm"}
             </Button>
           )}
         </Dialog.Actions>
