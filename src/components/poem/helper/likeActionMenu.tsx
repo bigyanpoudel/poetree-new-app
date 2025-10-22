@@ -1,4 +1,5 @@
 import { Text } from "@/src/components/text";
+import { ReactionsModal } from "@/src/components/modal/reactionsModal";
 import { usePoemLike } from "@/src/hooks/useRootHook";
 import { useAppProvider } from "@/src/provider/appProvider";
 import { IAppPoem, Obj } from "@/src/types";
@@ -19,6 +20,7 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({
 }) => {
   const colorSchema = useColorScheme();
   const [visible, setVisible] = React.useState(false);
+  const [reactionsModalVisible, setReactionsModalVisible] = React.useState(false);
   const [count, setCount] = React.useState<number>(poemCount ?? 0);
   const [reaction, setReaction] = React.useState<Obj>(poem?.userLike ?? {});
   const likePoem = usePoemLike();
@@ -64,8 +66,16 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({
       setReaction({});
     }
   };
+
+  const handleLikeCountPress = () => {
+    if (count > 0) {
+      setReactionsModalVisible(true);
+    }
+  };
+
   return (
-    <Menu
+    <>
+      <Menu
       anchorPosition={"bottom"}
       visible={visible}
       onDismiss={closeMenu}
@@ -94,9 +104,11 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({
               className="dark:text-darkTextColor text-ligtTextColor"
             />
           )}
-          <Text className="text-sm font-semibold">
-            {formatPoemNumber(count)}
-          </Text>
+          <TouchableOpacity onPress={handleLikeCountPress}>
+            <Text className="text-sm font-semibold">
+              {formatPoemNumber(count)}
+            </Text>
+          </TouchableOpacity>
         </TouchableOpacity>
       }
     >
@@ -129,5 +141,13 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({
         })}
       </View>
     </Menu>
+    {poem?._id && (
+      <ReactionsModal
+        visible={reactionsModalVisible}
+        onClose={() => setReactionsModalVisible(false)}
+        postId={poem._id}
+      />
+    )}
+    </>
   );
 };

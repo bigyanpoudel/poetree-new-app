@@ -2,6 +2,7 @@ import {
   deletePoem,
   followUserApi,
   getCurrentUser,
+  getPostReactions,
   poemLikeApi,
   reportApi,
   unfollowUserApi,
@@ -70,5 +71,25 @@ export const useReport = () => {
       Toast.error("Report Failed");
     },
     onSuccess: () => {},
+  });
+};
+
+export const useGetPostReactions = ({
+  postId,
+  page,
+  limit,
+  type,
+  enabled = false,
+}: {
+  postId: string;
+  page?: number;
+  limit?: number;
+  type?: string;
+  enabled?: boolean;
+}) => {
+  return useQuery({
+    queryKey: [appQuery.getPostReactions, postId, page, limit, type],
+    queryFn: () => getPostReactions({ postId, page, limit, type }),
+    enabled: Boolean(postId) && enabled,
   });
 };

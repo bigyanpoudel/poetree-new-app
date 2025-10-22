@@ -1,4 +1,5 @@
 import { Text } from "@/src/components/text";
+import { ReactionsModal } from "@/src/components/modal/reactionsModal";
 import { usePoemLike } from "@/src/hooks/useRootHook";
 import { IAppPlayList, IAppPoem, Obj } from "@/src/types";
 import { REACTION_IMAGE } from "@/src/utils/constant/appConstant";
@@ -16,6 +17,7 @@ interface IActionMenuProps {
 export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) => {
   const colorSchema = useColorScheme();
   const [visible, setVisible] = React.useState(false);
+  const [reactionsModalVisible, setReactionsModalVisible] = React.useState(false);
   const [count, setCount] = React.useState<number>(poemCount ?? 0);
   const [reaction, setReaction] = React.useState<Obj>(poem?.userLike ?? {});
   const likePoem = usePlaylistLike();
@@ -57,8 +59,16 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) 
       setReaction({});
     }
   };
+
+  const handleLikeCountPress = () => {
+    if (count > 0) {
+      setReactionsModalVisible(true);
+    }
+  };
+
   return (
-    <Menu
+    <>
+      <Menu
       anchorPosition={"bottom"}
       visible={visible}
       onDismiss={closeMenu}
@@ -87,9 +97,11 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) 
               className="dark:text-darkTextColor text-ligtTextColor"
             />
           )}
-          <Text className="text-sm font-semibold">
-            {formatPoemNumber(count)}
-          </Text>
+          <TouchableOpacity onPress={handleLikeCountPress}>
+            <Text className="text-sm font-semibold">
+              {formatPoemNumber(count)}
+            </Text>
+          </TouchableOpacity>
         </TouchableOpacity>
       }
     >
@@ -121,5 +133,13 @@ export const LikeActionMenu: React.FC<IActionMenuProps> = ({ poemCount, poem }) 
         })}
       </View>
     </Menu>
+    {poem?._id && (
+      <ReactionsModal
+        visible={reactionsModalVisible}
+        onClose={() => setReactionsModalVisible(false)}
+        postId={poem._id}
+      />
+    )}
+    </>
   );
 };

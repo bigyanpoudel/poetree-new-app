@@ -250,3 +250,26 @@ export type IPoemSubmission = {
   rejectionReason?: string;
 };
 
+export interface PostReactionDto {
+  _id: string;
+  type: string;
+  reactedBy: IAppUser;
+  createdAt: string;
+}
+
+export interface PostReactionsResponseDto {
+  reactions: PostReactionDto[];
+  totalReactions: number;
+  reactionCounts: {
+    like: number;
+    love: number;
+    haha: number;
+    sad: number;
+    wow: number;
+    angry: number;
+  };
+  currentPage: number;
+  totalPages: number;
+  hasNextPage: boolean;
+}
+

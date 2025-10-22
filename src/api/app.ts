@@ -1,5 +1,5 @@
 import { API } from "@/src/lib/axios";
-import { IAppUser, Obj } from "@/src/types";
+import { IAppUser, Obj, PostReactionsResponseDto } from "@/src/types";
 
 export const getCurrentUser = async (id: string): Promise<IAppUser> => {
   return API.get(`/user/${id}`);
@@ -31,4 +31,27 @@ export const deletePoem = (id?: string) => {
 
 export const reportApi = (body: Obj) => {
   return API.post("reports", body);
+};
+
+export const getPostReactions = ({
+  postId,
+  page = 1,
+  limit = 20,
+  type,
+}: {
+  postId: string;
+  page?: number;
+  limit?: number;
+  type?: string;
+}): Promise<PostReactionsResponseDto> => {
+  const params = new URLSearchParams({
+    page: page.toString(),
+    limit: limit.toString(),
+  });
+
+  if (type) {
+    params.append("type", type);
+  }
+
+  return API.get(`/likes/post/${postId}/reactions?${params.toString()}`);
 };
