@@ -1,5 +1,6 @@
 import { API } from "@/src/lib/axios";
 import { IAppUser, Obj, PostReactionsResponseDto } from "@/src/types";
+import { generateUrlWithParams } from "../utils/params";
 
 export const getCurrentUser = async (id: string): Promise<IAppUser> => {
   return API.get(`/user/${id}`);
@@ -44,14 +45,11 @@ export const getPostReactions = ({
   limit?: number;
   type?: string;
 }): Promise<PostReactionsResponseDto> => {
-  const params = new URLSearchParams({
-    page: page.toString(),
-    limit: limit.toString(),
+  const url = generateUrlWithParams(`/likes/post/${postId}/reactions`, {
+    postId,
+    page,
+    limit,
+    type,
   });
-
-  if (type) {
-    params.append("type", type);
-  }
-
-  return API.get(`/likes/post/${postId}/reactions?${params.toString()}`);
+  return API.get(url);
 };

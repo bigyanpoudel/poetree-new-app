@@ -2,9 +2,7 @@ import { Text } from "@/src/components/text";
 import { useGetPostReactions } from "@/src/hooks/useRootHook";
 import { POEMREACTION, PostReactionDto } from "@/src/types";
 import { REACTION_IMAGE } from "@/src/utils/constant/appConstant";
-import { Colors } from "@/src/utils/constant/colors";
 import { formatPoemNumber } from "@/src/utils/poem";
-import classNames from "classnames";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -13,15 +11,13 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  useColorScheme,
   View,
 } from "react-native";
-import { Avatar, Dialog, Portal } from "react-native-paper";
+import { Avatar } from "react-native-paper";
 
-interface IReactionsModalProps {
-  visible: boolean;
-  onClose: () => void;
+interface IReactionsContentProps {
   postId: string;
+  isActive: boolean;
 }
 
 interface IReactionTabProps {
@@ -42,17 +38,17 @@ const ReactionTab: React.FC<IReactionTabProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      className={`px-4 py-2 flex-row  items-center gap-2 border-b-2 ${isActive ? "border-primary dark:border-white" : "border-transparent"
-        }`}
+      className={`px-3 py-2 flex-row items-center gap-2 border-b-2 ${
+        isActive ? "border-primary" : "border-transparent"
+      }`}
     >
       {icon && <Image source={{ uri: icon }} className="w-5 h-5" />}
       <Text
-        className={classNames(`text-sm ${isActive
-          ? "font-semibold dark:text-darkTextColor"
-          : "dark:text-gray-400"
-          }`, {
-          "hidden": label !== "All"
-        })}
+        className={`text-sm ${
+          isActive
+            ? "font-semibold dark:text-darkTextColor"
+            : "dark:text-gray-400"
+        }`}
       >
         {label}
       </Text>
@@ -69,14 +65,12 @@ interface IReactionListProps {
   postId: string;
   reactionType?: string;
   isActive: boolean;
-  onClose: () => void
 }
 
 const ReactionList: React.FC<IReactionListProps> = ({
   postId,
   reactionType,
   isActive,
-  onClose
 }) => {
   const router = useRouter();
   const [page, setPage] = React.useState(1);
@@ -90,21 +84,12 @@ const ReactionList: React.FC<IReactionListProps> = ({
     type: reactionType,
     enabled: isActive,
   });
-  console.log("reactionType", reactionType)
 
   React.useEffect(() => {
-    console.log("Data effect triggered", {
-      hasData: !!data?.reactions,
-      reactionsLength: data?.reactions?.length,
-      page,
-      reactionType
-    });
     if (data?.reactions) {
       if (page === 1) {
-        console.log("Setting reactions (page 1):", data.reactions.length);
         setReactions(data.reactions);
       } else {
-        console.log("Appending reactions (page > 1)");
         setReactions((prev) => [...prev, ...data.reactions]);
       }
       setHasMore(data.hasNextPage);
@@ -112,14 +97,17 @@ const ReactionList: React.FC<IReactionListProps> = ({
   }, [data]);
 
   React.useEffect(() => {
-    console.log("isActive changed:", isActive);
     // Always reset when isActive changes (both open and close)
     setPage(1);
     setReactions([]);
     setHasMore(true);
   }, [isActive]);
 
-
+  React.useEffect(() => {
+    // Reset when reaction type changes, but only set page to 1
+    // Don't clear reactions here - let the data effect handle it
+    setPage(1);
+  }, [reactionType]);
 
   const loadMore = () => {
     if (hasMore && !isFetching) {
@@ -127,30 +115,21 @@ const ReactionList: React.FC<IReactionListProps> = ({
     }
   };
 
-  console.log("Render state:", {
-    reactions: reactions.length,
-    isLoading,
-    isFetching,
-    page,
-    reactionType
-  })
-
   const renderReaction = ({ item }: { item: PostReactionDto }) => (
     <TouchableOpacity
       onPress={() => {
-        onClose()
         router.push(
-          `/user/${item?.reactedBy?.id}?slug=${item?.reactedBy?.slug}`
+          `/user/${item.reactedBy._id}?slug=${item.reactedBy.slug ?? item.reactedBy._id}`
         );
       }}
-      className="flex-row items-center justify-between py-3 px-4"
+      className="flex-row items-center justify-between py-3"
     >
       <View className="flex-row items-center gap-3 flex-1">
         {item.reactedBy.photo ? (
           <Avatar.Image
-            size={30}
+            size={40}
             source={{ uri: item.reactedBy.photo }}
-            className="w-8 h-8"
+            className="w-10 h-10"
           />
         ) : (
           <Avatar.Text
@@ -177,7 +156,7 @@ const ReactionList: React.FC<IReactionListProps> = ({
     </TouchableOpacity>
   );
 
-  if (isLoading && page === 1 && reactions.length === 0) {
+  if (isLoading && page === 1) {
     return (
       <View className="flex-1 justify-center items-center py-10">
         <ActivityIndicator size="large" />
@@ -185,7 +164,7 @@ const ReactionList: React.FC<IReactionListProps> = ({
     );
   }
 
-  if (!isLoading && reactions.length === 0 && !isFetching) {
+  if (reactions.length === 0) {
     return (
       <View className="flex-1 justify-center items-center py-10">
         <Text className="text-gray-500 dark:text-gray-400">
@@ -209,31 +188,29 @@ const ReactionList: React.FC<IReactionListProps> = ({
           </View>
         ) : null
       }
-      style={{ maxHeight: 400 }}
+      style={{ maxHeight: 500 }}
     />
   );
 };
 
-export const ReactionsModal: React.FC<IReactionsModalProps> = ({
-  visible,
-  onClose,
+export const ReactionsContent: React.FC<IReactionsContentProps> = ({
   postId,
+  isActive,
 }) => {
-  const colorScheme = useColorScheme();
   const [activeTab, setActiveTab] = React.useState<string>("all");
 
   const { data: countsData, isLoading: countsLoading } = useGetPostReactions({
     postId,
     page: 1,
     limit: 1,
-    enabled: visible,
+    enabled: isActive,
   });
 
   React.useEffect(() => {
-    if (visible) {
+    if (isActive) {
       setActiveTab("all");
     }
-  }, [visible]);
+  }, [isActive]);
 
   const tabItems = [
     {
@@ -279,58 +256,37 @@ export const ReactionsModal: React.FC<IReactionsModalProps> = ({
     },
   ];
 
-  return (
-    <Portal>
-      <Dialog
-        visible={visible}
-        onDismiss={onClose}
-        style={{
-          backgroundColor:
-            colorScheme === "dark"
-              ? Colors.dark.background
-              : Colors.light.background,
-          maxHeight: "90%",
-          minHeight: "50%",
-          borderRadius: 8
-        }}
+  if (countsLoading) {
+    return (
+      <View className="py-10 justify-center items-center">
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
 
+  return (
+    <>
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        className="flex-row mb-4"
       >
-        <Dialog.Title style={{
-          padding: 0
-        }} className="text-xl p-0 dark:text-darkTextColor text-ligtTextColor">
-          Reactions
-        </Dialog.Title>
-        <Dialog.Content style={{ paddingHorizontal: 0, padding: 0 }}>
-          {countsLoading ? (
-            <View className="py-10 justify-center items-center">
-              <ActivityIndicator size="large" />
-            </View>
-          ) : (
-            <>
-                <ScrollView horizontal style={{
-                  height: 40,
-                }} className="max-h-[40px] p-0 ">
-                {tabItems.map((tab) => (
-                  <ReactionTab
-                    key={tab.key}
-                    label={tab.label}
-                    count={tab.count}
-                    icon={tab.icon}
-                    isActive={activeTab === tab.key}
-                    onPress={() => setActiveTab(tab.key)}
-                  />
-                ))}
-                </ScrollView>
-              <ReactionList
-                postId={postId}
-                reactionType={activeTab === "all" ? undefined : activeTab}
-                  isActive={visible}
-                  onClose={onClose}
-              />
-            </>
-          )}
-        </Dialog.Content>
-      </Dialog>
-    </Portal>
+        {tabItems.map((tab) => (
+          <ReactionTab
+            key={tab.key}
+            label={tab.label}
+            count={tab.count}
+            icon={tab.icon}
+            isActive={activeTab === tab.key}
+            onPress={() => setActiveTab(tab.key)}
+          />
+        ))}
+      </ScrollView>
+      <ReactionList
+        postId={postId}
+        reactionType={activeTab === "all" ? undefined : activeTab}
+        isActive={isActive}
+      />
+    </>
   );
 };

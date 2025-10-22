@@ -45,6 +45,7 @@ export interface IAppUser {
   role: string;
   updatedAt: string;
   _id: string;
+  id?: string;
   followings: string[];
   followers: string[];
   photo?: string;
