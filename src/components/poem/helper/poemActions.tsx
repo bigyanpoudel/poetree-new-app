@@ -40,7 +40,7 @@ export const PoemActions: React.FC<IPoemActionsProps> = ({ poem }) => {
       title: "Check out this poem on Poetree",
       message: `"${truncatedPoemText}"\n\nBy ${
         poem.postedBy?.name || "Anonymous"
-      }\n\nShared via Poetree - Social Media for Poets\n${APPENV.WEBSITE_BASE_URL}`,
+        }\n\nShared via Poetree - Social Media for Poets\n ${APPENV.WEBSITE_BASE_URL}/poem/${poem.slug}`,
       url: `${APPENV.WEBSITE_BASE_URL}/poem/${poem.slug}`,
     };
 
