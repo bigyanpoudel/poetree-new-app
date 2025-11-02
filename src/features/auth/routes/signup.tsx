@@ -10,10 +10,14 @@ import { generateSelectOptions } from "@/src/utils/form";
 import { Link } from "expo-router";
 import { Formik } from "formik";
 import React from "react";
-import { View } from "react-native";
+import { View, Keyboard } from "react-native";
 import { TextInput } from "react-native-paper";
 import * as Yup from "yup";
 import { useSignup } from "../hooks/auth";
+
+import Recaptcha, { RecaptchaRef } from 'react-native-recaptcha-that-works';
+
+import { APPENV } from "@/src/config/env";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -47,9 +51,27 @@ export const SignupPage = () => {
     React.useState<boolean>(false);
   const isDark = useIsDarkTheme();
   const signup = useSignup();
+  const recaptchaRef = React.useRef<RecaptchaRef>(null);
+  const [formValues, setFormValues] = React.useState<Obj | null>(null);
 
   const handleSubmit = async (values: Obj) => {
-    await signup.mutateAsync({ ...values, slug: values.email.split("@")[0] });
+    setFormValues(values);
+    recaptchaRef.current?.open();
+  };
+
+  const onRecaptchaVerify = async (token: string) => {
+    console.log("Recaptcha token:", token);
+
+    // Dismiss keyboard to prevent it from opening after verification
+    Keyboard.dismiss();
+
+    if (formValues) {
+      await signup.mutateAsync({
+        ...formValues,
+        slug: formValues.email.split("@")[0],
+        recaptchaToken: token
+      });
+    }
   };
 
   return (
@@ -197,6 +219,16 @@ export const SignupPage = () => {
             </View>
           )}
         </Formik>
+
+        <Recaptcha
+          ref={recaptchaRef}
+          siteKey={APPENV.NEXT_PUBLIC_RECAPTCH_SITE_KEY}
+          baseUrl="https://www.poetree.ca"
+          onVerify={onRecaptchaVerify}
+          size="invisible"
+          theme={isDark ? "dark" : "light"}
+
+        />
       </View>
     </ScreenLayout>
   );

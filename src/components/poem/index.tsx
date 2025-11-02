@@ -7,7 +7,7 @@ import { getCreatedDate } from "@/src/utils/poemDateFormat";
 import { AntDesign, Feather, Octicons } from "@expo/vector-icons";
 import { Link, useRouter } from "expo-router";
 import React from "react";
-import { Image, View } from "react-native";
+import { Image, View, TouchableOpacity } from "react-native";
 import { Avatar } from "react-native-paper";
 import { ActionMenu } from "../actionMenu";
 import { CustomDailog } from "../modal/dailog";
@@ -17,12 +17,16 @@ import { PoemActions } from "./helper/poemActions";
 import { PoemBody } from "./helper/poemBody";
 import { RenderHashTag } from "./helper/poemHashTag";
 import { PoemType } from "./helper/poemType";
+import { convert } from "html-to-text"
+import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
+import { Colors } from "@/src/utils/constant/colors";
 interface IPoemProps {
   poem: IAppPoem;
 }
 
 // Memoize action items to prevent recreation on every render
 const useActionItems = (poem: IAppPoem, user: any, router: any, setOpenDeleteModal: (open: boolean) => void, setOpenReportModal: (open: boolean) => void) => {
+
   return React.useMemo(() => {
     let items = [
       {
@@ -96,13 +100,22 @@ const titleStyle = {
 export const Poem: React.FC<IPoemProps> = React.memo(({ poem }) => {
   const [openDeleteModal, setOpenDeleteModal] = React.useState<boolean>(false);
   const [openReportModal, setOpenReportModal] = React.useState<boolean>(false);
+  const [showReadMore, setShowReadMore] = React.useState<boolean>(false);
   const { user } = useAppProvider();
   const deletePoem = useDeletePoem();
   const router = useRouter();
   const reportPoem = useReport();
+  const isDark = useIsDarkTheme();
   const poemType: POEMTYPE = getPoemType({ ...poem });
-  
+  const text = convert(poem.body).replace(/[^\S\n]+/g, ' ').replace(/\n+/g, '\n').trim() + "\n";
+  console.log("Converted Text: ", text);
   const actionItems = useActionItems(poem, user, router, setOpenDeleteModal, setOpenReportModal);
+
+  const onTextLayout = React.useCallback((e: any) => {
+    if (e.nativeEvent.lines.length > 6) {
+      setShowReadMore(true);
+    }
+  }, []);
 
   return (
     <View>
@@ -123,13 +136,45 @@ export const Poem: React.FC<IPoemProps> = React.memo(({ poem }) => {
           />
         </View>
         {poem.body && (
-          <PoemBody
-            poem={poem}
-            onShowMore={() => {
-              router.push(`/poem/${poem.slug}?name=${poem.title}`);
-            }}
-            maxLines={4}
-          />
+          <View>
+            <Text
+              fontWeight={500}
+              style={{
+                fontSize: 20,
+                color: isDark ? "white" : "#11181C",
+                fontFamily: "Spectral",
+                fontStyle: "normal",
+                fontWeight: 500,
+                textAlign: "left",
+                lineHeight: 28,
+              }}
+              numberOfLines={6}
+              onTextLayout={onTextLayout}
+            >
+              {text}
+            </Text>
+            {showReadMore && (
+              <TouchableOpacity
+                className="mt-2"
+                onPress={() => router.push(`/poem/${poem.slug}?name=${poem.title}`)}
+              >
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color:
+                      isDark
+                        ? Colors.dark.primary
+                        : Colors.light.primary,
+                    fontFamily: "Karla",
+                    fontWeight: "500",
+                  }}
+                  className="underline "
+                >
+                  Read More
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
         )}
         {poem.hashTags && poem.hashTags.length > 0 && (
           <RenderHashTag hashtags={poem.hashTags} title={poem?._id ?? ""} />

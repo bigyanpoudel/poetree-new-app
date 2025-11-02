@@ -47,6 +47,7 @@
     "expo-video": "~2.2.2",
     "expo-web-browser": "~14.2.0",
     "formik": "^2.4.6",
+    "html-to-text": "^9.0.5",
     "lucide-react-native": "^0.485.0",
     "nativewind": "^4.1.23",
     "react": "19.0.0",
@@ -61,6 +62,7 @@
     "react-native-pell-rich-editor": "^1.9.0",
     "react-native-portalize": "^1.0.7",
     "react-native-reanimated": "~3.17.4",
+    "react-native-recaptcha-that-works": "^2.0.0",
     "react-native-render-html": "^6.3.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
@@ -83,7 +85,8 @@
     "react-native-svg-transformer": "^1.5.0",
     "react-test-renderer": "18.3.1",
     "tailwindcss": "^3.4.17",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "@types/html-to-text": "^9.0.4"
   },
   "private": true
 }
