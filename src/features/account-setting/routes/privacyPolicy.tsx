@@ -32,7 +32,7 @@ export const PrivacyPolicyScreen = () => {
               PRIVACY POLICY
             </Text>
             <Text className="text-sm text-gray-600 dark:text-gray-400 mb-6">
-              Last updated August 06, 2023
+            Last updated Dec 08, 2025
             </Text>
           </View>
 

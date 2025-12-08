@@ -95,10 +95,10 @@ const AppBootStrap = () => {
     Spectral_700Bold,
     Spectral_800ExtraBold,
   });
-  
+
   const isDark = useIsDarkTheme();
   const toastStyles = useToastStyles(isDark);
-  
+
   useOnlineManager();
   useAppState(onAppStateChange);
   const { isUserLoaded, hasSeenOnboarding, isOnboardingLoaded } = useAppProvider();
@@ -120,13 +120,13 @@ const AppBootStrap = () => {
           alignItems: 'center',
         }}
       >
-        <Image 
-          source={isDark 
-            ? require('../assets/images/poetree_logo_white.png') 
+        <Image
+          source={isDark
+            ? require('../assets/images/poetree_logo_white.png')
             : require('../assets/images/poetree_logo.png')
           }
-          style={{ 
-            width: 200, 
+          style={{
+            width: 200,
             height: 200,
             resizeMode: 'contain'
           }}
@@ -145,7 +145,7 @@ const AppBootStrap = () => {
             : Colors.light.scafoldColor,
         }}
       >
-        <Stack 
+        <Stack
           screenOptions={{ headerShown: false }}
           initialRouteName={!hasSeenOnboarding ? "onboarding" : "(home)"}
         >
@@ -170,7 +170,6 @@ const AppBootStrap = () => {
           <Stack.Screen name="account/change-password" />
           <Stack.Screen name="account/payment-account" />
           <Stack.Screen name="my-purchase" />
-
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

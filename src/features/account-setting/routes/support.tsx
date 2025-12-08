@@ -49,6 +49,16 @@ export const SupportScreen = () => {
           </View>
         </TouchableOpacity>
 
+        {/* Child Safety Notice */}
+        <View className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800/30 rounded-lg p-4">
+          <Text className="text-base font-semibold mb-2 text-orange-900 dark:text-orange-100">
+            Report Child Safety Concerns
+          </Text>
+          <Text className="text-sm text-orange-800 dark:text-orange-200">
+            If you encounter content that may involve child exploitation or safety concerns, please use the in-app Report button on the content or user profile, or contact us immediately at info@poetree.ca or privacy@poetree.ca.
+          </Text>
+        </View>
+
         {/* FAQ Section */}
         <View className="mt-6 flex flex-col gap-4">
           <Text className="text-lg font-semibold  dark:text-white">

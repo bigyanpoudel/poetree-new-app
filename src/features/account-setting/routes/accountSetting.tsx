@@ -12,6 +12,7 @@ import {
   HelpCircle,
   Info,
   Key as KeyIcon,
+  ShieldCheck,
   LogIn,
   CreditCard as LucideCreditCard,
   LucideListPlus,
@@ -231,6 +232,13 @@ export const AccountSetting = () => {
             left={(props) => <Globe {...props} size={20} />}
             onPress={() => {
               router.push("/privacy-policy");
+            }}
+          />
+          <ListItem
+            title="Child Safety & Community Guidelines"
+            left={(props) => <ShieldCheck {...props} size={20} />}
+            onPress={() => {
+              router.push("/child-policy");
             }}
           />
         </List.Section>

@@ -1,7 +1,7 @@
 import { ScreenLayout } from "@/src/components/layout";
 import { Text } from "@/src/components/text";
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { View } from "react-native";
 
 export const TermsAndConditionsScreen = () => {
   return (
@@ -114,6 +114,19 @@ export const TermsAndConditionsScreen = () => {
               </Text>
               <Text className="text-base leading-6 dark:text-gray-300">
                 Please read our Privacy Policy.
+              </Text>
+            </View>
+
+            <View className="flex flex-col gap-3">
+              <Text className="text-lg font-bold dark:text-white">
+                8a. Child Safety and Community Guidelines
+              </Text>
+              <Text className="text-base leading-6 dark:text-gray-300">
+                Poetree Inc is committed to maintaining a safe environment for all users. We have zero tolerance for Child Sexual Abuse
+                and Exploitation (CSAE) and Child Sexual Abuse Material (CSAM). By using our platform, you agree to comply with our
+                Child Safety & Community Guidelines, which explicitly prohibit any content or behavior related to CSAE, CSAM, grooming,
+                or exploitation of minors. Violations will result in immediate account termination and reporting to law enforcement authorities.
+                Please review our complete Child Safety & Community Guidelines for detailed information.
               </Text>
             </View>
 
