@@ -1,16 +1,18 @@
 import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 import { Colors } from "@/src/utils/constant/colors";
-import { useField } from "formik"; // Import Formik hooks and components
+import { useField } from "formik";
 import React from "react";
-import { Pressable, View } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 import { Text } from "@/src/components";
+
 interface IPoemTypeProps {
   name: string;
   label?: string;
 }
+
 export const PoemType: React.FC<IPoemTypeProps> = ({ name, label }) => {
-  const [field, meta, helpers] = useField(name);
-  const [fileField, _, fileHelper] = useField("file");
+  const [field, , helpers] = useField(name);
+  const [, , fileHelper] = useField("file");
   const isDark = useIsDarkTheme();
 
   const POST_TYPES = [
@@ -29,29 +31,41 @@ export const PoemType: React.FC<IPoemTypeProps> = ({ name, label }) => {
   ];
 
   const handleTabChange = (tab: string) => {
+    console.log("Tab pressed:", tab);
     helpers.setValue(tab);
     fileHelper.setValue(undefined);
   };
 
   return (
-    <View className="flex flex-col gap-2">
+    <View className="flex flex-col py-2 gap-2">
       {label && <Text className="text-lg pl-2">{label}</Text>}
+
+
       <View
         style={{
           flexDirection: "row",
           backgroundColor: isDark ? Colors.light.primary : Colors.dark.primary,
+          zIndex: 9999,
+          elevation: 10,
         }}
       >
         {POST_TYPES.map((tab) => (
-          <Pressable
+          <TouchableOpacity
             key={tab.value}
+            activeOpacity={0.7}
             onPress={() => handleTabChange(tab.value)}
+            onPressIn={() => console.log("PRESS IN:", tab.value)}
+            onPressOut={() => console.log("PRESS OUT:", tab.value)}
+            onLongPress={() => console.log("LONG PRESS:", tab.value)}
+            delayPressIn={0}
+            hitSlop={{ top: 20, bottom: 20, left: 10, right: 10 }}
             style={{
               flex: 1,
               padding: 12,
               borderBottomWidth: field.value === tab.value ? 2 : 0,
               borderColor: isDark ? Colors.dark.primary : Colors.light.primary,
               alignItems: "center",
+              zIndex: 9999,
             }}
           >
             <Text
@@ -70,7 +84,7 @@ export const PoemType: React.FC<IPoemTypeProps> = ({ name, label }) => {
             >
               {tab.label}
             </Text>
-          </Pressable>
+          </TouchableOpacity>
         ))}
       </View>
     </View>

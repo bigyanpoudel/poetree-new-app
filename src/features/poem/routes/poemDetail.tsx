@@ -2,12 +2,13 @@ import { ActionMenu } from "@/src/components/actionMenu";
 import { ScreenLayout } from "@/src/components/layout";
 import { PoemActions } from "@/src/components/poem/helper/poemActions";
 import { PoemBody } from "@/src/components/poem/helper/poemBody";
+import { PoemMedia } from "@/src/components/poem/helper/poemMedia";
 import { useAppProvider } from "@/src/provider/appProvider";
 import { IAppPoem } from "@/src/types";
 import { Feather, Octicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { RefreshControl } from "react-native";
+import { RefreshControl, View } from "react-native";
 import { Divider } from "react-native-paper";
 import { PoemCommentSections } from "../components/poem-details/comments";
 import { PoemHeader } from "../components/poem-details/poem-header";
@@ -103,6 +104,8 @@ export const PoemDetail = () => {
         <>
           <PoemHeader poem={data} />
           <PoemBody poem={data as IAppPoem} maxLines={0} />
+            <PoemMedia poem={data as IAppPoem} />
+            
           <Divider className="my-6" />
           <PoemActions poem={data as IAppPoem} />
           <Divider className="my-6" />

@@ -62,14 +62,19 @@ export const AudioPlayer: React.FC<IAudioPlayer> = ({ uri }) => {
   // Load audio when uri changes
   useEffect(() => {
     loadAudio();
-    
-    // Cleanup on unmount or uri change
+  }, [uri]);
+
+  // Cleanup on unmount - separate effect that watches sound state
+  useEffect(() => {
     return () => {
       if (sound) {
-        sound.unloadAsync().catch(console.error);
+        sound.stopAsync().then(() => {
+          sound.unloadAsync();
+        }).catch(console.error);
+        setIsPlaying(false);
       }
     };
-  }, [uri]);
+  }, [sound]);
 
   // Progress update interval - only when playing and not loading
   useEffect(() => {

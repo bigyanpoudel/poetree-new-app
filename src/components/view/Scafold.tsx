@@ -64,6 +64,8 @@ export function Scafold({
       }}
       nestedScrollEnabled={true}
       keyboardShouldPersistTaps="handled"
+      scrollEventThrottle={16}
+      contentContainerStyle={{ flexGrow: 1 }}
       refreshControl={refreshControl}
     >
       <View

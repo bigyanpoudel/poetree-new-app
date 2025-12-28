@@ -85,6 +85,7 @@ export const CreatePoem = () => {
       {({ handleSubmit }) => (
         <View className="flex flex-1 relative">
           <ScreenLayout
+
             appBar={{
               title: id ? "Update Poem" : "Create Poem",
             }}
@@ -123,9 +124,8 @@ export const CreatePoem = () => {
           <View
             style={{
               paddingBottom: insets.bottom + 8,
-              backgroundColor: Colors.light.primary,
             }}
-            className="absolute px-5 pt-3 bottom-0 left-0 w-full z-[1]"
+            className="absolute px-5 dark:bg-darkBackground pt-3 bottom-0 left-0 w-full z-[1]"
           >
             <Button
               loading={createPoem.isPending || updatePoem.isPending}

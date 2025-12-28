@@ -20,6 +20,7 @@ import { PoemType } from "./helper/poemType";
 import { convert } from "html-to-text"
 import { useIsDarkTheme } from "@/src/hooks/useAppThemeScheme";
 import { Colors } from "@/src/utils/constant/colors";
+import { AudioPlayer } from "../audioPlayer";
 interface IPoemProps {
   poem: IAppPoem;
 }
@@ -194,6 +195,9 @@ export const Poem: React.FC<IPoemProps> = React.memo(({ poem }) => {
         {poemType === POEMTYPE.video && poem.video && (
           <VideoScreen url={poem.video} />
         )}
+        {poemType === POEMTYPE.audio && poem.audio &&
+          <AudioPlayer uri={poem.audio} />
+        }
         <View className="flex flex-row gap-4 mt-2 justify-between items-center">
           <View className="flex flex-row gap-2 flex-1">
             <Link
